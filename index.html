@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>リアルタイム研修スケジュール 2025年7〜8月</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+      background: #F5F7FA;
+      color: #2D3748;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .site-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: white;
+      padding: 28px 32px 24px;
+    }
+    .site-header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin-bottom: 6px;
+    }
+    .site-header p {
+      font-size: 0.85rem;
+      opacity: 0.75;
+      margin-bottom: 20px;
+    }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 5px 12px 5px 8px;
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+    .legend-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Main */
+    main {
+      max-width: 1100px;
+      margin: 32px auto;
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* Calendar card */
+    .calendar-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .calendar-header {
+      padding: 18px 24px 14px;
+      border-bottom: 1px solid #EDF2F7;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .calendar-header h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #1A202C;
+    }
+    .calendar-header span {
+      font-size: 0.85rem;
+      color: #718096;
+    }
+
+    /* Grid */
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+    }
+    .weekday-header {
+      text-align: center;
+      padding: 10px 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #718096;
+      border-bottom: 2px solid #EDF2F7;
+      background: #F7FAFC;
+    }
+    .weekday-header.sun { color: #E53E3E; }
+    .weekday-header.sat { color: #3182CE; }
+
+    .day-cell {
+      min-height: 90px;
+      padding: 6px 5px 5px;
+      border-right: 1px solid #EDF2F7;
+      border-bottom: 1px solid #EDF2F7;
+      vertical-align: top;
+      position: relative;
+    }
+    .day-cell:nth-child(7n) { border-right: none; }
+    .day-cell.empty { background: #FAFAFA; }
+    .day-cell.holiday { background: #FFF5F5; }
+    .day-cell.obon { background: #FFFAF0; }
+    .day-cell.today { background: #EBF8FF; }
+    .day-cell.sunday .day-num { color: #E53E3E; }
+    .day-cell.saturday .day-num { color: #3182CE; }
+
+    .day-num {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #4A5568;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .holiday-label {
+      font-size: 0.6rem;
+      color: #E53E3E;
+      font-weight: 500;
+    }
+    .obon-label {
+      font-size: 0.6rem;
+      color: #D97706;
+      font-weight: 500;
+    }
+
+    /* Event chips */
+    .events {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .event-chip {
+      border-radius: 5px;
+      padding: 3px 6px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      cursor: pointer;
+      line-height: 1.3;
+      transition: opacity 0.15s, transform 0.1s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .event-chip:hover {
+      opacity: 0.85;
+      transform: scale(1.02);
+    }
+    .chip-ai-video   { background: #DBEAFE; color: #1D4ED8; border-left: 3px solid #1976D2; }
+    .chip-common     { background: #EDE9FE; color: #5B21B6; border-left: 3px solid #7B1FA2; }
+    .chip-sales      { background: #D1FAE5; color: #065F46; border-left: 3px solid #388E3C; }
+    .chip-backoffice { background: #FFEDD5; color: #92400E; border-left: 3px solid #E65100; }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: white;
+      border-radius: 16px;
+      max-width: 500px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    .modal-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid #EDF2F7;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .modal-program-badge {
+      display: inline-block;
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .badge-ai-video   { background: #DBEAFE; color: #1D4ED8; }
+    .badge-common     { background: #EDE9FE; color: #5B21B6; }
+    .badge-sales      { background: #D1FAE5; color: #065F46; }
+    .badge-backoffice { background: #FFEDD5; color: #92400E; }
+
+    .modal-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #1A202C;
+      line-height: 1.4;
+    }
+    .modal-close {
+      background: #F7FAFC;
+      border: none;
+      border-radius: 50%;
+      width: 32px; height: 32px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: #718096;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .modal-close:hover { background: #EDF2F7; }
+    .modal-body { padding: 20px 24px 24px; }
+    .modal-meta {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .modal-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.82rem;
+      color: #4A5568;
+    }
+    .modal-meta-item .icon {
+      font-size: 1rem;
+    }
+    .modal-genre {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #718096;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .modal-topics {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .modal-topics li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.87rem;
+      line-height: 1.5;
+      color: #2D3748;
+    }
+    .modal-topics li::before {
+      content: '▶';
+      font-size: 0.55rem;
+      color: #A0AEC0;
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+
+    /* Info bar */
+    .info-bar {
+      background: #EBF8FF;
+      border: 1px solid #BEE3F8;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      color: #2C5282;
+      margin: 0 16px 16px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .site-header { padding: 20px 16px; }
+      .site-header h1 { font-size: 1.2rem; }
+      main { padding: 0 8px; }
+      .day-cell { min-height: 70px; padding: 4px 3px; }
+      .event-chip { font-size: 0.6rem; padding: 2px 4px; }
+      .legend { gap: 7px; }
+      .legend-item { font-size: 0.72rem; padding: 4px 10px 4px 7px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>リアルタイム研修スケジュール</h1>
+  <p>2025年7月〜8月 ／ 各コマ2時間 ／ 隔週実施（上旬 11:00〜13:00 ／ 下旬 14:00〜16:00）</p>
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#1976D2"></div>
+      AI動画・コンテンツ制作研修
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#7B1FA2"></div>
+      職種別共通①〜③（営業・バックオフィス）
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#388E3C"></div>
+      職種別 営業編④〜⑤
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#E65100"></div>
+      職種別 バックオフィス編④〜⑤
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="info-bar">
+    ℹ️ 各セッションをクリックすると講座テーマの詳細を確認できます。職種別①〜③は営業・バックオフィス共通セッションです。
+  </div>
+  <div id="cal-2025-7" class="calendar-card"></div>
+  <div id="cal-2025-8" class="calendar-card"></div>
+</main>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div>
+        <div id="modalBadge" class="modal-program-badge"></div>
+        <div id="modalTitle" class="modal-title"></div>
+      </div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-meta">
+        <div class="modal-meta-item"><span class="icon">📅</span><span id="modalDate"></span></div>
+        <div class="modal-meta-item"><span class="icon">🕐</span><span id="modalTime"></span></div>
+      </div>
+      <div id="modalGenre" class="modal-genre"></div>
+      <ul id="modalTopics" class="modal-topics"></ul>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── Session Data ────────────────────────────────────────────────────────────
+
+const PROGRAMS = {
+  'ai-video': {
+    name: 'AI動画・コンテンツ制作研修',
+    chipClass: 'chip-ai-video',
+    badgeClass: 'badge-ai-video',
+    sessions: {
+      1: { title: '①AI基礎', genre: '知識 ＆ 基本操作', topics: ['生成AIの基礎知識', '生成AIのサービスと生成の仕組みと活用の注意', 'Geminiマスターへの第一歩！基本操作を完全攻略', 'Nanobananaの基本操作'] },
+      2: { title: '②販促デザイン', genre: 'デザイン', topics: ['商品のコンセプト設計', 'コンセプトに合わせた画像生成の実践', 'デザインツールCanvaの基礎', 'Canvaを活用したチラシ・ポスターデザイン'] },
+      3: { title: '③動画生成・編集', genre: 'PR動画制作①', topics: ['Runwayを活用した動画生成AIの基礎と実践', 'PR動画の効果を高める！画像生成', 'PR動画の効果を高める！動画生成', '動画編集の基礎'] },
+      4: { title: '④音声・アバター', genre: 'PR動画制作②', topics: ['AIで作るオリジナルBGM！楽曲生成の基本', '伝わるナレーションをAIで！企業PRを強化する音声戦略', 'Heygenのアバター動画。ディープフェイクの危険性と対策', 'オリジナルキャラクターを使ったアバター動画'] },
+      5: { title: '⑤広報活用', genre: '広報・SNS展開支援', topics: ['SNS別の広告動画の基礎知識', 'AIを使った採用動画作成方法', 'オリジナルキャラクターの制作とCM作成', 'プレゼン資料を動画化', 'vrewで動画にフル字幕をつける'] }
+    }
+  },
+  'common': {
+    name: '職種別 生成AI活用研修（共通①〜③）',
+    chipClass: 'chip-common',
+    badgeClass: 'badge-common',
+    sessions: {
+      1: { title: '①AI基礎', genre: 'AI活用基礎', topics: ['生成AIを業務で使うための基本理解', 'AI活用時のリスク管理と情報の扱い方', 'Geminiを使った業務効率化の基本操作', '画像生成AIを使ったビジュアル作成の基本'] },
+      2: { title: '②情報収集・整理', genre: '業務情報の整理', topics: ['業務に必要な情報をAIで集める方法', '収集した情報を要点・課題・打ち手に整理する方法', '目的に合わせた文章・メール・案内文の作成', 'AIで整理した情報をチームで活用するテンプレート作成'] },
+      3: { title: '③資料作成', genre: '資料・提案素材の生成', topics: ['業務資料に使える画像・図解・バナー案の作成', 'ドキュメントのたたき台をAIで作成する方法', 'スライド資料の構成・見出し・流れを作成する方法', '目的に合わせた資料をその場で作成する実践ワーク'] }
+    }
+  },
+  'sales': {
+    name: '職種別 生成AI活用研修 営業編',
+    chipClass: 'chip-sales',
+    badgeClass: 'badge-sales',
+    sessions: {
+      4: { title: '④実務活用', genre: 'バックオフィス実務活用', topics: ['規程案・業務マニュアルをAIで作成する方法', '議事録からToDo・論点・決定事項を整理する', '社内問い合わせ対応に使えるFAQを作成する', '自社業務に合わせた社内ナレッジ整理ワーク'] },
+      5: { title: '⑤AIワークフロー', genre: '事務業務のAI化', topics: ['定型業務・繰り返し業務を洗い出す方法', 'AIで事務作業を効率化するプロンプト設計', 'バックオフィス業務のAI活用フロー設計', '明日から使えるバックオフィスAI活用ワークフローの完成'] }
+    }
+  },
+  'backoffice': {
+    name: '職種別 生成AI活用研修 バックオフィス編',
+    chipClass: 'chip-backoffice',
+    badgeClass: 'badge-backoffice',
+    sessions: {
+      4: { title: '④実務活用', genre: '営業提案実践', topics: ['顧客課題から提案ストーリーを設計する', '提案書に使える説明文・訴求文を作成する', '商談で使える営業トーク・切り返しを作成する', '自社商材に合わせた提案骨子を完成させる'] },
+      5: { title: '⑤AIワークフロー', genre: '営業AIワークフロー', topics: ['商談情報・顧客情報を整理する営業管理シート作成', '定型営業業務をAIで効率化する方法', '営業準備から提案作成までのAI活用フロー設計', '明日から使える営業AI活用ワークフローの完成'] }
+    }
+  }
+};
+
+// ─── Scheduled Events ────────────────────────────────────────────────────────
+
+const EVENTS = [
+  // === Cycle A: 7/1〜15, 11:00-13:00 ===
+  { date: '2025-07-01', program: 'ai-video',   session: 1, time: '11:00〜13:00' },
+  { date: '2025-07-02', program: 'common',      session: 1, time: '11:00〜13:00' },
+  { date: '2025-07-03', program: 'ai-video',   session: 2, time: '11:00〜13:00' },
+  { date: '2025-07-04', program: 'common',      session: 2, time: '11:00〜13:00' },
+  { date: '2025-07-07', program: 'ai-video',   session: 3, time: '11:00〜13:00' },
+  { date: '2025-07-08', program: 'common',      session: 3, time: '11:00〜13:00' },
+  { date: '2025-07-09', program: 'ai-video',   session: 4, time: '11:00〜13:00' },
+  { date: '2025-07-10', program: 'sales',       session: 4, time: '11:00〜13:00' },
+  { date: '2025-07-10', program: 'backoffice',  session: 4, time: '11:00〜13:00' },
+  { date: '2025-07-11', program: 'ai-video',   session: 5, time: '11:00〜13:00' },
+  { date: '2025-07-14', program: 'sales',       session: 5, time: '11:00〜13:00' },
+  { date: '2025-07-15', program: 'backoffice',  session: 5, time: '11:00〜13:00' },
+  // === Cycle B: 7/16〜31, 14:00-16:00 (7/21=海の日 除外) ===
+  { date: '2025-07-16', program: 'ai-video',   session: 1, time: '14:00〜16:00' },
+  { date: '2025-07-17', program: 'common',      session: 1, time: '14:00〜16:00' },
+  { date: '2025-07-18', program: 'ai-video',   session: 2, time: '14:00〜16:00' },
+  { date: '2025-07-22', program: 'common',      session: 2, time: '14:00〜16:00' },
+  { date: '2025-07-23', program: 'ai-video',   session: 3, time: '14:00〜16:00' },
+  { date: '2025-07-24', program: 'common',      session: 3, time: '14:00〜16:00' },
+  { date: '2025-07-25', program: 'ai-video',   session: 4, time: '14:00〜16:00' },
+  { date: '2025-07-28', program: 'sales',       session: 4, time: '14:00〜16:00' },
+  { date: '2025-07-28', program: 'backoffice',  session: 4, time: '14:00〜16:00' },
+  { date: '2025-07-29', program: 'ai-video',   session: 5, time: '14:00〜16:00' },
+  { date: '2025-07-30', program: 'sales',       session: 5, time: '14:00〜16:00' },
+  { date: '2025-07-31', program: 'backoffice',  session: 5, time: '14:00〜16:00' },
+  // === Cycle C: 8/1〜15, 11:00-13:00 (8/11=山の日, 8/13-15=お盆 除外) ===
+  { date: '2025-08-01', program: 'ai-video',   session: 1, time: '11:00〜13:00' },
+  { date: '2025-08-01', program: 'common',      session: 1, time: '11:00〜13:00' },
+  { date: '2025-08-04', program: 'ai-video',   session: 2, time: '11:00〜13:00' },
+  { date: '2025-08-04', program: 'common',      session: 2, time: '11:00〜13:00' },
+  { date: '2025-08-05', program: 'ai-video',   session: 3, time: '11:00〜13:00' },
+  { date: '2025-08-05', program: 'common',      session: 3, time: '11:00〜13:00' },
+  { date: '2025-08-06', program: 'ai-video',   session: 4, time: '11:00〜13:00' },
+  { date: '2025-08-06', program: 'sales',       session: 4, time: '11:00〜13:00' },
+  { date: '2025-08-06', program: 'backoffice',  session: 4, time: '11:00〜13:00' },
+  { date: '2025-08-07', program: 'ai-video',   session: 5, time: '11:00〜13:00' },
+  { date: '2025-08-08', program: 'sales',       session: 5, time: '11:00〜13:00' },
+  { date: '2025-08-12', program: 'backoffice',  session: 5, time: '11:00〜13:00' },
+  // === Cycle D: 8/18〜29, 14:00-16:00 ===
+  { date: '2025-08-18', program: 'ai-video',   session: 1, time: '14:00〜16:00' },
+  { date: '2025-08-19', program: 'common',      session: 1, time: '14:00〜16:00' },
+  { date: '2025-08-20', program: 'ai-video',   session: 2, time: '14:00〜16:00' },
+  { date: '2025-08-21', program: 'common',      session: 2, time: '14:00〜16:00' },
+  { date: '2025-08-22', program: 'ai-video',   session: 3, time: '14:00〜16:00' },
+  { date: '2025-08-25', program: 'common',      session: 3, time: '14:00〜16:00' },
+  { date: '2025-08-26', program: 'ai-video',   session: 4, time: '14:00〜16:00' },
+  { date: '2025-08-26', program: 'sales',       session: 4, time: '14:00〜16:00' },
+  { date: '2025-08-27', program: 'backoffice',  session: 4, time: '14:00〜16:00' },
+  { date: '2025-08-28', program: 'ai-video',   session: 5, time: '14:00〜16:00' },
+  { date: '2025-08-28', program: 'sales',       session: 5, time: '14:00〜16:00' },
+  { date: '2025-08-29', program: 'backoffice',  session: 5, time: '14:00〜16:00' },
+];
+
+// ─── Holidays & Special Days ─────────────────────────────────────────────────
+
+const HOLIDAYS = {
+  '2025-07-21': '海の日',
+  '2025-08-11': '山の日',
+};
+const OBON_DAYS = new Set(['2025-08-13', '2025-08-14', '2025-08-15']);
+
+// ─── Calendar Rendering ───────────────────────────────────────────────────────
+
+const WEEKDAYS = ['日', '月', '火', '水', '木', '金', '土'];
+const MONTH_NAMES = { 7: '7月', 8: '8月' };
+
+function buildEventMap() {
+  const map = {};
+  for (const ev of EVENTS) {
+    if (!map[ev.date]) map[ev.date] = [];
+    map[ev.date].push(ev);
+  }
+  return map;
+}
+
+function padDate(y, m, d) {
+  return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+}
+
+function renderCalendar(containerId, year, month) {
+  const container = document.getElementById(containerId);
+  const eventMap = buildEventMap();
+  const firstDay = new Date(year, month - 1, 1).getDay();
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const today = new Date();
+  const todayStr = padDate(today.getFullYear(), today.getMonth()+1, today.getDate());
+
+  let html = `
+    <div class="calendar-header">
+      <h2>2025年 ${MONTH_NAMES[month]}</h2>
+      <span>— リアルタイム研修スケジュール</span>
+    </div>
+    <div class="calendar-grid">
+  `;
+
+  // Weekday headers
+  for (let i = 0; i < 7; i++) {
+    const cls = i === 0 ? 'sun' : i === 6 ? 'sat' : '';
+    html += `<div class="weekday-header ${cls}">${WEEKDAYS[i]}</div>`;
+  }
+
+  // Empty cells before month starts
+  for (let i = 0; i < firstDay; i++) {
+    html += `<div class="day-cell empty"></div>`;
+  }
+
+  // Day cells
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = padDate(year, month, d);
+    const dow = new Date(year, month - 1, d).getDay();
+    const isHoliday = !!HOLIDAYS[dateStr];
+    const isObon = OBON_DAYS.has(dateStr);
+    const isSun = dow === 0;
+    const isSat = dow === 6;
+    const isToday = dateStr === todayStr;
+
+    let cellClass = 'day-cell';
+    if (isHoliday) cellClass += ' holiday';
+    else if (isObon) cellClass += ' obon';
+    else if (isToday) cellClass += ' today';
+    if (isSun) cellClass += ' sunday';
+    if (isSat) cellClass += ' saturday';
+
+    let dayNumHtml = `<div class="day-num">${d}`;
+    if (isHoliday) dayNumHtml += `<span class="holiday-label">${HOLIDAYS[dateStr]}</span>`;
+    if (isObon)    dayNumHtml += `<span class="obon-label">お盆</span>`;
+    dayNumHtml += `</div>`;
+
+    const dayEvents = eventMap[dateStr] || [];
+    let eventsHtml = '<div class="events">';
+    for (const ev of dayEvents) {
+      const prog = PROGRAMS[ev.program];
+      const sess = prog.sessions[ev.session];
+      const label = sess.title;
+      const shortProg = ev.program === 'ai-video' ? 'AI動画' :
+                        ev.program === 'common'    ? '共通' :
+                        ev.program === 'sales'     ? '営業' : 'BO';
+      eventsHtml += `<div class="event-chip ${prog.chipClass}"
+        onclick="showModal('${ev.program}',${ev.session},'${dateStr}','${ev.time}')"
+        title="${prog.name} ${sess.title}"
+      >${shortProg} ${label}</div>`;
+    }
+    eventsHtml += '</div>';
+
+    html += `<div class="${cellClass}">${dayNumHtml}${eventsHtml}</div>`;
+  }
+
+  // Fill remaining cells
+  const totalCells = firstDay + daysInMonth;
+  const remainder = totalCells % 7;
+  if (remainder !== 0) {
+    for (let i = 0; i < 7 - remainder; i++) {
+      html += `<div class="day-cell empty"></div>`;
+    }
+  }
+
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+// ─── Modal ────────────────────────────────────────────────────────────────────
+
+function showModal(programKey, sessionNum, dateStr, time) {
+  const prog = PROGRAMS[programKey];
+  const sess = prog.sessions[sessionNum];
+  const [y, m, d] = dateStr.split('-');
+  const dow = WEEKDAYS[new Date(dateStr).getDay()];
+  const dateLabel = `${parseInt(m)}月${parseInt(d)}日（${dow}）`;
+
+  document.getElementById('modalBadge').textContent = prog.name;
+  document.getElementById('modalBadge').className = `modal-program-badge ${prog.badgeClass}`;
+  document.getElementById('modalTitle').textContent = sess.title;
+  document.getElementById('modalDate').textContent = dateLabel;
+  document.getElementById('modalTime').textContent = time;
+  document.getElementById('modalGenre').textContent = sess.genre;
+
+  const topicsEl = document.getElementById('modalTopics');
+  topicsEl.innerHTML = '';
+  for (const topic of sess.topics) {
+    const li = document.createElement('li');
+    li.textContent = topic;
+    topicsEl.appendChild(li);
+  }
+
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+
+renderCalendar('cal-2025-7', 2025, 7);
+renderCalendar('cal-2025-8', 2025, 8);
+</script>
+</body>
+</html>
