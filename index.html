@@ -3,97 +3,111 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>リアルタイム研修 スケジュールカレンダー</title>
+<title>aicrew 生成AI研修 スケジュールカレンダー</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;background:#eef1f6;color:#1a202c;min-height:100vh}
 
-/* Header */
-.hd{background:linear-gradient(135deg,#0d1117 0%,#161b22 60%,#1a2744 100%);color:#fff;padding:0 24px}
-.hd-in{max-width:1200px;margin:0 auto;padding:18px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.hd h1{font-size:1.2rem;font-weight:700}
-.hd-sub{font-size:.78rem;color:#7c9cbf;margin-top:3px}
-.tabs{display:flex;gap:8px;flex-wrap:wrap}
-.tab{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.85);padding:7px 16px;border-radius:20px;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
-.tab:hover{background:rgba(255,255,255,.18)}
-.tab.on{background:#fff;color:#0d1117;border-color:#fff}
+/* ── Header ── */
+.hd{background:linear-gradient(135deg,#0d1117 0%,#161b22 60%,#1a2744 100%);color:#fff;padding:20px 24px}
+.hd-in{max-width:1300px;margin:0 auto;display:flex;align-items:flex-start;flex-direction:column;gap:4px}
+.hd-brand{font-size:.82rem;font-weight:700;color:#60a5fa;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.hd h1{font-size:1.35rem;font-weight:800;line-height:1.3}
+.hd-sub{font-size:.78rem;color:#7c9cbf;margin-top:4px}
 
-/* Page */
-.pg{max-width:1200px;margin:0 auto;padding:24px 16px 48px}
-.sec{margin-bottom:24px}
-.sec-ttl{font-size:.88rem;font-weight:700;color:#2d3748;border-left:3px solid #4299e1;padding-left:10px;margin-bottom:12px}
+/* ── Program Tab Bar ── */
+.prog-bar{background:#fff;border-bottom:1px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.prog-bar-in{max-width:1300px;margin:0 auto;display:flex;gap:0}
+.ptab{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;padding:16px 12px;cursor:pointer;border:none;background:none;font-size:.9rem;font-weight:600;color:#718096;border-bottom:3px solid transparent;transition:all .2s;flex-direction:column}
+.ptab:hover{background:#f7fafc;color:#2d3748}
+.ptab.on{color:var(--tc);border-bottom-color:var(--tc);background:var(--bg)}
+.ptab-icon{font-size:1.5rem;line-height:1}
+.ptab-name{font-size:.88rem;font-weight:700;line-height:1.3;text-align:center}
+.ptab-sub{font-size:.68rem;font-weight:400;color:#a0aec0;line-height:1.2;text-align:center}
+.ptab.on .ptab-sub{color:var(--tc);opacity:.7}
+@media(min-width:640px){.ptab{flex-direction:row;padding:14px 20px}}
 
-/* Session cards */
+/* ── Page ── */
+.pg{max-width:1300px;margin:0 auto;padding:24px 16px 48px}
+.sec{margin-bottom:22px}
+.sec-ttl{font-size:.86rem;font-weight:700;color:#2d3748;border-left:3px solid #4299e1;padding-left:10px;margin-bottom:12px}
+
+/* ── Session cards ── */
 .sc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-@media(max-width:860px){.sc-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:500px){.sc-grid{grid-template-columns:repeat(2,1fr)}}
-.sc{background:#fff;border-radius:12px;padding:12px 14px;cursor:pointer;border:2px solid transparent;box-shadow:0 1px 4px rgba(0,0,0,.07);display:flex;align-items:flex-start;gap:10px;transition:all .2s;user-select:none}
+@media(max-width:900px){.sc-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:520px){.sc-grid{grid-template-columns:repeat(2,1fr)}}
+.sc{background:#fff;border-radius:12px;padding:11px 13px;cursor:pointer;border:2px solid transparent;box-shadow:0 1px 4px rgba(0,0,0,.07);display:flex;align-items:flex-start;gap:9px;transition:all .2s;user-select:none}
 .sc:hover{box-shadow:0 4px 14px rgba(0,0,0,.13);transform:translateY(-1px)}
 .sc.on{border-color:var(--cd);box-shadow:0 4px 16px rgba(0,0,0,.15)}
-.sc-n{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;flex-shrink:0}
-.sc-info .stl{font-size:.83rem;font-weight:700;line-height:1.3;margin-bottom:2px}
-.sc-info .sgn{font-size:.68rem;color:#718096;line-height:1.3}
-.sh-tag{font-size:.6rem;background:#EBF8FF;color:#2B6CB0;border-radius:3px;padding:1px 4px;font-weight:600;display:inline-block;margin-top:2px}
+.sc-n{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;flex-shrink:0}
+.sc-info .stl{font-size:.82rem;font-weight:700;line-height:1.3;margin-bottom:1px}
+.sc-info .sgn{font-size:.66rem;color:#718096;line-height:1.3}
+.sh-tag{font-size:.58rem;background:#EBF8FF;color:#2B6CB0;border-radius:3px;padding:1px 4px;font-weight:600;display:inline-block;margin-top:2px}
 
-/* Legend */
-.lgd{background:#fff;border-radius:10px;padding:12px 18px;box-shadow:0 1px 4px rgba(0,0,0,.07);display:flex;gap:24px;flex-wrap:wrap;align-items:center}
-.lgd-item{display:flex;align-items:center;gap:8px;font-size:.78rem;color:#4a5568}
-.lgd-sw{width:30px;height:12px;border-radius:3px}
+/* ── Legend ── */
+.lgd{background:#fff;border-radius:10px;padding:11px 16px;box-shadow:0 1px 4px rgba(0,0,0,.07);display:flex;gap:20px;flex-wrap:wrap;align-items:center}
+.lgd-item{display:flex;align-items:center;gap:7px;font-size:.77rem;color:#4a5568}
+.lgd-sw{width:28px;height:11px;border-radius:3px}
 
-/* Calendar */
-.cal-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-@media(max-width:760px){.cal-grid{grid-template-columns:1fr}}
-.cc{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.cc-hd{background:#1a202c;color:#fff;padding:11px 16px;display:flex;align-items:center;justify-content:space-between}
-.cc-hd h3{font-size:.97rem;font-weight:700}
-.cc-hd .ctag{font-size:.68rem;opacity:.6}
+/* ── Calendar grid ── */
+.cal-outer{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:900px){.cal-outer{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:580px){.cal-outer{grid-template-columns:1fr}}
+.cc{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.07)}
+.cc-hd{background:#1a202c;color:#fff;padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+.cc-hd h3{font-size:.92rem;font-weight:700}
+.cc-hd .ctag{font-size:.65rem;opacity:.6}
 .wrow{display:grid;grid-template-columns:repeat(7,1fr);background:#f7fafc;border-bottom:1px solid #e2e8f0}
-.wd{text-align:center;padding:7px 2px;font-size:.7rem;font-weight:700;color:#718096}
+.wd{text-align:center;padding:5px 2px;font-size:.65rem;font-weight:700;color:#718096}
 .wd.s{color:#e53e3e}.wd.sa{color:#3182ce}
 .cbody{display:grid;grid-template-columns:repeat(7,1fr)}
-.day{min-height:72px;padding:4px 3px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0}
+.day{min-height:62px;padding:3px 3px 2px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0}
 .day:nth-child(7n){border-right:none}
 .day.emp{background:#fafafa}
 .day.hol{background:#fff5f5}
 .day.obn{background:#fffbf0}
 .day.sun .dn{color:#e53e3e}
 .day.sat .dn{color:#3182ce}
-.dn{font-size:.72rem;font-weight:600;color:#4a5568;margin-bottom:2px}
-.hn{font-size:.52rem;color:#e53e3e;display:block;font-weight:500;line-height:1.2}
-.on{font-size:.52rem;color:#d69e2e;display:block;font-weight:500}
+.dn{font-size:.68rem;font-weight:600;color:#4a5568;margin-bottom:2px;line-height:1.2}
+.hn{font-size:.48rem;color:#e53e3e;display:block;font-weight:500}
+.on2{font-size:.48rem;color:#d69e2e;display:block}
 .chips{display:flex;flex-direction:column;gap:2px}
-.chip{border-radius:4px;padding:2px 5px;font-size:.62rem;font-weight:700;line-height:1.35;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .15s,transform .1s}
-.chip:hover{opacity:.78;transform:scale(1.03)}
+.chip{border-radius:3px;padding:2px 4px;font-size:.58rem;font-weight:700;line-height:1.3;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .15s}
+.chip:hover{opacity:.75}
 
-/* Modal */
+/* ── Modal ── */
 .mwrap{display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:300;align-items:center;justify-content:center;padding:16px}
 .mwrap.open{display:flex}
 .mbox{background:#fff;border-radius:16px;max-width:480px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.28)}
-.mhd{padding:20px 22px 14px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.mbadge{display:inline-block;border-radius:14px;padding:3px 10px;font-size:.7rem;font-weight:700;margin-bottom:6px}
-.mttl{font-size:1.1rem;font-weight:800}
-.mx{background:#f7fafc;border:none;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;color:#718096;flex-shrink:0}
+.mhd{padding:18px 20px 12px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.mbadge{display:inline-block;border-radius:14px;padding:3px 10px;font-size:.68rem;font-weight:700;margin-bottom:5px}
+.mttl{font-size:1.05rem;font-weight:800}
+.mx{background:#f7fafc;border:none;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;cursor:pointer;color:#718096;flex-shrink:0}
 .mx:hover{background:#e2e8f0}
-.mbd{padding:16px 22px 24px}
-.mmeta{display:flex;gap:18px;flex-wrap:wrap;font-size:.8rem;color:#4a5568;margin-bottom:12px}
-.mgnr{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#a0aec0;margin-bottom:12px}
-.mlist{list-style:none;display:flex;flex-direction:column;gap:8px}
-.mlist li{font-size:.86rem;line-height:1.55;padding-left:14px;position:relative}
-.mlist li::before{content:'▶';position:absolute;left:0;top:5px;font-size:.5rem;color:#cbd5e0}
-.snote{margin-top:14px;background:#EBF8FF;border-radius:8px;padding:9px 12px;font-size:.76rem;color:#2B6CB0;line-height:1.6}
+.mbd{padding:14px 20px 22px}
+.mmeta{display:flex;gap:16px;flex-wrap:wrap;font-size:.78rem;color:#4a5568;margin-bottom:10px}
+.mgnr{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#a0aec0;margin-bottom:10px}
+.mlist{list-style:none;display:flex;flex-direction:column;gap:7px}
+.mlist li{font-size:.84rem;line-height:1.55;padding-left:13px;position:relative}
+.mlist li::before{content:'▶';position:absolute;left:0;top:5px;font-size:.48rem;color:#cbd5e0}
+.snote{margin-top:12px;background:#EBF8FF;border-radius:8px;padding:9px 12px;font-size:.74rem;color:#2B6CB0;line-height:1.6}
 </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <header class="hd">
   <div class="hd-in">
-    <div>
-      <h1>リアルタイム研修 スケジュールカレンダー</h1>
-      <div class="hd-sub">2025年7月 〜 8月　／　各コマ2時間　／　隔週実施（上旬 11:00〜13:00 ／ 下旬 14:00〜16:00）</div>
-    </div>
-    <div class="tabs" id="tabs"></div>
+    <div class="hd-brand">aicrew 生成AI研修</div>
+    <h1>リアルタイム研修 スケジュールカレンダー</h1>
+    <div class="hd-sub">2026年7月 〜 2027年3月　／　各コマ2時間　／　隔週実施（上旬 11:00〜13:00 ／ 下旬 14:00〜16:00）</div>
   </div>
 </header>
+
+<!-- PROGRAM TABS -->
+<div class="prog-bar">
+  <div class="prog-bar-in" id="progBar"></div>
+</div>
 
 <div class="pg">
   <div class="sec">
@@ -104,15 +118,16 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Hiragino Sa
     <div class="lgd">
       <div class="lgd-item"><div class="lgd-sw" style="background:#FECACA;border:1px solid #fca5a5"></div>上旬（1〜15日）薄色 — 11:00〜13:00</div>
       <div class="lgd-item"><div class="lgd-sw" style="background:#F87171"></div>下旬（16日〜末日）濃色 — 14:00〜16:00</div>
-      <div style="font-size:.74rem;color:#718096">※ セッション①のカラー例</div>
+      <div style="font-size:.72rem;color:#a0aec0">※ セッション①のカラー例</div>
     </div>
   </div>
   <div class="sec">
     <div class="sec-ttl">カレンダー</div>
-    <div class="cal-grid" id="calGrid"></div>
+    <div class="cal-outer" id="calOuter"></div>
   </div>
 </div>
 
+<!-- MODAL -->
 <div class="mwrap" id="mwrap" onclick="bgClick(event)">
   <div class="mbox">
     <div class="mhd">
@@ -132,6 +147,7 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Hiragino Sa
 </div>
 
 <script>
+// ── Colors by session number ─────────────────────────────
 const C=[null,
   {l:'#FECACA',d:'#F87171',t:'#7F1D1D'},
   {l:'#FEF08A',d:'#CA8A04',t:'#713F12'},
@@ -140,75 +156,192 @@ const C=[null,
   {l:'#BBF7D0',d:'#16A34A',t:'#14532D'},
 ];
 
+// ── Program definitions ───────────────────────────────────
 const P={
   ai:{
-    name:'AI動画・コンテンツ制作研修',short:'AI動画',
+    name:'AI動画・コンテンツ制作研修',
+    short:'AI動画',
+    icon:'🎬',
+    color:'#1D4ED8',
+    bg:'#EFF6FF',
     sess:{
-      1:{title:'①AI基礎',      chip:'①AI基礎', genre:'知識・基本操作',   topics:['生成AIの基礎知識','生成AIのサービスと生成の仕組みと活用の注意','Geminiマスターへの第一歩！基本操作を完全攻略','Nanobananaの基本操作']},
+      1:{title:'①AI基礎',      chip:'①AI基礎', genre:'知識・基本操作',    topics:['生成AIの基礎知識','生成AIのサービスと生成の仕組みと活用の注意','Geminiマスターへの第一歩！基本操作を完全攻略','Nanobananaの基本操作']},
       2:{title:'②販促デザイン', chip:'②販促',   genre:'デザイン',        topics:['商品のコンセプト設計','コンセプトに合わせた画像生成の実践','デザインツールCanvaの基礎','Canvaを活用したチラシ・ポスターデザイン']},
       3:{title:'③動画生成・編集',chip:'③動画',  genre:'PR動画制作①',    topics:['Runwayを活用した動画生成AIの基礎と実践','PR動画の効果を高める！画像生成','PR動画の効果を高める！動画生成','動画編集の基礎']},
       4:{title:'④音声・アバター',chip:'④音声',  genre:'PR動画制作②',    topics:['AIで作るオリジナルBGM！楽曲生成の基本','伝わるナレーションをAIで！企業PRを強化する音声戦略','Heygenのアバター動画。ディープフェイクの危険性と対策','オリジナルキャラクターを使ったアバター動画']},
       5:{title:'⑤広報活用',    chip:'⑤広報',   genre:'広報・SNS展開支援',topics:['SNS別の広告動画の基礎知識','AIを使った採用動画作成方法','オリジナルキャラクターの制作とCM作成','プレゼン資料を動画化','vrewで動画にフル字幕をつける']},
-    },
-    evs:[
-      {d:'2025-07-01',s:1,t:'11:00〜13:00'},{d:'2025-07-03',s:2,t:'11:00〜13:00'},{d:'2025-07-07',s:3,t:'11:00〜13:00'},{d:'2025-07-09',s:4,t:'11:00〜13:00'},{d:'2025-07-11',s:5,t:'11:00〜13:00'},
-      {d:'2025-07-16',s:1,t:'14:00〜16:00'},{d:'2025-07-18',s:2,t:'14:00〜16:00'},{d:'2025-07-23',s:3,t:'14:00〜16:00'},{d:'2025-07-25',s:4,t:'14:00〜16:00'},{d:'2025-07-29',s:5,t:'14:00〜16:00'},
-      {d:'2025-08-01',s:1,t:'11:00〜13:00'},{d:'2025-08-04',s:2,t:'11:00〜13:00'},{d:'2025-08-05',s:3,t:'11:00〜13:00'},{d:'2025-08-06',s:4,t:'11:00〜13:00'},{d:'2025-08-07',s:5,t:'11:00〜13:00'},
-      {d:'2025-08-18',s:1,t:'14:00〜16:00'},{d:'2025-08-20',s:2,t:'14:00〜16:00'},{d:'2025-08-22',s:3,t:'14:00〜16:00'},{d:'2025-08-26',s:4,t:'14:00〜16:00'},{d:'2025-08-28',s:5,t:'14:00〜16:00'},
-    ]
+    }
   },
   sales:{
-    name:'職種別 生成AI活用研修 営業編',short:'営業編',
+    name:'職種別 生成AI活用研修 営業編',
+    short:'営業編',
+    icon:'💼',
+    color:'#15803D',
+    bg:'#F0FDF4',
     sess:{
       1:{title:'①AI基礎',        chip:'①AI基礎', genre:'AI活用基礎',          shared:true,topics:['生成AIを業務で使うための基本理解','AI活用時のリスク管理と情報の扱い方','Geminiを使った業務効率化の基本操作','画像生成AIを使ったビジュアル作成の基本']},
       2:{title:'②情報収集・整理', chip:'②情報整理',genre:'業務情報の整理',       shared:true,topics:['業務に必要な情報をAIで集める方法','収集した情報を要点・課題・打ち手に整理する方法','目的に合わせた文章・メール・案内文の作成','AIで整理した情報をチームで活用するテンプレート作成']},
       3:{title:'③資料作成',       chip:'③資料作成',genre:'資料・提案素材の生成',  shared:true,topics:['業務資料に使える画像・図解・バナー案の作成','ドキュメントのたたき台をAIで作成する方法','スライド資料の構成・見出し・流れを作成する方法','目的に合わせた資料をその場で作成する実践ワーク']},
       4:{title:'④実務活用',       chip:'④実務',   genre:'バックオフィス実務活用', topics:['規程案・業務マニュアルをAIで作成する方法','議事録からToDo・論点・決定事項を整理する','社内問い合わせ対応に使えるFAQを作成する','自社業務に合わせた社内ナレッジ整理ワーク']},
       5:{title:'⑤AIワークフロー', chip:'⑤ワークF', genre:'事務業務のAI化',       topics:['定型業務・繰り返し業務を洗い出す方法','AIで事務作業を効率化するプロンプト設計','バックオフィス業務のAI活用フロー設計','明日から使えるバックオフィスAI活用ワークフローの完成']},
-    },
-    evs:[
-      {d:'2025-07-02',s:1,t:'11:00〜13:00'},{d:'2025-07-04',s:2,t:'11:00〜13:00'},{d:'2025-07-08',s:3,t:'11:00〜13:00'},{d:'2025-07-10',s:4,t:'11:00〜13:00'},{d:'2025-07-14',s:5,t:'11:00〜13:00'},
-      {d:'2025-07-17',s:1,t:'14:00〜16:00'},{d:'2025-07-22',s:2,t:'14:00〜16:00'},{d:'2025-07-24',s:3,t:'14:00〜16:00'},{d:'2025-07-28',s:4,t:'14:00〜16:00'},{d:'2025-07-30',s:5,t:'14:00〜16:00'},
-      {d:'2025-08-01',s:1,t:'11:00〜13:00'},{d:'2025-08-04',s:2,t:'11:00〜13:00'},{d:'2025-08-05',s:3,t:'11:00〜13:00'},{d:'2025-08-06',s:4,t:'11:00〜13:00'},{d:'2025-08-08',s:5,t:'11:00〜13:00'},
-      {d:'2025-08-19',s:1,t:'14:00〜16:00'},{d:'2025-08-21',s:2,t:'14:00〜16:00'},{d:'2025-08-25',s:3,t:'14:00〜16:00'},{d:'2025-08-26',s:4,t:'14:00〜16:00'},{d:'2025-08-28',s:5,t:'14:00〜16:00'},
-    ]
+    }
   },
   bo:{
-    name:'職種別 生成AI活用研修 バックオフィス編',short:'バックオフィス',
+    name:'職種別 生成AI活用研修 バックオフィス編',
+    short:'バックオフィス編',
+    icon:'🖥️',
+    color:'#C2410C',
+    bg:'#FFF7ED',
     sess:{
       1:{title:'①AI基礎',        chip:'①AI基礎', genre:'AI活用基礎',       shared:true,topics:['生成AIを業務で使うための基本理解','AI活用時のリスク管理と情報の扱い方','Geminiを使った業務効率化の基本操作','画像生成AIを使ったビジュアル作成の基本']},
       2:{title:'②情報収集・整理', chip:'②情報整理',genre:'業務情報の整理',    shared:true,topics:['業務に必要な情報をAIで集める方法','収集した情報を要点・課題・打ち手に整理する方法','目的に合わせた文章・メール・案内文の作成','AIで整理した情報をチームで活用するテンプレート作成']},
       3:{title:'③資料作成',       chip:'③資料作成',genre:'資料・提案素材の生成',shared:true,topics:['業務資料に使える画像・図解・バナー案の作成','ドキュメントのたたき台をAIで作成する方法','スライド資料の構成・見出し・流れを作成する方法','目的に合わせた資料をその場で作成する実践ワーク']},
       4:{title:'④実務活用',       chip:'④提案',   genre:'営業提案実践',      topics:['顧客課題から提案ストーリーを設計する','提案書に使える説明文・訴求文を作成する','商談で使える営業トーク・切り返しを作成する','自社商材に合わせた提案骨子を完成させる']},
       5:{title:'⑤AIワークフロー', chip:'⑤ワークF', genre:'営業AIワークフロー', topics:['商談情報・顧客情報を整理する営業管理シート作成','定型営業業務をAIで効率化する方法','営業準備から提案作成までのAI活用フロー設計','明日から使える営業AI活用ワークフローの完成']},
-    },
-    evs:[
-      {d:'2025-07-02',s:1,t:'11:00〜13:00'},{d:'2025-07-04',s:2,t:'11:00〜13:00'},{d:'2025-07-08',s:3,t:'11:00〜13:00'},{d:'2025-07-10',s:4,t:'11:00〜13:00'},{d:'2025-07-15',s:5,t:'11:00〜13:00'},
-      {d:'2025-07-17',s:1,t:'14:00〜16:00'},{d:'2025-07-22',s:2,t:'14:00〜16:00'},{d:'2025-07-24',s:3,t:'14:00〜16:00'},{d:'2025-07-28',s:4,t:'14:00〜16:00'},{d:'2025-07-31',s:5,t:'14:00〜16:00'},
-      {d:'2025-08-01',s:1,t:'11:00〜13:00'},{d:'2025-08-04',s:2,t:'11:00〜13:00'},{d:'2025-08-05',s:3,t:'11:00〜13:00'},{d:'2025-08-06',s:4,t:'11:00〜13:00'},{d:'2025-08-12',s:5,t:'11:00〜13:00'},
-      {d:'2025-08-19',s:1,t:'14:00〜16:00'},{d:'2025-08-21',s:2,t:'14:00〜16:00'},{d:'2025-08-25',s:3,t:'14:00〜16:00'},{d:'2025-08-27',s:4,t:'14:00〜16:00'},{d:'2025-08-29',s:5,t:'14:00〜16:00'},
-    ]
+    }
   }
 };
 
-const HOLI={'2025-07-21':'海の日','2025-08-11':'山の日'};
-const OBON=new Set(['2025-08-13','2025-08-14','2025-08-15']);
+// ── Holiday / Skip dates ─────────────────────────────────
+const SKIP=new Set([
+  '2026-07-20',                               // 海の日
+  '2026-08-11','2026-08-13','2026-08-14','2026-08-15', // 山の日・お盆
+  '2026-09-21','2026-09-22','2026-09-23',     // シルバーウィーク
+  '2026-10-12',                               // スポーツの日
+  '2026-11-03','2026-11-23',                  // 文化の日・勤労感謝の日
+  '2027-01-01','2027-01-02','2027-01-03','2027-01-11', // 年末年始・成人の日
+  '2027-02-11','2027-02-23',                  // 建国記念の日・天皇誕生日
+  '2027-03-21','2027-03-22',                  // 春分の日・振替休日
+]);
+
+const HOLI_LABELS={
+  '2026-07-20':'海の日','2026-08-11':'山の日',
+  '2026-09-21':'敬老の日','2026-09-22':'国民の休日','2026-09-23':'秋分の日',
+  '2026-10-12':'スポーツの日','2026-11-03':'文化の日','2026-11-23':'勤労感謝の日',
+  '2027-01-01':'元日','2027-01-11':'成人の日',
+  '2027-02-11':'建国記念','2027-02-23':'天皇誕生日',
+  '2027-03-21':'春分の日','2027-03-22':'振替休日',
+};
+const OBON_SET=new Set(['2026-08-13','2026-08-14','2026-08-15']);
+const MONTHS=[[2026,7],[2026,8],[2026,9],[2026,10],[2026,11],[2026,12],[2027,1],[2027,2],[2027,3]];
 const WD=['日','月','火','水','木','金','土'];
-const MONTHS=[{y:2025,m:7},{y:2025,m:8}];
 
-let curP='ai', curS=null;
+// ── Schedule generator ────────────────────────────────────
+function pad(n){return String(n).padStart(2,'0')}
+function ds(y,m,d){return `${y}-${pad(m)}-${pad(d)}`}
 
+function getWeekdays(y,m,isUpper){
+  const start=isUpper?1:16;
+  const end=isUpper?15:new Date(y,m,0).getDate();
+  const result=[];
+  for(let d=start;d<=end;d++){
+    const str=ds(y,m,d);
+    const dow=new Date(y,m-1,d).getDay();
+    if(dow===0||dow===6)continue;
+    if(SKIP.has(str))continue;
+    result.push({ds:str,dow,d});
+  }
+  return result;
+}
+
+function pickSpread(days,n){
+  if(!days.length)return[];
+  if(days.length<=n)return days.slice(0,n);
+  // Evenly spaced selection with weekday diversity improvement
+  const total=days.length;
+  const step=(total-1)/(n-1);
+  const indices=Array.from({length:n},(_,i)=>Math.round(i*step));
+  const picked=indices.map(i=>({...days[i]}));
+  // Try to diversify weekdays by swapping duplicates
+  for(let iter=0;iter<n;iter++){
+    const dows=picked.map(p=>p.dow);
+    let improved=false;
+    for(let i=0;i<n;i++){
+      if(dows.filter(d=>d===dows[i]).length>1){
+        const oi=indices[i];
+        for(let off=1;off<=5;off++){
+          for(const sign of[-1,1]){
+            const ni=oi+sign*off;
+            if(ni<0||ni>=total)continue;
+            const cand=days[ni];
+            if(picked.find(p=>p.ds===cand.ds))continue;
+            if(!dows.some((d,j)=>j!==i&&d===cand.dow)){
+              picked[i]=cand;indices[i]=ni;improved=true;break;
+            }
+          }
+          if(improved)break;
+        }
+        if(improved)break;
+      }
+    }
+    if(!improved)break;
+  }
+  return picked.sort((a,b)=>a.ds.localeCompare(b.ds));
+}
+
+function generateEvs(){
+  const ai=[],sales=[],bo=[];
+  for(const[y,m]of MONTHS){
+    for(const isUpper of[true,false]){
+      const time=isUpper?'11:00〜13:00':'14:00〜16:00';
+      const days=getWeekdays(y,m,isUpper);
+      if(days.length<1)continue;
+      // AI動画: pick 5 evenly
+      pickSpread(days,5).forEach((d,i)=>ai.push({d:d.ds,s:i+1,t:time}));
+      // 職種別: shared ①②③ from first 60%, ④⑤ from remaining
+      const split=Math.ceil(days.length*0.6);
+      const first=days.slice(0,Math.max(split,3));
+      const shared=pickSpread(first,Math.min(3,first.length));
+      const shDs=new Set(shared.map(d=>d.ds));
+      shared.forEach((d,i)=>{
+        sales.push({d:d.ds,s:i+1,t:time});
+        bo.push({d:d.ds,s:i+1,t:time});
+      });
+      // After last shared date, pick ④⑤ for each
+      const after=days.filter(d=>d.ds>(shared[shared.length-1]?.ds||'')&&!shDs.has(d.ds));
+      const fallback=days.filter(d=>!shDs.has(d.ds));
+      const pool=after.length>=4?after:fallback;
+      const salesSpec=pickSpread(pool,2);
+      salesSpec.forEach((d,i)=>sales.push({d:d.ds,s:i+4,t:time}));
+      const salDs=new Set(salesSpec.map(d=>d.ds));
+      const boPool=pool.filter(d=>!salDs.has(d.ds));
+      pickSpread(boPool.length>=2?boPool:pool,2).forEach((d,i)=>bo.push({d:d.ds,s:i+4,t:time}));
+    }
+  }
+  return{ai,sales,bo};
+}
+
+// Generate all events
+const ALL_EVS=generateEvs();
+P.ai.evs=ALL_EVS.ai;
+P.sales.evs=ALL_EVS.sales;
+P.bo.evs=ALL_EVS.bo;
+
+// ── State ─────────────────────────────────────────────────
+let curP='ai',curS=null;
+
+// ── Init ──────────────────────────────────────────────────
 function init(){rTabs();rCards();rCals()}
 
+// Program tabs
 function rTabs(){
-  document.getElementById('tabs').innerHTML=
-    Object.entries(P).map(([k,v])=>
-      `<button class="tab ${k===curP?'on':''}" onclick="sw('${k}')">${v.short}</button>`
+  document.getElementById('progBar').innerHTML=
+    Object.entries(P).map(([k,v])=>`
+      <button class="ptab ${k===curP?'on':''}"
+        style="--tc:${v.color};--bg:${v.bg}"
+        onclick="sw('${k}')">
+        <span class="ptab-icon">${v.icon}</span>
+        <span>
+          <div class="ptab-name">${v.short}</div>
+          <div class="ptab-sub">${k==='ai'?'AI動画・コンテンツ制作':k==='sales'?'職種別・営業':'職種別・バックオフィス'}</div>
+        </span>
+      </button>`
     ).join('');
 }
 
 function sw(k){curP=k;curS=null;rTabs();rCards();rCals()}
 
+// Session cards
 function rCards(){
   const p=P[curP];
   document.getElementById('scGrid').innerHTML=
@@ -227,6 +360,7 @@ function rCards(){
 
 function togS(n){curS=curS===n?null:n;rCards();rCals()}
 
+// Calendars
 function rCals(){
   const p=P[curP];
   const em={};
@@ -234,26 +368,23 @@ function rCals(){
     if(curS!==null&&ev.s!==curS)continue;
     (em[ev.d]=em[ev.d]||[]).push(ev);
   }
-  document.getElementById('calGrid').innerHTML=
-    MONTHS.map(({y,m})=>mkMonth(y,m,em,p)).join('');
+  document.getElementById('calOuter').innerHTML=
+    MONTHS.map(([y,m])=>mkMonth(y,m,em,p)).join('');
 }
 
 function mkMonth(y,m,em,p){
   const fd=new Date(y,m-1,1).getDay();
   const days=new Date(y,m,0).getDate();
-  const pad=v=>String(v).padStart(2,'0');
-  const ds=d=>`${y}-${pad(m)}-${pad(d)}`;
-
   let cells='';
   for(let i=0;i<fd;i++)cells+='<div class="day emp"></div>';
   for(let d=1;d<=days;d++){
-    const str=ds(d),dow=new Date(y,m-1,d).getDay();
-    const isH=!!HOLI[str],isO=OBON.has(str);
+    const str=ds(y,m,d),dow=new Date(y,m-1,d).getDay();
+    const isH=!!HOLI_LABELS[str],isO=OBON_SET.has(str);
     const evs=em[str]||[];
     let cls='day';
     if(isH)cls+=' hol';else if(isO)cls+=' obn';
     if(dow===0)cls+=' sun';else if(dow===6)cls+=' sat';
-    const note=isH?`<span class="hn">${HOLI[str]}</span>`:isO?`<span class="on">お盆</span>`:'';
+    const note=isH?`<span class="hn">${HOLI_LABELS[str]}</span>`:isO?`<span class="on2">お盆</span>`:'';
     const chips=evs.map(ev=>{
       const c=C[ev.s],up=ev.t.startsWith('11');
       return `<div class="chip" style="background:${up?c.l:c.d};color:${up?c.t:'#fff'}"
@@ -263,7 +394,6 @@ function mkMonth(y,m,em,p){
   }
   const rem=(fd+days)%7;
   if(rem)for(let i=0;i<7-rem;i++)cells+='<div class="day emp"></div>';
-
   return `<div class="cc">
     <div class="cc-hd"><h3>${y}年${m}月</h3><span class="ctag">上旬5・下旬5</span></div>
     <div class="wrow">${WD.map((w,i)=>`<div class="wd ${i===0?'s':i===6?'sa':''}">${w}</div>`).join('')}</div>
@@ -271,9 +401,10 @@ function mkMonth(y,m,em,p){
   </div>`;
 }
 
-function openM(pk,sn,ds,tm){
+// Modal
+function openM(pk,sn,str,tm){
   const p=P[pk],s=p.sess[sn],c=C[sn];
-  const [,mo,d]=ds.split('-'),dow=WD[new Date(ds).getDay()];
+  const[,mo,d]=str.split('-'),dow=WD[new Date(str).getDay()];
   const b=document.getElementById('mbadge');
   b.textContent=p.name;b.style.cssText=`background:${c.l};color:${c.t}`;
   document.getElementById('mttl').textContent=s.title;
