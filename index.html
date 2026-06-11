@@ -100,7 +100,7 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Hiragino Sa
   <div class="hd-in">
     <div class="hd-brand">aicrew 生成AI研修</div>
     <h1>リアルタイム研修 スケジュールカレンダー</h1>
-    <div class="hd-sub">2026年7月 〜 2027年3月　／　各コマ2時間　／　隔週実施（上旬 11:00〜13:00 ／ 下旬 14:00〜16:00）</div>
+    <div class="hd-sub">2026年7月 〜 12月　／　各コマ2時間　／　毎月2クール（午前 11:00〜13:00 ／ 午後 14:00〜16:00）</div>
   </div>
 </header>
 
@@ -116,9 +116,9 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Hiragino Sa
   </div>
   <div class="sec">
     <div class="lgd">
-      <div class="lgd-item"><div class="lgd-sw" style="background:#FECACA;border:1px solid #fca5a5"></div>上旬（1〜15日）薄色 — 11:00〜13:00</div>
-      <div class="lgd-item"><div class="lgd-sw" style="background:#F87171"></div>下旬（16日〜末日）濃色 — 14:00〜16:00</div>
-      <div style="font-size:.72rem;color:#a0aec0">※ セッション①のカラー例</div>
+      <div class="lgd-item"><div class="lgd-sw" style="background:#FECACA;border:1px solid #fca5a5"></div>午前クール 薄色 — 11:00〜13:00</div>
+      <div class="lgd-item"><div class="lgd-sw" style="background:#F87171"></div>午後クール 濃色 — 14:00〜16:00</div>
+      <div style="font-size:.72rem;color:#a0aec0">※ セッション①のカラー例／一部の回は開始時刻が異なります（各コマをタップで確認）</div>
     </div>
   </div>
   <div class="sec">
@@ -141,7 +141,7 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Hiragino Sa
       <div class="mmeta"><span>📅 <span id="mdate"></span></span><span>🕐 <span id="mtime"></span></span></div>
       <div id="mgnr" class="mgnr"></div>
       <ul id="mlist" class="mlist"></ul>
-      <div id="snote" class="snote" style="display:none">★ このセッション（①〜③）は営業編・バックオフィス編の<strong>共通セッション</strong>です。両プログラムの受講者が合同で参加します。</div>
+      <div id="snote" class="snote" style="display:none">★ このセッション（①〜③）は営業編・バックオフィス編で<strong>共通カリキュラム</strong>です（実施日はコース・月により異なる場合があります）。</div>
     </div>
   </div>
 </div>
@@ -182,8 +182,8 @@ const P={
       1:{title:'①AI基礎',        chip:'①AI基礎', genre:'AI活用基礎',          shared:true,topics:['生成AIを業務で使うための基本理解','AI活用時のリスク管理と情報の扱い方','Geminiを使った業務効率化の基本操作','画像生成AIを使ったビジュアル作成の基本']},
       2:{title:'②情報収集・整理', chip:'②情報整理',genre:'業務情報の整理',       shared:true,topics:['業務に必要な情報をAIで集める方法','収集した情報を要点・課題・打ち手に整理する方法','目的に合わせた文章・メール・案内文の作成','AIで整理した情報をチームで活用するテンプレート作成']},
       3:{title:'③資料作成',       chip:'③資料作成',genre:'資料・提案素材の生成',  shared:true,topics:['業務資料に使える画像・図解・バナー案の作成','ドキュメントのたたき台をAIで作成する方法','スライド資料の構成・見出し・流れを作成する方法','目的に合わせた資料をその場で作成する実践ワーク']},
-      4:{title:'④実務活用',       chip:'④実務',   genre:'バックオフィス実務活用', topics:['規程案・業務マニュアルをAIで作成する方法','議事録からToDo・論点・決定事項を整理する','社内問い合わせ対応に使えるFAQを作成する','自社業務に合わせた社内ナレッジ整理ワーク']},
-      5:{title:'⑤AIワークフロー', chip:'⑤ワークF', genre:'事務業務のAI化',       topics:['定型業務・繰り返し業務を洗い出す方法','AIで事務作業を効率化するプロンプト設計','バックオフィス業務のAI活用フロー設計','明日から使えるバックオフィスAI活用ワークフローの完成']},
+      4:{title:'④営業実務',     chip:'④営業実務',genre:'営業提案実践',        topics:['顧客課題から提案ストーリーを設計する','提案書に使える説明文・訴求文を作成する','商談で使える営業トーク・切り返しを作成する','自社商材に合わせた提案骨子を完成させる']},
+      5:{title:'⑤営業WF',       chip:'⑤営業WF', genre:'営業AIワークフロー',  topics:['商談情報・顧客情報を整理する営業管理シート作成','定型営業業務をAIで効率化する方法','営業準備から提案作成までのAI活用フロー設計','明日から使える営業AI活用ワークフローの完成']},
     }
   },
   bo:{
@@ -196,170 +196,35 @@ const P={
       1:{title:'①AI基礎',        chip:'①AI基礎', genre:'AI活用基礎',       shared:true,topics:['生成AIを業務で使うための基本理解','AI活用時のリスク管理と情報の扱い方','Geminiを使った業務効率化の基本操作','画像生成AIを使ったビジュアル作成の基本']},
       2:{title:'②情報収集・整理', chip:'②情報整理',genre:'業務情報の整理',    shared:true,topics:['業務に必要な情報をAIで集める方法','収集した情報を要点・課題・打ち手に整理する方法','目的に合わせた文章・メール・案内文の作成','AIで整理した情報をチームで活用するテンプレート作成']},
       3:{title:'③資料作成',       chip:'③資料作成',genre:'資料・提案素材の生成',shared:true,topics:['業務資料に使える画像・図解・バナー案の作成','ドキュメントのたたき台をAIで作成する方法','スライド資料の構成・見出し・流れを作成する方法','目的に合わせた資料をその場で作成する実践ワーク']},
-      4:{title:'④実務活用',       chip:'④提案',   genre:'営業提案実践',      topics:['顧客課題から提案ストーリーを設計する','提案書に使える説明文・訴求文を作成する','商談で使える営業トーク・切り返しを作成する','自社商材に合わせた提案骨子を完成させる']},
-      5:{title:'⑤AIワークフロー', chip:'⑤ワークF', genre:'営業AIワークフロー', topics:['商談情報・顧客情報を整理する営業管理シート作成','定型営業業務をAIで効率化する方法','営業準備から提案作成までのAI活用フロー設計','明日から使える営業AI活用ワークフローの完成']},
+      4:{title:'④BO実務',       chip:'④BO実務', genre:'バックオフィス実務活用', topics:['規程案・業務マニュアルをAIで作成する方法','議事録からToDo・論点・決定事項を整理する','社内問い合わせ対応に使えるFAQを作成する','自社業務に合わせた社内ナレッジ整理ワーク']},
+      5:{title:'⑤BO WF',        chip:'⑤BO WF',  genre:'事務業務のAI化',       topics:['定型業務・繰り返し業務を洗い出す方法','AIで事務作業を効率化するプロンプト設計','バックオフィス業務のAI活用フロー設計','明日から使えるバックオフィスAI活用ワークフローの完成']},
     }
   }
 };
 
-// ── Holiday / Skip dates ─────────────────────────────────
-const SKIP=new Set([
-  '2026-07-20',                               // 海の日
-   '2026-08-11','2026-08-12',                  // 山の日・お盆前日
-  '2026-08-13','2026-08-14','2026-08-15',     // お盆
-  '2026-12-28','2026-12-29','2026-12-30','2026-12-31', // 年末
-  '2027-01-01','2027-01-02','2027-01-03','2027-01-04','2027-01-05', // 年始
-  '2026-09-21','2026-09-22','2026-09-23',     // シルバーウィーク
-  '2026-10-12',                               // スポーツの日
-  '2026-11-03','2026-11-23',                  // 文化の日・勤労感謝の日
-  '2027-01-01','2027-01-02','2027-01-03','2027-01-11', // 年末年始・成人の日
-  '2027-02-11','2027-02-23',                  // 建国記念の日・天皇誕生日
-  '2027-03-21','2027-03-22',                  // 春分の日・振替休日
-]);
-
+// ── Holiday labels (祝日表示用) ───────────────────────────
 const HOLI_LABELS={
-  '2026-07-20':'海の日','2026-08-11':'山の日',
+  '2026-07-20':'海の日','2026-08-11':'山の日','2026-08-12':'振替休日',
   '2026-09-21':'敬老の日','2026-09-22':'国民の休日','2026-09-23':'秋分の日',
   '2026-10-12':'スポーツの日','2026-11-03':'文化の日','2026-11-23':'勤労感謝の日',
-  '2027-01-01':'元日','2027-01-11':'成人の日',
-  '2027-02-11':'建国記念','2027-02-23':'天皇誕生日',
-  '2027-03-21':'春分の日','2027-03-22':'振替休日',
+  '2026-12-23':'天皇誕生日',
 };
-const OBON_SET=new Set(['2026-08-13','2026-08-14','2026-08-15']);
-const MONTHS=[[2026,7],[2026,8],[2026,9],[2026,10],[2026,11],[2026,12],[2027,1],[2027,2],[2027,3]];
+const OBON_SET=new Set(['2026-08-13','2026-08-14','2026-08-15','2026-08-16']);
+const MONTHS=[[2026,7],[2026,8],[2026,9],[2026,10],[2026,11],[2026,12]];
 const WD=['日','月','火','水','木','金','土'];
 
-// ── Schedule generator ────────────────────────────────────
+// ── Date helpers ──────────────────────────────────────────
 function pad(n){return String(n).padStart(2,'0')}
 function ds(y,m,d){return `${y}-${pad(m)}-${pad(d)}`}
 
-function getWeekdays(y,m,isUpper){
-  const start=isUpper?1:16;
-  const end=isUpper?15:new Date(y,m,0).getDate();
-  const result=[];
-  for(let d=start;d<=end;d++){
-    const str=ds(y,m,d);
-    const dow=new Date(y,m-1,d).getDay();
-    if(dow===0||dow===6)continue;
-    if(SKIP.has(str))continue;
-    result.push({ds:str,dow,d});
-  }
-function pickSpread(days,n,avoidDows){
-  avoidDows=avoidDows||new Set();
-  if(!days.length)return[];
-  n=Math.min(n,days.length);
-  const byDow={};
-  days.forEach(d=>{(byDow[d.dow]=byDow[d.dow]||[]).push(d);});
-  const allDows=Object.keys(byDow).map(Number).sort();
-  const orderedDows=[...allDows.filter(d=>!avoidDows.has(d)),...allDows.filter(d=>avoidDows.has(d))];
-  const picked=[];
-  const usedDates=new Set();
-  const usedDows=new Set();
-  for(let i=0;i<n;i++){
-    let targetDow=null;
-    for(const dow of orderedDows){
-      if(!usedDows.has(dow)){
-        const avail=(byDow[dow]||[]).filter(d=>!usedDates.has(d.ds));
-        if(avail.length>0){targetDow=dow;break;}
-      }
-    }
-    if(targetDow===null){
-      for(const dow of orderedDows){
-        const avail=(byDow[dow]||[]).filter(d=>!usedDates.has(d.ds));
-        if(avail.length>0){targetDow=dow;break;}
-      }
-    }
-    if(targetDow===null)break;
-    const candidates=(byDow[targetDow]||[]).filter(d=>!usedDates.has(d.ds));
-    let best=candidates[0];
-    if(picked.length>0&&candidates.length>1){
-      let maxMin=-1;
-      for(const c of candidates){
-        const ct=new Date(c.ds).getTime();
-        const minDist=Math.min(...picked.map(p=>Math.abs(ct-new Date(p.ds).getTime())));
-        if(minDist>maxMin){maxMin=minDist;best=c;}
-      }
-    }
-    picked.push(best);
-    usedDates.add(best.ds);
-    usedDows.add(best.dow);
-  }
-  return picked.sort((a,b)=>a.ds.localeCompare(b.ds));
-}
-}
+// ── Confirmed schedule (PDF確定日程：2026年7月〜12月) ───────
+// 各イベント: {d:日付, s:セッション番号①〜⑤, t:時間}
+// ※ 配布PDFの確定スケジュールをそのまま反映（自動生成ではありません）
+P.ai.evs=[{d:'2026-07-15',s:1,t:'14:00〜16:00'},{d:'2026-07-16',s:2,t:'14:00〜16:00'},{d:'2026-07-17',s:3,t:'14:00〜16:00'},{d:'2026-07-21',s:4,t:'14:00〜16:00'},{d:'2026-07-27',s:5,t:'14:00〜16:00'},{d:'2026-08-04',s:1,t:'11:00〜13:00'},{d:'2026-08-05',s:2,t:'11:00〜13:00'},{d:'2026-08-06',s:3,t:'11:00〜13:00'},{d:'2026-08-07',s:4,t:'11:00〜13:00'},{d:'2026-08-10',s:5,t:'11:00〜13:00'},{d:'2026-08-17',s:1,t:'14:00〜16:00'},{d:'2026-08-18',s:2,t:'14:00〜16:00'},{d:'2026-08-19',s:3,t:'14:00〜16:00'},{d:'2026-08-20',s:4,t:'14:00〜16:00'},{d:'2026-08-21',s:5,t:'14:00〜16:00'},{d:'2026-09-07',s:1,t:'11:00〜13:00'},{d:'2026-09-08',s:2,t:'11:00〜13:00'},{d:'2026-09-09',s:3,t:'11:00〜13:00'},{d:'2026-09-10',s:4,t:'11:00〜13:00'},{d:'2026-09-11',s:5,t:'11:00〜13:00'},{d:'2026-09-15',s:1,t:'14:00〜16:00'},{d:'2026-09-16',s:2,t:'14:00〜16:00'},{d:'2026-09-17',s:3,t:'14:00〜16:00'},{d:'2026-09-18',s:4,t:'14:00〜16:00'},{d:'2026-09-28',s:5,t:'14:00〜16:00'},{d:'2026-10-06',s:1,t:'11:00〜13:00'},{d:'2026-10-07',s:2,t:'11:00〜13:00'},{d:'2026-10-08',s:3,t:'11:00〜13:00'},{d:'2026-10-09',s:4,t:'11:00〜13:00'},{d:'2026-10-13',s:5,t:'11:00〜13:00'},{d:'2026-10-15',s:1,t:'14:00〜16:00'},{d:'2026-10-16',s:2,t:'14:00〜16:00'},{d:'2026-10-19',s:3,t:'14:00〜16:00'},{d:'2026-10-20',s:4,t:'14:00〜16:00'},{d:'2026-10-21',s:5,t:'14:00〜16:00'},{d:'2026-11-02',s:1,t:'11:00〜13:00'},{d:'2026-11-05',s:2,t:'11:00〜13:00'},{d:'2026-11-06',s:3,t:'11:00〜13:00'},{d:'2026-11-10',s:4,t:'11:00〜13:00'},{d:'2026-11-11',s:5,t:'11:00〜13:00'},{d:'2026-11-13',s:1,t:'14:00〜16:00'},{d:'2026-11-16',s:2,t:'14:00〜16:00'},{d:'2026-11-17',s:3,t:'14:00〜16:00'},{d:'2026-11-18',s:4,t:'14:00〜16:00'},{d:'2026-11-19',s:5,t:'14:00〜16:00'},{d:'2026-12-01',s:1,t:'11:00〜13:00'},{d:'2026-12-02',s:2,t:'11:00〜13:00'},{d:'2026-12-03',s:3,t:'11:00〜13:00'},{d:'2026-12-04',s:4,t:'11:00〜13:00'},{d:'2026-12-07',s:5,t:'11:00〜13:00'},{d:'2026-12-14',s:1,t:'14:00〜16:00'},{d:'2026-12-15',s:2,t:'14:00〜16:00'},{d:'2026-12-16',s:3,t:'14:00〜16:00'},{d:'2026-12-17',s:4,t:'14:00〜16:00'},{d:'2026-12-18',s:5,t:'14:00〜16:00'}];
 
-function pickSpread(days,n){
-  if(!days.length)return[];
-  if(days.length<=n)return days.slice(0,n);
-  // Evenly spaced selection with weekday diversity improvement
-  const total=days.length;
-  const step=(total-1)/(n-1);
-  const indices=Array.from({length:n},(_,i)=>Math.round(i*step));
-  const picked=indices.map(i=>({...days[i]}));
-  // Try to diversify weekdays by swapping duplicates
-  for(let iter=0;iter<n;iter++){
-    const dows=picked.map(p=>p.dow);
-    let improved=false;
-    for(let i=0;i<n;i++){
-      if(dows.filter(d=>d===dows[i]).length>1){
-        const oi=indices[i];
-        for(let off=1;off<=5;off++){
-          for(const sign of[-1,1]){
-            const ni=oi+sign*off;
-            if(ni<0||ni>=total)continue;
-            const cand=days[ni];
-            if(picked.find(p=>p.ds===cand.ds))continue;
-            if(!dows.some((d,j)=>j!==i&&d===cand.dow)){
-              picked[i]=cand;indices[i]=ni;improved=true;break;
-            }
-          }
-          if(improved)break;
-        }
-        if(improved)break;
-      }
-    }
-    if(!improved)break;
-  }
-  return picked.sort((a,b)=>a.ds.localeCompare(b.ds));
-}
+P.sales.evs=[{d:'2026-07-15',s:1,t:'14:00〜16:00'},{d:'2026-07-16',s:2,t:'14:00〜16:00'},{d:'2026-07-17',s:3,t:'14:00〜16:00'},{d:'2026-07-22',s:4,t:'14:00〜16:00'},{d:'2026-07-23',s:5,t:'11:00〜13:00'},{d:'2026-08-03',s:1,t:'11:30〜13:30'},{d:'2026-08-05',s:2,t:'11:00〜13:00'},{d:'2026-08-06',s:3,t:'11:00〜13:00'},{d:'2026-08-07',s:4,t:'11:00〜13:00'},{d:'2026-08-17',s:5,t:'14:00〜16:00'},{d:'2026-08-21',s:1,t:'14:00〜16:00'},{d:'2026-08-24',s:2,t:'11:30〜13:30'},{d:'2026-08-25',s:3,t:'14:00〜16:00'},{d:'2026-08-26',s:4,t:'11:00〜13:00'},{d:'2026-08-27',s:5,t:'14:00〜16:00'},{d:'2026-09-01',s:1,t:'11:00〜13:00'},{d:'2026-09-02',s:2,t:'11:00〜13:00'},{d:'2026-09-03',s:3,t:'11:00〜13:00'},{d:'2026-09-04',s:4,t:'11:00〜13:00'},{d:'2026-09-07',s:5,t:'11:00〜13:00'},{d:'2026-09-16',s:1,t:'14:00〜16:00'},{d:'2026-09-17',s:2,t:'14:00〜16:00'},{d:'2026-09-18',s:3,t:'14:00〜16:00'},{d:'2026-09-24',s:4,t:'14:00〜16:00'},{d:'2026-09-25',s:5,t:'14:00〜16:00'},{d:'2026-10-05',s:1,t:'11:00〜13:00'},{d:'2026-10-06',s:2,t:'11:00〜13:00'},{d:'2026-10-07',s:3,t:'11:00〜13:00'},{d:'2026-10-08',s:4,t:'11:00〜13:00'},{d:'2026-10-09',s:5,t:'11:00〜13:00'},{d:'2026-10-15',s:1,t:'14:00〜16:00'},{d:'2026-10-16',s:2,t:'14:00〜16:00'},{d:'2026-10-19',s:3,t:'14:00〜16:00'},{d:'2026-10-20',s:4,t:'14:00〜16:00'},{d:'2026-10-21',s:5,t:'14:00〜16:00'},{d:'2026-11-04',s:1,t:'11:00〜13:00'},{d:'2026-11-05',s:2,t:'11:00〜13:00'},{d:'2026-11-06',s:3,t:'11:00〜13:00'},{d:'2026-11-09',s:4,t:'11:00〜13:00'},{d:'2026-11-10',s:5,t:'11:00〜13:00'},{d:'2026-11-16',s:1,t:'14:00〜16:00'},{d:'2026-11-17',s:2,t:'14:00〜16:00'},{d:'2026-11-18',s:3,t:'14:00〜16:00'},{d:'2026-11-19',s:4,t:'14:00〜16:00'},{d:'2026-11-20',s:5,t:'14:00〜16:00'},{d:'2026-12-03',s:1,t:'11:00〜13:00'},{d:'2026-12-04',s:2,t:'11:00〜13:00'},{d:'2026-12-07',s:3,t:'11:00〜13:00'},{d:'2026-12-08',s:4,t:'11:00〜13:00'},{d:'2026-12-09',s:5,t:'11:00〜13:00'},{d:'2026-12-15',s:1,t:'14:00〜16:00'},{d:'2026-12-16',s:2,t:'14:00〜16:00'},{d:'2026-12-17',s:3,t:'14:00〜16:00'},{d:'2026-12-18',s:4,t:'14:00〜16:00'},{d:'2026-12-21',s:5,t:'14:00〜16:00'}];
 
-function generateEvs(){
-  const ai=[],sales=[],bo=[];
-  for(const[y,m]of MONTHS){
-    for(const isUpper of[true,false]){
-      const time=isUpper?'11:00〜13:00':'14:00〜16:00';
-      const days=getWeekdays(y,m,isUpper);
-      if(days.length<1)continue;
-      // AI動画: pick 5 evenly
-      pickSpread(days,5).forEach((d,i)=>ai.push({d:d.ds,s:i+1,t:time}));
-      // 職種別: shared ①②③ from first 60%, ④⑤ from remaining
-      const split=Math.ceil(days.length*0.6);
-      const first=days.slice(0,Math.max(split,3));
-      const shared=pickSpread(first,Math.min(3,first.length));
-      const shDs=new Set(shared.map(d=>d.ds));
-      shared.forEach((d,i)=>{
-        sales.push({d:d.ds,s:i+1,t:time});
-        bo.push({d:d.ds,s:i+1,t:time});
-      });
-      // After last shared date, pick ④⑤ for each
-      const after=days.filter(d=>d.ds>(shared[shared.length-1]?.ds||'')&&!shDs.has(d.ds));
-      const fallback=days.filter(d=>!shDs.has(d.ds));
-      const pool=after.length>=4?after:fallback;
-      const salesSpec=pickSpread(pool,2);
-      salesSpec.forEach((d,i)=>sales.push({d:d.ds,s:i+4,t:time}));
-      const salDs=new Set(salesSpec.map(d=>d.ds));
-      const boPool=pool.filter(d=>!salDs.has(d.ds));
-      pickSpread(boPool.length>=2?boPool:pool,2).forEach((d,i)=>bo.push({d:d.ds,s:i+4,t:time}));
-    }
-  }
-  return{ai,sales,bo};
-}
-
-// Generate all events
-const ALL_EVS=generateEvs();
-P.ai.evs=ALL_EVS.ai;
-P.sales.evs=ALL_EVS.sales;
-P.bo.evs=ALL_EVS.bo;
+P.bo.evs=[{d:'2026-07-15',s:1,t:'14:00〜16:00'},{d:'2026-07-16',s:2,t:'14:00〜16:00'},{d:'2026-07-17',s:3,t:'14:00〜16:00'},{d:'2026-07-27',s:4,t:'14:00〜16:00'},{d:'2026-07-29',s:5,t:'14:00〜16:00'},{d:'2026-08-03',s:1,t:'11:30〜13:30'},{d:'2026-08-05',s:2,t:'11:00〜13:00'},{d:'2026-08-06',s:3,t:'11:00〜13:00'},{d:'2026-08-19',s:4,t:'14:00〜16:00'},{d:'2026-08-20',s:5,t:'14:00〜16:00'},{d:'2026-08-21',s:1,t:'14:00〜16:00'},{d:'2026-08-24',s:2,t:'11:30〜13:30'},{d:'2026-08-25',s:3,t:'14:00〜16:00'},{d:'2026-08-28',s:4,t:'14:00〜16:00'},{d:'2026-08-31',s:5,t:'11:30〜13:30'},{d:'2026-09-01',s:1,t:'11:00〜13:00'},{d:'2026-09-02',s:2,t:'11:00〜13:00'},{d:'2026-09-03',s:3,t:'11:00〜13:00'},{d:'2026-09-08',s:4,t:'11:00〜13:00'},{d:'2026-09-09',s:5,t:'11:00〜13:00'},{d:'2026-09-16',s:1,t:'14:00〜16:00'},{d:'2026-09-17',s:2,t:'14:00〜16:00'},{d:'2026-09-18',s:3,t:'14:00〜16:00'},{d:'2026-09-28',s:4,t:'14:00〜16:00'},{d:'2026-09-29',s:5,t:'14:00〜16:00'},{d:'2026-10-01',s:1,t:'11:00〜13:00'},{d:'2026-10-02',s:2,t:'11:00〜13:00'},{d:'2026-10-05',s:3,t:'11:00〜13:00'},{d:'2026-10-06',s:4,t:'11:00〜13:00'},{d:'2026-10-07',s:5,t:'11:00〜13:00'},{d:'2026-10-19',s:1,t:'14:00〜16:00'},{d:'2026-10-20',s:2,t:'14:00〜16:00'},{d:'2026-10-21',s:3,t:'14:00〜16:00'},{d:'2026-10-22',s:4,t:'14:00〜16:00'},{d:'2026-10-23',s:5,t:'14:00〜16:00'},{d:'2026-11-02',s:1,t:'11:00〜13:00'},{d:'2026-11-04',s:2,t:'11:00〜13:00'},{d:'2026-11-05',s:3,t:'11:00〜13:00'},{d:'2026-11-06',s:4,t:'11:00〜13:00'},{d:'2026-11-09',s:5,t:'11:00〜13:00'},{d:'2026-11-19',s:1,t:'14:00〜16:00'},{d:'2026-11-20',s:2,t:'14:00〜16:00'},{d:'2026-11-24',s:3,t:'14:00〜16:00'},{d:'2026-11-25',s:4,t:'14:00〜16:00'},{d:'2026-11-26',s:5,t:'14:00〜16:00'},{d:'2026-12-01',s:1,t:'11:00〜13:00'},{d:'2026-12-02',s:2,t:'11:00〜13:00'},{d:'2026-12-03',s:3,t:'11:00〜13:00'},{d:'2026-12-04',s:4,t:'11:00〜13:00'},{d:'2026-12-07',s:5,t:'11:00〜13:00'},{d:'2026-12-16',s:1,t:'14:00〜16:00'},{d:'2026-12-17',s:2,t:'14:00〜16:00'},{d:'2026-12-18',s:3,t:'14:00〜16:00'},{d:'2026-12-21',s:4,t:'14:00〜16:00'},{d:'2026-12-22',s:5,t:'14:00〜16:00'}];
 
 // ── State ─────────────────────────────────────────────────
 let curP='ai',curS=null;
@@ -438,8 +303,10 @@ function mkMonth(y,m,em,p){
   }
   const rem=(fd+days)%7;
   if(rem)for(let i=0;i<7-rem;i++)cells+='<div class="day emp"></div>';
+  const pre=ds(y,m,1).slice(0,7);
+  const cnt=Object.entries(em).reduce((a,[k,v])=>a+(k.startsWith(pre)?v.length:0),0);
   return `<div class="cc">
-    <div class="cc-hd"><h3>${y}年${m}月</h3><span class="ctag">上旬5・下旬5</span></div>
+    <div class="cc-hd"><h3>${y}年${m}月</h3><span class="ctag">${cnt?`全${cnt}コマ`:'休講'}</span></div>
     <div class="wrow">${WD.map((w,i)=>`<div class="wd ${i===0?'s':i===6?'sa':''}">${w}</div>`).join('')}</div>
     <div class="cbody">${cells}</div>
   </div>`;
@@ -467,3 +334,4 @@ init();
 </script>
 </body>
 </html>
+
