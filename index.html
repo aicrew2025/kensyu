@@ -43,6 +43,7 @@ header h1{font-size:18px;font-weight:700}header p{font-size:11.5px;color:#bdbdbd
 .done h2{color:#0f6e56;font-size:16px;margin-bottom:8px}.done table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px}.done td{border:1px solid #d7ece2;padding:5px 8px}
 .policy{background:#fff8e6;border:1px solid #f0d98a;border-radius:10px;padding:10px 12px;font-size:11.5px;color:#7a5c00;margin:14px 0 2px;line-height:1.5}.policy b{color:#5c4500}.errmsg{background:#fdecec;color:#c0392b;border:1px solid #f3c9c9;border-radius:8px;padding:9px 10px;font-size:12px;font-weight:700;margin-top:8px;text-align:center}.note{font-size:10.5px;color:#999;margin-top:8px}.hide{display:none}
 .resetbar{display:flex;justify-content:flex-end;margin:2px 0 0}.reset{background:none;border:1px solid #ddd;border-radius:20px;padding:4px 12px;font-size:11.5px;color:#666;cursor:pointer;font-family:inherit}.reset:hover{background:#f0f0f2;color:#333}
+#totop{position:fixed;right:14px;bottom:176px;z-index:60;border:none;background:#1a1a1a;color:#fff;padding:9px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.28);display:none;font-family:inherit}#totop.show{display:block}
 .viewtabs{display:flex;gap:6px;margin:0 0 10px}.viewtabs button{flex:1;border:1.5px solid #ddd;background:#fff;border-radius:8px;padding:8px;font-size:12.5px;font-weight:700;color:#555;cursor:pointer;font-family:inherit}.viewtabs button.on{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
 .cal-legend{display:flex;flex-wrap:wrap;gap:8px 12px;margin:2px 2px 8px;font-size:11px;color:#444}.cal-leg{display:flex;align-items:center;gap:4px}
 .cal-note{font-size:10.5px;color:#999;margin:0 2px 10px}
@@ -57,7 +58,7 @@ header h1{font-size:18px;font-weight:700}header p{font-size:11.5px;color:#bdbdbd
 </style></head><body><div class="wrap">
 <header><h1>aicrew 生成AI研修｜受講者登録</h1><p>①〜⑤の受講日をそれぞれ選んでください（順不同・全日程を2ヶ月以内に受講いただきます）</p></header>
 <div id="app">
-<div class="policy">📌 <b>受講日の変更について</b>：変更は<b>受講日の10日前まで</b>であれば可能です。それ以降は変更不可です。（例：8/7の回 → 7/28まで）変更の際は研修サポート事務局 <b>support@aicrew.jp</b> へご連絡ください。</div>
+<div class="policy">📌 <b>受講日の変更について</b>：変更は<b style="color:#c0392b">受講日の10日前まで</b>であれば可能です。以降は変更不可。変更の際は研修サポート事務局 <b>support@aicrew.jp</b> へご連絡ください。</div>
 <div class="step">STEP 1 ／ <b>コースを選ぶ</b></div>
 <div class="courses" id="courses"></div>
 <div id="selWrap" class="hide">
@@ -78,6 +79,7 @@ header h1{font-size:18px;font-weight:700}header p{font-size:11.5px;color:#bdbdbd
 <div id="result" class="hide"></div>
 </div>
 
+<button id="totop" type="button">↑ TOPに戻る</button>
 <div id="tray" class="hide"><div class="tray-in">
 <div class="tray-h"><span>📋 受講予定（自動反映）</span><span id="status" class="status wait">コースを選択</span></div>
 <div class="slots" id="slots"></div>
@@ -241,7 +243,7 @@ window.doSubmit=async function(){
    <div style="font-size:12.5px">${infoLine_()}</div>
    <table><tr><td>研修内容</td><td>日付</td><td>時間</td><td>変更締切</td></tr>${r.rows}</table>
    <div style="font-size:12px">各回のZoom URLは <b>${$('f_mail').value}</b> 宛にお送りします。</div>
-   <div style="font-size:11.5px;margin-top:8px;background:#fff8e6;border:1px solid #f0d98a;border-radius:8px;padding:9px 11px;color:#7a5c00">📌 受講日の変更は<b>受講日の10日前まで</b>であれば可能です。それ以降は変更不可です。各回の<b>変更締切</b>までに <b>support@aicrew.jp</b>（研修サポート事務局）へご連絡ください。</div>
+   <div style="font-size:11.5px;margin-top:8px;background:#fff8e6;border:1px solid #f0d98a;border-radius:8px;padding:9px 11px;color:#7a5c00">📌 受講日の変更は<b style="color:#c0392b">受講日の10日前まで</b>であれば可能です。以降は変更不可。各回の<b>変更締切</b>までに <b>support@aicrew.jp</b>（研修サポート事務局）へご連絡ください。</div>
    <button class="sub" style="margin-top:12px;background:#534ab7" onclick="window.print()">この画面を保存する（PDF）</button><button class="sub" style="margin-top:8px;background:#1a1a1a" onclick="location.reload()">別の受講者を登録する</button></div>`;
   window.scrollTo({top:0,behavior:'smooth'});
 };
@@ -249,4 +251,6 @@ window.doSubmit=async function(){
 renderCourses();
 document.querySelectorAll('.viewtabs button').forEach(b=>b.onclick=()=>setView(b.dataset.v));
 $('resetBtn').onclick=resetAll;
+$('totop').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+window.addEventListener('scroll',()=>$('totop').classList.toggle('show',window.scrollY>300));
 </script></body></html>
