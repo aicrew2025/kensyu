@@ -1,336 +1,193 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>aicrew 生成AI研修 スケジュールカレンダー</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;background:#eef1f6;color:#1a202c;min-height:100vh}
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>aicrew 生成AI研修 受講者登録</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Yu Gothic","Hiragino Kaku Gothic ProN",system-ui,sans-serif;background:#f4f4f6;color:#1a1a1a;line-height:1.55}
+.wrap{max-width:720px;margin:0 auto;padding:0 14px 220px}
+header{background:#1a1a1a;color:#fff;padding:20px 16px;border-radius:0 0 14px 14px;margin:0 -14px 16px}
+header h1{font-size:18px;font-weight:700}header p{font-size:11.5px;color:#bdbdbd;margin-top:3px}
+.step{font-size:12px;color:#666;margin:18px 2px 8px;font-weight:700}.step b{color:#1a1a1a}
+.courses{display:flex;gap:8px;flex-wrap:wrap}
+.cbtn{flex:1;min-width:130px;border:1.5px solid #ddd;background:#fff;border-radius:10px;padding:12px;font-size:13px;font-weight:700;cursor:pointer;color:#333}
+.cbtn.on{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+.sblock{background:#fff;border:1px solid #e6e6e9;border-radius:12px;padding:12px 13px;margin-bottom:10px}
+.shead{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;margin-bottom:9px}
+.b{width:20px;height:20px;border-radius:6px;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.s1{background:#ede9fe;color:#4c1d95}.s2{background:#fff3e8;color:#9a3412}.s3{background:#ecfdf5;color:#065f46}.s4{background:#fef3c7;color:#92400e}.s5{background:#dbeafe;color:#1e3a8a}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1.5px solid #e0e0e4;background:#fafafa;border-radius:9px;padding:5px 9px;font-size:11.5px;cursor:pointer;text-align:center;line-height:1.25;min-width:62px}
+.chip:hover{border-color:#9b8cff}
+.chip .t{display:block;color:#888;font-size:9.5px}
+.chip.on{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+.chip.on .t{color:#cfcfcf}
+.chip.dim{opacity:.32;pointer-events:none}
+/* 下のタブ（自動反映） */
+#tray{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:2px solid #1a1a1a;box-shadow:0 -4px 18px rgba(0,0,0,.1);z-index:50}
+.tray-in{max-width:720px;margin:0 auto;padding:10px 16px}
+.tray-h{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:700;margin-bottom:6px}
+.status{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:20px}
+.ok{background:#e7f7ee;color:#0f6e56}.ng{background:#fdecec;color:#c0392b}.wait{background:#eee;color:#888}
+.slots{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.slot{border:1px solid #eee;border-radius:8px;padding:6px 4px;text-align:center;font-size:11px}
+.slot .n{font-size:11px;font-weight:700}.slot .d{font-size:12px;font-weight:700;margin-top:2px}.slot .e{color:#bbb}
+.slot .tm{font-size:9px;color:#888}
+.totline{font-size:11px;color:#555;margin-top:6px;display:flex;justify-content:space-between;align-items:center}
+.form{background:#fff;border:1px solid #e6e6e9;border-radius:12px;padding:16px;margin-top:6px}
+.fr{margin-bottom:12px}.fr label{display:block;font-size:12px;font-weight:700;margin-bottom:4px}.fr label .req{color:#c0392b;font-size:10px;margin-left:4px}
+.fr input,.fr select{width:100%;border:1.5px solid #ddd;border-radius:8px;padding:9px 10px;font-size:13px;font-family:inherit}
+.fr input:focus,.fr select:focus{outline:none;border-color:#534ab7}
+.hint{font-size:10.5px;color:#999;margin-top:3px}
+.sub{width:100%;background:#534ab7;color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:700;cursor:pointer}
+.sub:disabled{background:#c5c5cf;cursor:not-allowed}
+.done{background:#f0fbf6;border:1px solid #bfe6cf;border-radius:12px;padding:18px}
+.done h2{color:#0f6e56;font-size:16px;margin-bottom:8px}.done table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px}.done td{border:1px solid #d7ece2;padding:5px 8px}
+.policy{background:#fff8e6;border:1px solid #f0d98a;border-radius:10px;padding:10px 12px;font-size:11.5px;color:#7a5c00;margin:14px 0 2px;line-height:1.5}.policy b{color:#5c4500}.errmsg{background:#fdecec;color:#c0392b;border:1px solid #f3c9c9;border-radius:8px;padding:9px 10px;font-size:12px;font-weight:700;margin-top:8px;text-align:center}.note{font-size:10.5px;color:#999;margin-top:8px}.hide{display:none}
+@media print{.sub{display:none!important}.step,.policy,#app,#tray{display:none!important}body{background:#fff}.done{box-shadow:none;border:1px solid #cdd9d0}header{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style></head><body><div class="wrap">
+<header><h1>aicrew 生成AI研修｜受講者登録</h1><p>①〜⑤の受講日をそれぞれ選んでください（順不同・全日程を2ヶ月以内に受講いただきます）</p></header>
+<div id="app">
+<div class="policy">📌 <b>受講日の変更について</b>：変更は<b>受講日の10日前まで</b>であれば可能です。それ以降は変更不可です。（例：8/7の回 → 7/28まで）変更の際は研修サポート事務局 <b>support@aicrew.jp</b> へご連絡ください。</div>
+<div class="step">STEP 1 ／ <b>コースを選ぶ</b></div>
+<div class="courses" id="courses"></div>
+<div id="selWrap" class="hide">
+<div class="step">STEP 2 ／ <b>①〜⑤の受講日を1つずつ選ぶ（順番は自由）</b></div>
+<div id="sessions"></div>
+<div class="step">STEP 3 ／ <b>受講者情報</b></div>
+<div class="form">
+<div class="fr"><label>会社名<span class="req">必須</span></label><input id="f_comp" placeholder="株式会社◯◯"></div>
+<div class="fr"><label>受講者氏名<span class="req">必須</span></label><input id="f_name" placeholder="山田 太郎"></div>
+<div class="fr"><label>ふりがな<span class="req">必須</span></label><input id="f_kana" placeholder="やまだ たろう"></div>
+<div class="fr"><label>メールアドレス<span class="req">必須</span></label><input id="f_mail" type="email" inputmode="email" placeholder="taro@example.co.jp"><div class="hint">日程・Zoom URLはこのアドレスに送ります（半角英数のみ・スペース不可）</div><div id="mailErr" class="hint" style="color:#c0392b;display:none">メールアドレスの形式を確認してください</div></div>
 
-/* ── Header ── */
-.hd{background:linear-gradient(135deg,#0d1117 0%,#161b22 60%,#1a2744 100%);color:#fff;padding:20px 24px}
-.hd-in{max-width:1300px;margin:0 auto;display:flex;align-items:flex-start;flex-direction:column;gap:4px}
-.hd-brand{font-size:.82rem;font-weight:700;color:#60a5fa;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
-.hd h1{font-size:1.35rem;font-weight:800;line-height:1.3}
-.hd-sub{font-size:.78rem;color:#7c9cbf;margin-top:4px}
-
-/* ── Program Tab Bar ── */
-.prog-bar{background:#fff;border-bottom:1px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,.07)}
-.prog-bar-in{max-width:1300px;margin:0 auto;display:flex;gap:0}
-.ptab{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;padding:16px 12px;cursor:pointer;border:none;background:none;font-size:.9rem;font-weight:600;color:#718096;border-bottom:3px solid transparent;transition:all .2s;flex-direction:column}
-.ptab:hover{background:#f7fafc;color:#2d3748}
-.ptab.on{color:var(--tc);border-bottom-color:var(--tc);background:var(--bg)}
-.ptab-icon{font-size:1.5rem;line-height:1}
-.ptab-name{font-size:.88rem;font-weight:700;line-height:1.3;text-align:center}
-.ptab-sub{font-size:.68rem;font-weight:400;color:#a0aec0;line-height:1.2;text-align:center}
-.ptab.on .ptab-sub{color:var(--tc);opacity:.7}
-@media(min-width:640px){.ptab{flex-direction:row;padding:14px 20px}}
-
-/* ── Page ── */
-.pg{max-width:1300px;margin:0 auto;padding:24px 16px 48px}
-.sec{margin-bottom:22px}
-.sec-ttl{font-size:.86rem;font-weight:700;color:#2d3748;border-left:3px solid #4299e1;padding-left:10px;margin-bottom:12px}
-
-/* ── Session cards ── */
-.sc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-@media(max-width:900px){.sc-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:520px){.sc-grid{grid-template-columns:repeat(2,1fr)}}
-.sc{background:#fff;border-radius:12px;padding:11px 13px;cursor:pointer;border:2px solid transparent;box-shadow:0 1px 4px rgba(0,0,0,.07);display:flex;align-items:flex-start;gap:9px;transition:all .2s;user-select:none}
-.sc:hover{box-shadow:0 4px 14px rgba(0,0,0,.13);transform:translateY(-1px)}
-.sc.on{border-color:var(--cd);box-shadow:0 4px 16px rgba(0,0,0,.15)}
-.sc-n{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;flex-shrink:0}
-.sc-info .stl{font-size:.82rem;font-weight:700;line-height:1.3;margin-bottom:1px}
-.sc-info .sgn{font-size:.66rem;color:#718096;line-height:1.3}
-.sh-tag{font-size:.58rem;background:#EBF8FF;color:#2B6CB0;border-radius:3px;padding:1px 4px;font-weight:600;display:inline-block;margin-top:2px}
-
-/* ── Legend ── */
-.lgd{background:#fff;border-radius:10px;padding:11px 16px;box-shadow:0 1px 4px rgba(0,0,0,.07);display:flex;gap:20px;flex-wrap:wrap;align-items:center}
-.lgd-item{display:flex;align-items:center;gap:7px;font-size:.77rem;color:#4a5568}
-.lgd-sw{width:28px;height:11px;border-radius:3px}
-
-/* ── Calendar grid ── */
-.cal-outer{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-@media(max-width:900px){.cal-outer{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:580px){.cal-outer{grid-template-columns:1fr}}
-.cc{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.07)}
-.cc-hd{background:#1a202c;color:#fff;padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
-.cc-hd h3{font-size:.92rem;font-weight:700}
-.cc-hd .ctag{font-size:.65rem;opacity:.6}
-.wrow{display:grid;grid-template-columns:repeat(7,1fr);background:#f7fafc;border-bottom:1px solid #e2e8f0}
-.wd{text-align:center;padding:5px 2px;font-size:.65rem;font-weight:700;color:#718096}
-.wd.s{color:#e53e3e}.wd.sa{color:#3182ce}
-.cbody{display:grid;grid-template-columns:repeat(7,1fr)}
-.day{min-height:62px;padding:3px 3px 2px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0}
-.day:nth-child(7n){border-right:none}
-.day.emp{background:#fafafa}
-.day.hol{background:#fff5f5}
-.day.obn{background:#fffbf0}
-.day.sun .dn{color:#e53e3e}
-.day.sat .dn{color:#3182ce}
-.dn{font-size:.68rem;font-weight:600;color:#4a5568;margin-bottom:2px;line-height:1.2}
-.hn{font-size:.48rem;color:#e53e3e;display:block;font-weight:500}
-.on2{font-size:.48rem;color:#d69e2e;display:block}
-.chips{display:flex;flex-direction:column;gap:2px}
-.chip{border-radius:3px;padding:2px 4px;font-size:.58rem;font-weight:700;line-height:1.3;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .15s}
-.chip:hover{opacity:.75}
-
-/* ── Modal ── */
-.mwrap{display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:300;align-items:center;justify-content:center;padding:16px}
-.mwrap.open{display:flex}
-.mbox{background:#fff;border-radius:16px;max-width:480px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.28)}
-.mhd{padding:18px 20px 12px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.mbadge{display:inline-block;border-radius:14px;padding:3px 10px;font-size:.68rem;font-weight:700;margin-bottom:5px}
-.mttl{font-size:1.05rem;font-weight:800}
-.mx{background:#f7fafc;border:none;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;cursor:pointer;color:#718096;flex-shrink:0}
-.mx:hover{background:#e2e8f0}
-.mbd{padding:14px 20px 22px}
-.mmeta{display:flex;gap:16px;flex-wrap:wrap;font-size:.78rem;color:#4a5568;margin-bottom:10px}
-.mgnr{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#a0aec0;margin-bottom:10px}
-.mlist{list-style:none;display:flex;flex-direction:column;gap:7px}
-.mlist li{font-size:.84rem;line-height:1.55;padding-left:13px;position:relative}
-.mlist li::before{content:'▶';position:absolute;left:0;top:5px;font-size:.48rem;color:#cbd5e0}
-.snote{margin-top:12px;background:#EBF8FF;border-radius:8px;padding:9px 12px;font-size:.74rem;color:#2B6CB0;line-height:1.6}
-</style>
-</head>
-<body>
-
-<!-- HEADER -->
-<header class="hd">
-  <div class="hd-in">
-    <div class="hd-brand">aicrew 生成AI研修</div>
-    <h1>リアルタイム研修 スケジュールカレンダー</h1>
-    <div class="hd-sub">2026年7月 〜 12月　／　各コマ2時間　／　毎月2クール（午前 11:00〜13:00 ／ 午後 14:00〜16:00）</div>
-  </div>
-</header>
-
-<!-- PROGRAM TABS -->
-<div class="prog-bar">
-  <div class="prog-bar-in" id="progBar"></div>
+</div>
+</div></div>
+<div id="result" class="hide"></div>
 </div>
 
-<div class="pg">
-  <div class="sec">
-    <div class="sec-ttl">講座ラインナップ（タップでフィルター）</div>
-    <div class="sc-grid" id="scGrid"></div>
-  </div>
-  <div class="sec">
-    <div class="lgd">
-      <div class="lgd-item"><div class="lgd-sw" style="background:#FECACA;border:1px solid #fca5a5"></div>午前クール 薄色 — 11:00〜13:00</div>
-      <div class="lgd-item"><div class="lgd-sw" style="background:#F87171"></div>午後クール 濃色 — 14:00〜16:00</div>
-      <div style="font-size:.72rem;color:#a0aec0">※ セッション①のカラー例／一部の回は開始時刻が異なります（各コマをタップで確認）</div>
-    </div>
-  </div>
-  <div class="sec">
-    <div class="sec-ttl">カレンダー</div>
-    <div class="cal-outer" id="calOuter"></div>
-  </div>
-</div>
-
-<!-- MODAL -->
-<div class="mwrap" id="mwrap" onclick="bgClick(event)">
-  <div class="mbox">
-    <div class="mhd">
-      <div>
-        <div id="mbadge" class="mbadge"></div>
-        <div id="mttl" class="mttl"></div>
-      </div>
-      <button class="mx" onclick="closeM()">✕</button>
-    </div>
-    <div class="mbd">
-      <div class="mmeta"><span>📅 <span id="mdate"></span></span><span>🕐 <span id="mtime"></span></span></div>
-      <div id="mgnr" class="mgnr"></div>
-      <ul id="mlist" class="mlist"></ul>
-      <div id="snote" class="snote" style="display:none">★ このセッション（①〜③）は営業編・バックオフィス編で<strong>共通カリキュラム</strong>です（実施日はコース・月により異なる場合があります）。</div>
-    </div>
-  </div>
-</div>
+<div id="tray" class="hide"><div class="tray-in">
+<div class="tray-h"><span>📋 受講予定（自動反映）</span><span id="status" class="status wait">コースを選択</span></div>
+<div class="slots" id="slots"></div>
+<div class="totline"><span id="spaninfo"></span><span id="tot"></span></div>
+<div id="errmsg" class="errmsg hide"></div>
+<button class="sub" id="submit" style="margin-top:8px;padding:11px" disabled>この内容で申込む</button>
+</div></div>
 
 <script>
-// ── Colors by session number ─────────────────────────────
-const C=[null,
-  {l:'#FECACA',d:'#F87171',t:'#7F1D1D'},
-  {l:'#FEF08A',d:'#CA8A04',t:'#713F12'},
-  {l:'#99F6E4',d:'#0D9488',t:'#134E4A'},
-  {l:'#FED7AA',d:'#EA6C19',t:'#7C2D12'},
-  {l:'#BBF7D0',d:'#16A34A',t:'#14532D'},
-];
+const D={"opt": {"video": {"1": [{"date": "2026-07-15", "wd": "水", "time": "14:00〜16:00", "cool": "7月午後"}, {"date": "2026-08-04", "wd": "火", "time": "11:00〜13:00", "cool": "8月午前"}, {"date": "2026-08-17", "wd": "月", "time": "14:00〜16:00", "cool": "8月午後"}, {"date": "2026-09-07", "wd": "月", "time": "11:00〜13:00", "cool": "9月午前"}, {"date": "2026-09-15", "wd": "火", "time": "14:00〜16:00", "cool": "9月午後"}, {"date": "2026-10-06", "wd": "火", "time": "11:00〜13:00", "cool": "10月午前"}, {"date": "2026-10-15", "wd": "木", "time": "14:00〜16:00", "cool": "10月午後"}, {"date": "2026-11-02", "wd": "月", "time": "11:00〜13:00", "cool": "11月午前"}, {"date": "2026-11-13", "wd": "金", "time": "14:00〜16:00", "cool": "11月午後"}, {"date": "2026-12-01", "wd": "火", "time": "11:00〜13:00", "cool": "12月午前"}, {"date": "2026-12-14", "wd": "月", "time": "14:00〜16:00", "cool": "12月午後"}], "2": [{"date": "2026-07-16", "wd": "木", "time": "14:00〜16:00", "cool": "7月午後"}, {"date": "2026-08-05", "wd": "水", "time": "11:00〜13:00", "cool": "8月午前"}, {"date": "2026-08-18", "wd": "火", "time": "14:00〜16:00", "cool": "8月午後"}, {"date": "2026-09-08", "wd": "火", "time": "11:00〜13:00", "cool": "9月午前"}, {"date": "2026-09-16", "wd": "水", "time": "14:00〜16:00", "cool": "9月午後"}, {"date": "2026-10-07", "wd": "水", "time": "11:00〜13:00", "cool": "10月午前"}, {"date": "2026-10-16", "wd": "金", "time": "14:00〜16:00", "cool": "10月午後"}, {"date": "2026-11-05", "wd": "木", "time": "11:00〜13:00", "cool": "11月午前"}, {"date": "2026-11-16", "wd": "月", "time": "14:00〜16:00", "cool": "11月午後"}, {"date": "2026-12-02", "wd": "水", "time": "11:00〜13:00", "cool": "12月午前"}, {"date": "2026-12-15", "wd": "火", "time": "14:00〜16:00", "cool": "12月午後"}], "3": [{"date": "2026-07-17", "wd": "金", "time": "14:00〜16:00", "cool": "7月午後"}, {"date": "2026-08-06", "wd": "木", "time": "11:00〜13:00", "cool": "8月午前"}, {"date": "2026-08-19", "wd": "水", "time": "14:00〜16:00", "cool": "8月午後"}, {"date": "2026-09-09", "wd": "水", "time": "11:00〜13:00", "cool": "9月午前"}, {"date": "2026-09-17", "wd": "木", "time": "14:00〜16:00", "cool": "9月午後"}, {"date": "2026-10-08", "wd": "木", "time": "11:00〜13:00", "cool": "10月午前"}, {"date": "2026-10-19", "wd": "月", "time": "14:00〜16:00", "cool": "10月午後"}, {"date": "2026-11-06", "wd": "金", "time": "11:00〜13:00", "cool": "11月午前"}, {"date": "2026-11-17", "wd": "火", "time": "14:00〜16:00", "cool": "11月午後"}, {"date": "2026-12-03", "wd": "木", "time": "11:00〜13:00", "cool": "12月午前"}, {"date": "2026-12-16", "wd": "水", "time": "14:00〜16:00", "cool": "12月午後"}], "4": [{"date": "2026-07-21", "wd": "火", "time": "14:00〜16:00", "cool": "7月午後"}, {"date": "2026-08-07", "wd": "金", "time": "11:00〜13:00", "cool": "8月午前"}, {"date": "2026-08-20", "wd": "木", "time": "14:00〜16:00", "cool": "8月午後"}, {"date": "2026-09-10", "wd": "木", "time": "11:00〜13:00", "cool": "9月午前"}, {"date": "2026-09-18", "wd": "金", "time": "14:00〜16:00", "cool": "9月午後"}, {"date": "2026-10-09", "wd": "金", "time": "11:00〜13:00", "cool": "10月午前"}, {"date": "2026-10-20", "wd": "火", "time": "14:00〜16:00", "cool": "10月午後"}, {"date": "2026-11-10", "wd": "火", "time": "11:00〜13:00", "cool": "11月午前"}, {"date": "2026-11-18", "wd": "水", "time": "14:00〜16:00", "cool": "11月午後"}, {"date": "2026-12-04", "wd": "金", "time": "11:00〜13:00", "cool": "12月午前"}, {"date": "2026-12-17", "wd": "木", "time": "14:00〜16:00", "cool": "12月午後"}], "5": [{"date": "2026-07-27", "wd": "月", "time": "14:00〜16:00", "cool": "7月午後"}, {"date": "2026-08-10", "wd": "月", "time": "11:00〜13:00", "cool": "8月午前"}, {"date": "2026-08-21", "wd": "金", "time": "14:00〜16:00", "cool": "8月午後"}, {"date": "2026-09-11", "wd": "金", "time": "11:00〜13:00", "cool": "9月午前"}, {"date": "2026-09-28", "wd": "月", "time": "14:00〜16:00", "cool": "9月午後"}, {"date": "2026-10-13", "wd": "火", "time": "11:00〜13:00", "cool": "10月午前"}, {"date": "2026-10-21", "wd": "水", "time": "14:00〜16:00", "cool": "10月午後"}, {"date": "2026-11-11", "wd": "水", "time": "11:00〜13:00", "cool": "11月午前"}, {"date": "2026-11-19", "wd": "木", "time": "14:00〜16:00", "cool": "11月午後"}, {"date": "2026-12-07", "wd": "月", "time": "11:00〜13:00", "cool": "12月午前"}, {"date": "2026-12-18", "wd": "金", "time": "14:00〜16:00", "cool": "12月午後"}]}, "sales": {"1": [{"date": "2026-07-15", "wd": "水", "time": "14:00〜16:00", "cool": "7月"}, {"date": "2026-08-03", "wd": "月", "time": "11:30〜13:30", "cool": "8月前半"}, {"date": "2026-08-21", "wd": "金", "time": "14:00〜16:00", "cool": "8月後半"}, {"date": "2026-09-02", "wd": "水", "time": "11:00〜13:00", "cool": "9月前半"}, {"date": "2026-09-07", "wd": "月", "time": "11:00〜13:00", "cool": "9月後半"}, {"date": "2026-10-05", "wd": "月", "time": "11:00〜13:00", "cool": "10月前半"}, {"date": "2026-10-21", "wd": "水", "time": "14:00〜16:00", "cool": "10月後半"}, {"date": "2026-11-04", "wd": "水", "time": "11:00〜13:00", "cool": "11月前半"}, {"date": "2026-11-24", "wd": "火", "time": "14:00〜16:00", "cool": "11月後半"}, {"date": "2026-12-07", "wd": "月", "time": "11:00〜13:00", "cool": "12月前半"}, {"date": "2026-12-16", "wd": "水", "time": "14:00〜16:00", "cool": "12月後半"}, {"date": "2027-01-13", "wd": "水", "time": "11:00〜13:00", "cool": "1月前半"}, {"date": "2027-01-21", "wd": "木", "time": "14:00〜16:00", "cool": "1月後半"}, {"date": "2027-02-01", "wd": "月", "time": "11:00〜13:00", "cool": "2月前半"}, {"date": "2027-02-16", "wd": "火", "time": "14:00〜16:00", "cool": "2月後半"}, {"date": "2027-03-04", "wd": "木", "time": "11:00〜13:00", "cool": "3月前半"}, {"date": "2027-03-24", "wd": "水", "time": "14:00〜16:00", "cool": "3月後半"}], "2": [{"date": "2026-07-16", "wd": "木", "time": "14:00〜16:00", "cool": "7月"}, {"date": "2026-08-05", "wd": "水", "time": "11:00〜13:00", "cool": "8月前半"}, {"date": "2026-08-24", "wd": "月", "time": "11:30〜13:30", "cool": "8月後半"}, {"date": "2026-09-03", "wd": "木", "time": "11:00〜13:00", "cool": "9月前半"}, {"date": "2026-09-08", "wd": "火", "time": "11:00〜13:00", "cool": "9月後半"}, {"date": "2026-10-06", "wd": "火", "time": "11:00〜13:00", "cool": "10月前半"}, {"date": "2026-10-22", "wd": "木", "time": "14:00〜16:00", "cool": "10月後半"}, {"date": "2026-11-05", "wd": "木", "time": "11:00〜13:00", "cool": "11月前半"}, {"date": "2026-11-25", "wd": "水", "time": "14:00〜16:00", "cool": "11月後半"}, {"date": "2026-12-08", "wd": "火", "time": "11:00〜13:00", "cool": "12月前半"}, {"date": "2026-12-17", "wd": "木", "time": "14:00〜16:00", "cool": "12月後半"}, {"date": "2027-01-14", "wd": "木", "time": "11:00〜13:00", "cool": "1月前半"}, {"date": "2027-01-22", "wd": "金", "time": "14:00〜16:00", "cool": "1月後半"}, {"date": "2027-02-02", "wd": "火", "time": "11:00〜13:00", "cool": "2月前半"}, {"date": "2027-02-17", "wd": "水", "time": "14:00〜16:00", "cool": "2月後半"}, {"date": "2027-03-05", "wd": "金", "time": "11:00〜13:00", "cool": "3月前半"}, {"date": "2027-03-25", "wd": "木", "time": "14:00〜16:00", "cool": "3月後半"}], "3": [{"date": "2026-07-17", "wd": "金", "time": "14:00〜16:00", "cool": "7月"}, {"date": "2026-08-06", "wd": "木", "time": "11:00〜13:00", "cool": "8月前半"}, {"date": "2026-08-25", "wd": "火", "time": "14:00〜16:00", "cool": "8月後半"}, {"date": "2026-09-04", "wd": "金", "time": "11:00〜13:00", "cool": "9月前半"}, {"date": "2026-09-09", "wd": "水", "time": "11:00〜13:00", "cool": "9月後半"}, {"date": "2026-10-07", "wd": "水", "time": "11:00〜13:00", "cool": "10月前半"}, {"date": "2026-10-23", "wd": "金", "time": "14:00〜16:00", "cool": "10月後半"}, {"date": "2026-11-06", "wd": "金", "time": "11:00〜13:00", "cool": "11月前半"}, {"date": "2026-11-26", "wd": "木", "time": "14:00〜16:00", "cool": "11月後半"}, {"date": "2026-12-09", "wd": "水", "time": "11:00〜13:00", "cool": "12月前半"}, {"date": "2026-12-18", "wd": "金", "time": "14:00〜16:00", "cool": "12月後半"}, {"date": "2027-01-15", "wd": "金", "time": "11:00〜13:00", "cool": "1月前半"}, {"date": "2027-01-25", "wd": "月", "time": "14:00〜16:00", "cool": "1月後半"}, {"date": "2027-02-03", "wd": "水", "time": "11:00〜13:00", "cool": "2月前半"}, {"date": "2027-02-18", "wd": "木", "time": "14:00〜16:00", "cool": "2月後半"}, {"date": "2027-03-08", "wd": "月", "time": "11:00〜13:00", "cool": "3月前半"}, {"date": "2027-03-26", "wd": "金", "time": "14:00〜16:00", "cool": "3月後半"}], "4": [{"date": "2026-07-22", "wd": "水", "time": "14:00〜16:00", "cool": "7月"}, {"date": "2026-08-07", "wd": "金", "time": "11:00〜13:00", "cool": "8月前半"}, {"date": "2026-08-26", "wd": "水", "time": "11:00〜13:00", "cool": "8月後半"}, {"date": "2026-09-10", "wd": "木", "time": "11:00〜13:00", "cool": "9月前半"}, {"date": "2026-09-24", "wd": "木", "time": "14:00〜16:00", "cool": "9月後半"}, {"date": "2026-10-08", "wd": "木", "time": "11:00〜13:00", "cool": "10月前半"}, {"date": "2026-10-26", "wd": "月", "time": "14:00〜16:00", "cool": "10月後半"}, {"date": "2026-11-09", "wd": "月", "time": "11:00〜13:00", "cool": "11月前半"}, {"date": "2026-11-27", "wd": "金", "time": "14:00〜16:00", "cool": "11月後半"}, {"date": "2026-12-10", "wd": "木", "time": "11:00〜13:00", "cool": "12月前半"}, {"date": "2026-12-21", "wd": "月", "time": "14:00〜16:00", "cool": "12月後半"}, {"date": "2027-01-18", "wd": "月", "time": "11:00〜13:00", "cool": "1月前半"}, {"date": "2027-01-26", "wd": "火", "time": "14:00〜16:00", "cool": "1月後半"}, {"date": "2027-02-04", "wd": "木", "time": "11:00〜13:00", "cool": "2月前半"}, {"date": "2027-02-19", "wd": "金", "time": "14:00〜16:00", "cool": "2月後半"}, {"date": "2027-03-09", "wd": "火", "time": "11:00〜13:00", "cool": "3月前半"}, {"date": "2027-03-29", "wd": "月", "time": "14:00〜16:00", "cool": "3月後半"}], "5": [{"date": "2026-07-23", "wd": "木", "time": "11:00〜13:00", "cool": "7月"}, {"date": "2026-08-17", "wd": "月", "time": "14:00〜16:00", "cool": "8月前半"}, {"date": "2026-08-27", "wd": "木", "time": "14:00〜16:00", "cool": "8月後半"}, {"date": "2026-09-11", "wd": "金", "time": "11:00〜13:00", "cool": "9月前半"}, {"date": "2026-09-25", "wd": "金", "time": "14:00〜16:00", "cool": "9月後半"}, {"date": "2026-10-09", "wd": "金", "time": "11:00〜13:00", "cool": "10月前半"}, {"date": "2026-10-27", "wd": "火", "time": "14:00〜16:00", "cool": "10月後半"}, {"date": "2026-11-10", "wd": "火", "time": "11:00〜13:00", "cool": "11月前半"}, {"date": "2026-11-30", "wd": "月", "time": "14:00〜16:00", "cool": "11月後半"}, {"date": "2026-12-11", "wd": "金", "time": "11:00〜13:00", "cool": "12月前半"}, {"date": "2026-12-22", "wd": "火", "time": "14:00〜16:00", "cool": "12月後半"}, {"date": "2027-01-19", "wd": "火", "time": "11:00〜13:00", "cool": "1月前半"}, {"date": "2027-01-27", "wd": "水", "time": "14:00〜16:00", "cool": "1月後半"}, {"date": "2027-02-05", "wd": "金", "time": "11:00〜13:00", "cool": "2月前半"}, {"date": "2027-02-22", "wd": "月", "time": "14:00〜16:00", "cool": "2月後半"}, {"date": "2027-03-10", "wd": "水", "time": "11:00〜13:00", "cool": "3月前半"}, {"date": "2027-03-30", "wd": "火", "time": "14:00〜16:00", "cool": "3月後半"}]}, "bo": {"1": [{"date": "2026-07-15", "wd": "水", "time": "14:00〜16:00", "cool": "7月"}, {"date": "2026-08-03", "wd": "月", "time": "11:30〜13:30", "cool": "8月前半"}, {"date": "2026-08-21", "wd": "金", "time": "14:00〜16:00", "cool": "8月後半"}, {"date": "2026-09-02", "wd": "水", "time": "11:00〜13:00", "cool": "9月前半"}, {"date": "2026-09-07", "wd": "月", "time": "11:00〜13:00", "cool": "9月後半"}, {"date": "2026-10-05", "wd": "月", "time": "11:00〜13:00", "cool": "10月前半"}, {"date": "2026-10-21", "wd": "水", "time": "14:00〜16:00", "cool": "10月後半"}, {"date": "2026-11-04", "wd": "水", "time": "11:00〜13:00", "cool": "11月前半"}, {"date": "2026-11-24", "wd": "火", "time": "14:00〜16:00", "cool": "11月後半"}, {"date": "2026-12-07", "wd": "月", "time": "11:00〜13:00", "cool": "12月前半"}, {"date": "2026-12-16", "wd": "水", "time": "14:00〜16:00", "cool": "12月後半"}, {"date": "2027-01-13", "wd": "水", "time": "11:00〜13:00", "cool": "1月前半"}, {"date": "2027-01-21", "wd": "木", "time": "14:00〜16:00", "cool": "1月後半"}, {"date": "2027-02-01", "wd": "月", "time": "11:00〜13:00", "cool": "2月前半"}, {"date": "2027-02-16", "wd": "火", "time": "14:00〜16:00", "cool": "2月後半"}, {"date": "2027-03-04", "wd": "木", "time": "11:00〜13:00", "cool": "3月前半"}, {"date": "2027-03-24", "wd": "水", "time": "14:00〜16:00", "cool": "3月後半"}], "2": [{"date": "2026-07-16", "wd": "木", "time": "14:00〜16:00", "cool": "7月"}, {"date": "2026-08-05", "wd": "水", "time": "11:00〜13:00", "cool": "8月前半"}, {"date": "2026-08-24", "wd": "月", "time": "11:30〜13:30", "cool": "8月後半"}, {"date": "2026-09-03", "wd": "木", "time": "11:00〜13:00", "cool": "9月前半"}, {"date": "2026-09-08", "wd": "火", "time": "11:00〜13:00", "cool": "9月後半"}, {"date": "2026-10-06", "wd": "火", "time": "11:00〜13:00", "cool": "10月前半"}, {"date": "2026-10-22", "wd": "木", "time": "14:00〜16:00", "cool": "10月後半"}, {"date": "2026-11-05", "wd": "木", "time": "11:00〜13:00", "cool": "11月前半"}, {"date": "2026-11-25", "wd": "水", "time": "14:00〜16:00", "cool": "11月後半"}, {"date": "2026-12-08", "wd": "火", "time": "11:00〜13:00", "cool": "12月前半"}, {"date": "2026-12-17", "wd": "木", "time": "14:00〜16:00", "cool": "12月後半"}, {"date": "2027-01-14", "wd": "木", "time": "11:00〜13:00", "cool": "1月前半"}, {"date": "2027-01-22", "wd": "金", "time": "14:00〜16:00", "cool": "1月後半"}, {"date": "2027-02-02", "wd": "火", "time": "11:00〜13:00", "cool": "2月前半"}, {"date": "2027-02-17", "wd": "水", "time": "14:00〜16:00", "cool": "2月後半"}, {"date": "2027-03-05", "wd": "金", "time": "11:00〜13:00", "cool": "3月前半"}, {"date": "2027-03-25", "wd": "木", "time": "14:00〜16:00", "cool": "3月後半"}], "3": [{"date": "2026-07-17", "wd": "金", "time": "14:00〜16:00", "cool": "7月"}, {"date": "2026-08-06", "wd": "木", "time": "11:00〜13:00", "cool": "8月前半"}, {"date": "2026-08-25", "wd": "火", "time": "14:00〜16:00", "cool": "8月後半"}, {"date": "2026-09-04", "wd": "金", "time": "11:00〜13:00", "cool": "9月前半"}, {"date": "2026-09-09", "wd": "水", "time": "11:00〜13:00", "cool": "9月後半"}, {"date": "2026-10-07", "wd": "水", "time": "11:00〜13:00", "cool": "10月前半"}, {"date": "2026-10-23", "wd": "金", "time": "14:00〜16:00", "cool": "10月後半"}, {"date": "2026-11-06", "wd": "金", "time": "11:00〜13:00", "cool": "11月前半"}, {"date": "2026-11-26", "wd": "木", "time": "14:00〜16:00", "cool": "11月後半"}, {"date": "2026-12-09", "wd": "水", "time": "11:00〜13:00", "cool": "12月前半"}, {"date": "2026-12-18", "wd": "金", "time": "14:00〜16:00", "cool": "12月後半"}, {"date": "2027-01-15", "wd": "金", "time": "11:00〜13:00", "cool": "1月前半"}, {"date": "2027-01-25", "wd": "月", "time": "14:00〜16:00", "cool": "1月後半"}, {"date": "2027-02-03", "wd": "水", "time": "11:00〜13:00", "cool": "2月前半"}, {"date": "2027-02-18", "wd": "木", "time": "14:00〜16:00", "cool": "2月後半"}, {"date": "2027-03-08", "wd": "月", "time": "11:00〜13:00", "cool": "3月前半"}, {"date": "2027-03-26", "wd": "金", "time": "14:00〜16:00", "cool": "3月後半"}], "4": [{"date": "2026-07-27", "wd": "月", "time": "14:00〜16:00", "cool": "7月"}, {"date": "2026-08-19", "wd": "水", "time": "14:00〜16:00", "cool": "8月前半"}, {"date": "2026-08-28", "wd": "金", "time": "14:00〜16:00", "cool": "8月後半"}, {"date": "2026-09-17", "wd": "木", "time": "11:00〜13:00", "cool": "9月前半"}, {"date": "2026-09-28", "wd": "月", "time": "14:00〜16:00", "cool": "9月後半"}, {"date": "2026-10-08", "wd": "木", "time": "11:00〜13:00", "cool": "10月前半"}, {"date": "2026-10-26", "wd": "月", "time": "14:00〜16:00", "cool": "10月後半"}, {"date": "2026-11-09", "wd": "月", "time": "11:00〜13:00", "cool": "11月前半"}, {"date": "2026-11-27", "wd": "金", "time": "14:00〜16:00", "cool": "11月後半"}, {"date": "2026-12-10", "wd": "木", "time": "11:00〜13:00", "cool": "12月前半"}, {"date": "2026-12-21", "wd": "月", "time": "14:00〜16:00", "cool": "12月後半"}, {"date": "2027-01-18", "wd": "月", "time": "11:00〜13:00", "cool": "1月前半"}, {"date": "2027-01-26", "wd": "火", "time": "14:00〜16:00", "cool": "1月後半"}, {"date": "2027-02-04", "wd": "木", "time": "11:00〜13:00", "cool": "2月前半"}, {"date": "2027-02-19", "wd": "金", "time": "14:00〜16:00", "cool": "2月後半"}, {"date": "2027-03-09", "wd": "火", "time": "11:00〜13:00", "cool": "3月前半"}, {"date": "2027-03-29", "wd": "月", "time": "14:00〜16:00", "cool": "3月後半"}], "5": [{"date": "2026-07-29", "wd": "水", "time": "14:00〜16:00", "cool": "7月"}, {"date": "2026-08-20", "wd": "木", "time": "14:00〜16:00", "cool": "8月前半"}, {"date": "2026-08-31", "wd": "月", "time": "11:30〜13:30", "cool": "8月後半"}, {"date": "2026-09-18", "wd": "金", "time": "11:00〜13:00", "cool": "9月前半"}, {"date": "2026-09-30", "wd": "水", "time": "14:00〜16:00", "cool": "9月後半"}, {"date": "2026-10-09", "wd": "金", "time": "11:00〜13:00", "cool": "10月前半"}, {"date": "2026-10-27", "wd": "火", "time": "14:00〜16:00", "cool": "10月後半"}, {"date": "2026-11-10", "wd": "火", "time": "11:00〜13:00", "cool": "11月前半"}, {"date": "2026-11-30", "wd": "月", "time": "14:00〜16:00", "cool": "11月後半"}, {"date": "2026-12-11", "wd": "金", "time": "11:00〜13:00", "cool": "12月前半"}, {"date": "2026-12-22", "wd": "火", "time": "14:00〜16:00", "cool": "12月後半"}, {"date": "2027-01-19", "wd": "火", "time": "11:00〜13:00", "cool": "1月前半"}, {"date": "2027-01-27", "wd": "水", "time": "14:00〜16:00", "cool": "1月後半"}, {"date": "2027-02-05", "wd": "金", "time": "11:00〜13:00", "cool": "2月前半"}, {"date": "2027-02-22", "wd": "月", "time": "14:00〜16:00", "cool": "2月後半"}, {"date": "2027-03-10", "wd": "水", "time": "11:00〜13:00", "cool": "3月前半"}, {"date": "2027-03-30", "wd": "火", "time": "14:00〜16:00", "cool": "3月後半"}]}}, "theme": {"video": {"1": "知識・基本操作", "2": "デザイン", "3": "PR動画制作①", "4": "PR動画制作②", "5": "広報・SNS"}, "sales": {"1": "AI活用", "2": "業務整理", "3": "資料素材", "4": "営業実務", "5": "営業ワークフロー"}, "bo": {"1": "AI活用", "2": "業務整理", "3": "資料素材", "4": "BO実務", "5": "BOワークフロー"}}};
+const CN={video:'AI動画活用編',sales:'営業編',bo:'バックオフィス編'};
+const GAS_URL='https://script.google.com/macros/s/AKfycbzJ5-feOsXY45-g4HyFrQzT2mbeijpB8UDmNhbvi68FZLCOb7wS1A5eus-Jtm9Idi_C/exec';  // Apps Script ウェブアプリ（旧・未使用）
+const SB_FN='https://gfbedmzdgjpczpfadaft.supabase.co/functions/v1/submit-registration';  // Supabase Edge Function
+const SB_KEY='sb_publishable_ECc0koefc0NFUeXwyT2U1w_BW6KExj4';  // Supabase publishable key
+const CIR='①②③④⑤';
+let st={course:null,sel:{1:null,2:null,3:null,4:null,5:null}};
+const $=id=>document.getElementById(id);
+const md=s=>s.slice(5).replace('-','/');
+function addMonths(d,m){const x=new Date(d);x.setMonth(x.getMonth()+m);return x;}
+function ddl(s){const d=new Date(s);d.setDate(d.getDate()-10);return (d.getMonth()+1)+"/"+d.getDate();}
 
-// ── Program definitions ───────────────────────────────────
-const P={
-  ai:{
-    name:'AI動画・コンテンツ制作研修',
-    short:'AI動画',
-    icon:'🎬',
-    color:'#1D4ED8',
-    bg:'#EFF6FF',
-    sess:{
-      1:{title:'①AI基礎',      chip:'①AI基礎', genre:'知識・基本操作',    topics:['生成AIの基礎知識','生成AIのサービスと生成の仕組みと活用の注意','Geminiマスターへの第一歩！基本操作を完全攻略','Nanobananaの基本操作']},
-      2:{title:'②販促デザイン', chip:'②販促',   genre:'デザイン',        topics:['商品のコンセプト設計','コンセプトに合わせた画像生成の実践','デザインツールCanvaの基礎','Canvaを活用したチラシ・ポスターデザイン']},
-      3:{title:'③動画生成・編集',chip:'③動画',  genre:'PR動画制作①',    topics:['Runwayを活用した動画生成AIの基礎と実践','PR動画の効果を高める！画像生成','PR動画の効果を高める！動画生成','動画編集の基礎']},
-      4:{title:'④音声・アバター',chip:'④音声',  genre:'PR動画制作②',    topics:['AIで作るオリジナルBGM！楽曲生成の基本','伝わるナレーションをAIで！企業PRを強化する音声戦略','Heygenのアバター動画。ディープフェイクの危険性と対策','オリジナルキャラクターを使ったアバター動画']},
-      5:{title:'⑤広報活用',    chip:'⑤広報',   genre:'広報・SNS展開支援',topics:['SNS別の広告動画の基礎知識','AIを使った採用動画作成方法','オリジナルキャラクターの制作とCM作成','プレゼン資料を動画化','vrewで動画にフル字幕をつける']},
-    }
-  },
-  sales:{
-    name:'職種別 生成AI活用研修 営業編',
-    short:'営業編',
-    icon:'💼',
-    color:'#15803D',
-    bg:'#F0FDF4',
-    sess:{
-      1:{title:'①AI基礎',        chip:'①AI基礎', genre:'AI活用基礎',          shared:true,topics:['生成AIを業務で使うための基本理解','AI活用時のリスク管理と情報の扱い方','Geminiを使った業務効率化の基本操作','画像生成AIを使ったビジュアル作成の基本']},
-      2:{title:'②情報収集・整理', chip:'②情報整理',genre:'業務情報の整理',       shared:true,topics:['業務に必要な情報をAIで集める方法','収集した情報を要点・課題・打ち手に整理する方法','目的に合わせた文章・メール・案内文の作成','AIで整理した情報をチームで活用するテンプレート作成']},
-      3:{title:'③資料作成',       chip:'③資料作成',genre:'資料・提案素材の生成',  shared:true,topics:['業務資料に使える画像・図解・バナー案の作成','ドキュメントのたたき台をAIで作成する方法','スライド資料の構成・見出し・流れを作成する方法','目的に合わせた資料をその場で作成する実践ワーク']},
-      4:{title:'④営業実務',     chip:'④営業実務',genre:'営業提案実践',        topics:['顧客課題から提案ストーリーを設計する','提案書に使える説明文・訴求文を作成する','商談で使える営業トーク・切り返しを作成する','自社商材に合わせた提案骨子を完成させる']},
-      5:{title:'⑤営業WF',       chip:'⑤営業WF', genre:'営業AIワークフロー',  topics:['商談情報・顧客情報を整理する営業管理シート作成','定型営業業務をAIで効率化する方法','営業準備から提案作成までのAI活用フロー設計','明日から使える営業AI活用ワークフローの完成']},
-    }
-  },
-  bo:{
-    name:'職種別 生成AI活用研修 バックオフィス編',
-    short:'バックオフィス編',
-    icon:'🖥️',
-    color:'#C2410C',
-    bg:'#FFF7ED',
-    sess:{
-      1:{title:'①AI基礎',        chip:'①AI基礎', genre:'AI活用基礎',       shared:true,topics:['生成AIを業務で使うための基本理解','AI活用時のリスク管理と情報の扱い方','Geminiを使った業務効率化の基本操作','画像生成AIを使ったビジュアル作成の基本']},
-      2:{title:'②情報収集・整理', chip:'②情報整理',genre:'業務情報の整理',    shared:true,topics:['業務に必要な情報をAIで集める方法','収集した情報を要点・課題・打ち手に整理する方法','目的に合わせた文章・メール・案内文の作成','AIで整理した情報をチームで活用するテンプレート作成']},
-      3:{title:'③資料作成',       chip:'③資料作成',genre:'資料・提案素材の生成',shared:true,topics:['業務資料に使える画像・図解・バナー案の作成','ドキュメントのたたき台をAIで作成する方法','スライド資料の構成・見出し・流れを作成する方法','目的に合わせた資料をその場で作成する実践ワーク']},
-      4:{title:'④BO実務',       chip:'④BO実務', genre:'バックオフィス実務活用', topics:['規程案・業務マニュアルをAIで作成する方法','議事録からToDo・論点・決定事項を整理する','社内問い合わせ対応に使えるFAQを作成する','自社業務に合わせた社内ナレッジ整理ワーク']},
-      5:{title:'⑤BO WF',        chip:'⑤BO WF',  genre:'事務業務のAI化',       topics:['定型業務・繰り返し業務を洗い出す方法','AIで事務作業を効率化するプロンプト設計','バックオフィス業務のAI活用フロー設計','明日から使えるバックオフィスAI活用ワークフローの完成']},
-    }
+function renderCourses(){
+  $('courses').innerHTML=Object.keys(CN).map(k=>`<button class="cbtn" data-c="${k}">${CN[k]}</button>`).join('');
+  document.querySelectorAll('.cbtn').forEach(b=>b.onclick=()=>{
+    st.course=b.dataset.c;st.sel={1:null,2:null,3:null,4:null,5:null};
+    document.querySelectorAll('.cbtn').forEach(x=>x.classList.toggle('on',x===b));
+    renderSessions();$('selWrap').classList.remove('hide');$('tray').classList.remove('hide');$('result').classList.add('hide');update();
+  });
+}
+function renderSessions(){
+  const opt=D.opt[st.course],th=D.theme[st.course];
+  let h='';
+  for(let n=1;n<=5;n++){
+    h+=`<div class="sblock"><div class="shead"><span class="b s${n}">${CIR[n-1]}</span>${th[n]}</div><div class="chips" data-n="${n}">`+
+       opt[n].map(o=>`<button class="chip" data-n="${n}" data-d="${o.date}"><b>${md(o.date)}(${o.wd})</b><span class="t">${o.time}</span></button>`).join('')+`</div></div>`;
   }
+  $('sessions').innerHTML=h;
+  document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+    const n=+c.dataset.n; st.sel[n]=c.dataset.d;
+    document.querySelectorAll(`.chip[data-n="${n}"]`).forEach(x=>x.classList.toggle('on',x===c));
+    update();
+  });
+}
+function update(){
+  const opt=st.course?D.opt[st.course]:null;
+  // slots
+  let slots='';
+  for(let n=1;n<=5;n++){
+    const d=st.sel[n];
+    if(d){const o=opt[n].find(x=>x.date===d);slots+=`<div class="slot"><span class="n b s${n}" style="margin:0 auto;display:inline-flex">${CIR[n-1]}</span><div class="d">${md(d)}</div><div class="tm">${o.time.split('〜')[0]}〜</div></div>`;}
+    else slots+=`<div class="slot"><span class="b s${n}" style="margin:0 auto;display:inline-flex;opacity:.5">${CIR[n-1]}</span><div class="d e">—</div></div>`;
+  }
+  $('slots').innerHTML=slots;
+  const picked=Object.values(st.sel).filter(Boolean);
+  const all=picked.length===5;
+  let okSpan=false;
+  if(all){
+    const ds=[st.sel[1],st.sel[2],st.sel[3],st.sel[4],st.sel[5]].map(s=>new Date(s));
+    const first=new Date(Math.min(...ds)),last=new Date(Math.max(...ds));
+    okSpan=last<=addMonths(first,2);
+    $('spaninfo').textContent=md(first.toISOString().slice(0,10))+' 〜 '+md(last.toISOString().slice(0,10));
+    $('tot').textContent='全5回／計10.0時間';
+  }else{$('spaninfo').textContent='';$('tot').textContent=picked.length+'/5 選択';}
+  const st_el=$('status');
+  if(!all){st_el.className='status wait';st_el.textContent=picked.length+'/5 選択中';}
+  else if(!okSpan){st_el.className='status ng';st_el.textContent='⚠ 2ヶ月を超えています';}
+  else{st_el.className='status ok';st_el.textContent='✓ 2ヶ月以内 OK';}
+  const em=$('errmsg');
+  if(all&&!okSpan){em.className='errmsg';em.textContent='⚠ 全日程を2ヶ月以内に収めてください（最も早い回から2ヶ月以内）。送信できません。';}
+  else{em.className='errmsg hide';}
+  const mailVal=$('f_mail').value;const mailOk=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailVal);$('mailErr').style.display=(mailVal&&!mailOk)?'block':'none';
+  const form=$('f_comp').value&&$('f_name').value&&$('f_kana').value&&mailOk;
+  $('submit').disabled=!(all&&okSpan&&form);
+}
+['f_comp','f_name','f_kana','f_mail'].forEach(id=>$(id).addEventListener('input',update));
+$('f_mail').addEventListener('input',function(){var v=this.value.replace(/[^\x21-\x7e]/g,'');if(v!==this.value)this.value=v;update();});
+function buildRows_(){
+  const opt=D.opt[st.course],th=D.theme[st.course];
+  var rows='';for(let n=1;n<=5;n++){const o=opt[n].find(x=>x.date===st.sel[n]);rows+=`<tr><td><b>${CIR[n-1]}</b> ${th[n]}</td><td>${md(o.date)}</td><td>${o.time}</td><td>${ddl(o.date)}まで</td></tr>`;}
+  const labels=[1,2,3,4,5].map(n=>{const o=opt[n].find(x=>x.date===st.sel[n]);return md(o.date)+'('+o.wd+') '+o.time+' '+th[n];});
+  const ddls=[1,2,3,4,5].map(n=>ddl(st.sel[n]));
+  const sess=[1,2,3,4,5].map(n=>{const o=opt[n].find(x=>x.date===st.sel[n]);return {n:n,date:o.date,wd:o.wd,time:o.time,theme:th[n],deadline:ddl(o.date)};});
+  return {rows:rows,labels:labels,ddls:ddls,sessions:sess};
+}
+function infoLine_(){ return `${$('f_comp').value}／<b>${$('f_name').value}</b> 様<br>${CN[st.course]}（全5回・計10.0時間／2ヶ月以内）`; }
+
+$('submit').onclick=()=>{
+  const r=buildRows_();
+  $('result').innerHTML=`<div class="done" style="background:#eef0ff;border-color:#cdd3ff">
+   <h2 style="color:#3c3489">この内容でよろしいですか？</h2>
+   <div style="font-size:12.5px">${infoLine_()}</div>
+   <table><tr><td>研修内容</td><td>日付</td><td>時間</td><td>変更締切</td></tr>${r.rows}</table>
+   <div style="font-size:12px">各回のZoom URLは <b>${$('f_mail').value}</b> 宛にお送りします。</div>
+   <div style="font-size:11.5px;margin-top:8px;background:#fff8e6;border:1px solid #f0d98a;border-radius:8px;padding:9px 11px;color:#7a5c00">⚠ まだ送信されていません。内容をご確認のうえ、下の「確定して申込む」を押してください。</div>
+   <div style="display:flex;gap:8px;margin-top:12px">
+     <button class="sub" style="background:#9a9aa3;flex:1" onclick="backToForm()">← 修正する</button>
+     <button class="sub" id="confirmBtn" style="flex:2" onclick="doSubmit()">確定して申込む</button>
+   </div></div>`;
+  $('app').classList.add('hide');$('tray').classList.add('hide');$('result').classList.remove('hide');window.scrollTo({top:0,behavior:'smooth'});
 };
 
-// ── Holiday labels (祝日表示用) ───────────────────────────
-const HOLI_LABELS={
-  '2026-07-20':'海の日','2026-08-11':'山の日','2026-08-12':'振替休日',
-  '2026-09-21':'敬老の日','2026-09-22':'国民の休日','2026-09-23':'秋分の日',
-  '2026-10-12':'スポーツの日','2026-11-03':'文化の日','2026-11-23':'勤労感謝の日',
-  '2026-12-23':'天皇誕生日',
+window.backToForm=function(){ $('result').classList.add('hide');$('app').classList.remove('hide');$('tray').classList.remove('hide');window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); };
+
+window.doSubmit=async function(){
+  var btn=$('confirmBtn'); if(btn&&btn.dataset.busy)return; if(btn){btn.dataset.busy='1';btn.disabled=true;btn.textContent='送信中…';}
+  const r=buildRows_();
+  try{
+    const res=await fetch(SB_FN,{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({company:$('f_comp').value,name:$('f_name').value,kana:$('f_kana').value,email:$('f_mail').value,course:st.course,course_label:CN[st.course],sessions:r.sessions})});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok||!data.ok){throw new Error(data.error||('HTTP '+res.status));}
+  }catch(e){
+    if(btn){btn.dataset.busy='';btn.disabled=false;btn.textContent='確定して申込む';}
+    var box=document.querySelector('#result .done');
+    if(box){var old=box.querySelector('.errmsg');if(old)old.remove();var eb=document.createElement('div');eb.className='errmsg';eb.style.marginTop='12px';eb.textContent='⚠ 送信に失敗しました。通信環境をご確認のうえ、もう一度お試しください。（'+(e&&e.message?e.message:'error')+'）';box.appendChild(eb);}
+    else{alert('送信に失敗しました。もう一度お試しください。');}
+    return;
+  }
+  $('result').innerHTML=`<div class="done"><h2>✓ お申込みを受け付けました</h2>
+   <div style="font-size:12.5px">${infoLine_()}</div>
+   <table><tr><td>研修内容</td><td>日付</td><td>時間</td><td>変更締切</td></tr>${r.rows}</table>
+   <div style="font-size:12px">各回のZoom URLは <b>${$('f_mail').value}</b> 宛にお送りします。</div>
+   <div style="font-size:11.5px;margin-top:8px;background:#fff8e6;border:1px solid #f0d98a;border-radius:8px;padding:9px 11px;color:#7a5c00">📌 受講日の変更は<b>受講日の10日前まで</b>であれば可能です。それ以降は変更不可です。各回の<b>変更締切</b>までに <b>support@aicrew.jp</b>（研修サポート事務局）へご連絡ください。</div>
+   <button class="sub" style="margin-top:12px;background:#534ab7" onclick="window.print()">この画面を保存する（PDF）</button><button class="sub" style="margin-top:8px;background:#1a1a1a" onclick="location.reload()">別の受講者を登録する</button></div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
 };
-const OBON_SET=new Set(['2026-08-13','2026-08-14','2026-08-15','2026-08-16']);
-const MONTHS=[[2026,7],[2026,8],[2026,9],[2026,10],[2026,11],[2026,12]];
-const WD=['日','月','火','水','木','金','土'];
 
-// ── Date helpers ──────────────────────────────────────────
-function pad(n){return String(n).padStart(2,'0')}
-function ds(y,m,d){return `${y}-${pad(m)}-${pad(d)}`}
-
-// ── Confirmed schedule (PDF確定日程：2026年7月〜12月) ───────
-// 各イベント: {d:日付, s:セッション番号①〜⑤, t:時間}
-// ※ 配布PDFの確定スケジュールをそのまま反映（自動生成ではありません）
-P.ai.evs=[{d:'2026-07-15',s:1,t:'14:00〜16:00'},{d:'2026-07-16',s:2,t:'14:00〜16:00'},{d:'2026-07-17',s:3,t:'14:00〜16:00'},{d:'2026-07-21',s:4,t:'14:00〜16:00'},{d:'2026-07-27',s:5,t:'14:00〜16:00'},{d:'2026-08-04',s:1,t:'11:00〜13:00'},{d:'2026-08-05',s:2,t:'11:00〜13:00'},{d:'2026-08-06',s:3,t:'11:00〜13:00'},{d:'2026-08-07',s:4,t:'11:00〜13:00'},{d:'2026-08-10',s:5,t:'11:00〜13:00'},{d:'2026-08-17',s:1,t:'14:00〜16:00'},{d:'2026-08-18',s:2,t:'14:00〜16:00'},{d:'2026-08-19',s:3,t:'14:00〜16:00'},{d:'2026-08-20',s:4,t:'14:00〜16:00'},{d:'2026-08-21',s:5,t:'14:00〜16:00'},{d:'2026-09-07',s:1,t:'11:00〜13:00'},{d:'2026-09-08',s:2,t:'11:00〜13:00'},{d:'2026-09-09',s:3,t:'11:00〜13:00'},{d:'2026-09-10',s:4,t:'11:00〜13:00'},{d:'2026-09-11',s:5,t:'11:00〜13:00'},{d:'2026-09-15',s:1,t:'14:00〜16:00'},{d:'2026-09-16',s:2,t:'14:00〜16:00'},{d:'2026-09-17',s:3,t:'14:00〜16:00'},{d:'2026-09-18',s:4,t:'14:00〜16:00'},{d:'2026-09-28',s:5,t:'14:00〜16:00'},{d:'2026-10-06',s:1,t:'11:00〜13:00'},{d:'2026-10-07',s:2,t:'11:00〜13:00'},{d:'2026-10-08',s:3,t:'11:00〜13:00'},{d:'2026-10-09',s:4,t:'11:00〜13:00'},{d:'2026-10-13',s:5,t:'11:00〜13:00'},{d:'2026-10-15',s:1,t:'14:00〜16:00'},{d:'2026-10-16',s:2,t:'14:00〜16:00'},{d:'2026-10-19',s:3,t:'14:00〜16:00'},{d:'2026-10-20',s:4,t:'14:00〜16:00'},{d:'2026-10-21',s:5,t:'14:00〜16:00'},{d:'2026-11-02',s:1,t:'11:00〜13:00'},{d:'2026-11-05',s:2,t:'11:00〜13:00'},{d:'2026-11-06',s:3,t:'11:00〜13:00'},{d:'2026-11-10',s:4,t:'11:00〜13:00'},{d:'2026-11-11',s:5,t:'11:00〜13:00'},{d:'2026-11-13',s:1,t:'14:00〜16:00'},{d:'2026-11-16',s:2,t:'14:00〜16:00'},{d:'2026-11-17',s:3,t:'14:00〜16:00'},{d:'2026-11-18',s:4,t:'14:00〜16:00'},{d:'2026-11-19',s:5,t:'14:00〜16:00'},{d:'2026-12-01',s:1,t:'11:00〜13:00'},{d:'2026-12-02',s:2,t:'11:00〜13:00'},{d:'2026-12-03',s:3,t:'11:00〜13:00'},{d:'2026-12-04',s:4,t:'11:00〜13:00'},{d:'2026-12-07',s:5,t:'11:00〜13:00'},{d:'2026-12-14',s:1,t:'14:00〜16:00'},{d:'2026-12-15',s:2,t:'14:00〜16:00'},{d:'2026-12-16',s:3,t:'14:00〜16:00'},{d:'2026-12-17',s:4,t:'14:00〜16:00'},{d:'2026-12-18',s:5,t:'14:00〜16:00'}];
-
-P.sales.evs=[{d:'2026-07-15',s:1,t:'14:00〜16:00'},{d:'2026-07-16',s:2,t:'14:00〜16:00'},{d:'2026-07-17',s:3,t:'14:00〜16:00'},{d:'2026-07-22',s:4,t:'14:00〜16:00'},{d:'2026-07-23',s:5,t:'11:00〜13:00'},{d:'2026-08-03',s:1,t:'11:30〜13:30'},{d:'2026-08-05',s:2,t:'11:00〜13:00'},{d:'2026-08-06',s:3,t:'11:00〜13:00'},{d:'2026-08-07',s:4,t:'11:00〜13:00'},{d:'2026-08-17',s:5,t:'14:00〜16:00'},{d:'2026-08-21',s:1,t:'14:00〜16:00'},{d:'2026-08-24',s:2,t:'11:30〜13:30'},{d:'2026-08-25',s:3,t:'14:00〜16:00'},{d:'2026-08-26',s:4,t:'11:00〜13:00'},{d:'2026-08-27',s:5,t:'14:00〜16:00'},{d:'2026-09-01',s:1,t:'11:00〜13:00'},{d:'2026-09-02',s:2,t:'11:00〜13:00'},{d:'2026-09-03',s:3,t:'11:00〜13:00'},{d:'2026-09-04',s:4,t:'11:00〜13:00'},{d:'2026-09-07',s:5,t:'11:00〜13:00'},{d:'2026-09-16',s:1,t:'14:00〜16:00'},{d:'2026-09-17',s:2,t:'14:00〜16:00'},{d:'2026-09-18',s:3,t:'14:00〜16:00'},{d:'2026-09-24',s:4,t:'14:00〜16:00'},{d:'2026-09-25',s:5,t:'14:00〜16:00'},{d:'2026-10-05',s:1,t:'11:00〜13:00'},{d:'2026-10-06',s:2,t:'11:00〜13:00'},{d:'2026-10-07',s:3,t:'11:00〜13:00'},{d:'2026-10-08',s:4,t:'11:00〜13:00'},{d:'2026-10-09',s:5,t:'11:00〜13:00'},{d:'2026-10-15',s:1,t:'14:00〜16:00'},{d:'2026-10-16',s:2,t:'14:00〜16:00'},{d:'2026-10-19',s:3,t:'14:00〜16:00'},{d:'2026-10-20',s:4,t:'14:00〜16:00'},{d:'2026-10-21',s:5,t:'14:00〜16:00'},{d:'2026-11-04',s:1,t:'11:00〜13:00'},{d:'2026-11-05',s:2,t:'11:00〜13:00'},{d:'2026-11-06',s:3,t:'11:00〜13:00'},{d:'2026-11-09',s:4,t:'11:00〜13:00'},{d:'2026-11-10',s:5,t:'11:00〜13:00'},{d:'2026-11-16',s:1,t:'14:00〜16:00'},{d:'2026-11-17',s:2,t:'14:00〜16:00'},{d:'2026-11-18',s:3,t:'14:00〜16:00'},{d:'2026-11-19',s:4,t:'14:00〜16:00'},{d:'2026-11-20',s:5,t:'14:00〜16:00'},{d:'2026-12-03',s:1,t:'11:00〜13:00'},{d:'2026-12-04',s:2,t:'11:00〜13:00'},{d:'2026-12-07',s:3,t:'11:00〜13:00'},{d:'2026-12-08',s:4,t:'11:00〜13:00'},{d:'2026-12-09',s:5,t:'11:00〜13:00'},{d:'2026-12-15',s:1,t:'14:00〜16:00'},{d:'2026-12-16',s:2,t:'14:00〜16:00'},{d:'2026-12-17',s:3,t:'14:00〜16:00'},{d:'2026-12-18',s:4,t:'14:00〜16:00'},{d:'2026-12-21',s:5,t:'14:00〜16:00'}];
-
-P.bo.evs=[{d:'2026-07-15',s:1,t:'14:00〜16:00'},{d:'2026-07-16',s:2,t:'14:00〜16:00'},{d:'2026-07-17',s:3,t:'14:00〜16:00'},{d:'2026-07-27',s:4,t:'14:00〜16:00'},{d:'2026-07-29',s:5,t:'14:00〜16:00'},{d:'2026-08-03',s:1,t:'11:30〜13:30'},{d:'2026-08-05',s:2,t:'11:00〜13:00'},{d:'2026-08-06',s:3,t:'11:00〜13:00'},{d:'2026-08-19',s:4,t:'14:00〜16:00'},{d:'2026-08-20',s:5,t:'14:00〜16:00'},{d:'2026-08-21',s:1,t:'14:00〜16:00'},{d:'2026-08-24',s:2,t:'11:30〜13:30'},{d:'2026-08-25',s:3,t:'14:00〜16:00'},{d:'2026-08-28',s:4,t:'14:00〜16:00'},{d:'2026-08-31',s:5,t:'11:30〜13:30'},{d:'2026-09-01',s:1,t:'11:00〜13:00'},{d:'2026-09-02',s:2,t:'11:00〜13:00'},{d:'2026-09-03',s:3,t:'11:00〜13:00'},{d:'2026-09-08',s:4,t:'11:00〜13:00'},{d:'2026-09-09',s:5,t:'11:00〜13:00'},{d:'2026-09-16',s:1,t:'14:00〜16:00'},{d:'2026-09-17',s:2,t:'14:00〜16:00'},{d:'2026-09-18',s:3,t:'14:00〜16:00'},{d:'2026-09-28',s:4,t:'14:00〜16:00'},{d:'2026-09-29',s:5,t:'14:00〜16:00'},{d:'2026-10-01',s:1,t:'11:00〜13:00'},{d:'2026-10-02',s:2,t:'11:00〜13:00'},{d:'2026-10-05',s:3,t:'11:00〜13:00'},{d:'2026-10-06',s:4,t:'11:00〜13:00'},{d:'2026-10-07',s:5,t:'11:00〜13:00'},{d:'2026-10-19',s:1,t:'14:00〜16:00'},{d:'2026-10-20',s:2,t:'14:00〜16:00'},{d:'2026-10-21',s:3,t:'14:00〜16:00'},{d:'2026-10-22',s:4,t:'14:00〜16:00'},{d:'2026-10-23',s:5,t:'14:00〜16:00'},{d:'2026-11-02',s:1,t:'11:00〜13:00'},{d:'2026-11-04',s:2,t:'11:00〜13:00'},{d:'2026-11-05',s:3,t:'11:00〜13:00'},{d:'2026-11-06',s:4,t:'11:00〜13:00'},{d:'2026-11-09',s:5,t:'11:00〜13:00'},{d:'2026-11-19',s:1,t:'14:00〜16:00'},{d:'2026-11-20',s:2,t:'14:00〜16:00'},{d:'2026-11-24',s:3,t:'14:00〜16:00'},{d:'2026-11-25',s:4,t:'14:00〜16:00'},{d:'2026-11-26',s:5,t:'14:00〜16:00'},{d:'2026-12-01',s:1,t:'11:00〜13:00'},{d:'2026-12-02',s:2,t:'11:00〜13:00'},{d:'2026-12-03',s:3,t:'11:00〜13:00'},{d:'2026-12-04',s:4,t:'11:00〜13:00'},{d:'2026-12-07',s:5,t:'11:00〜13:00'},{d:'2026-12-16',s:1,t:'14:00〜16:00'},{d:'2026-12-17',s:2,t:'14:00〜16:00'},{d:'2026-12-18',s:3,t:'14:00〜16:00'},{d:'2026-12-21',s:4,t:'14:00〜16:00'},{d:'2026-12-22',s:5,t:'14:00〜16:00'}];
-
-// ── State ─────────────────────────────────────────────────
-let curP='ai',curS=null;
-
-// ── Init ──────────────────────────────────────────────────
-function init(){rTabs();rCards();rCals()}
-
-// Program tabs
-function rTabs(){
-  document.getElementById('progBar').innerHTML=
-    Object.entries(P).map(([k,v])=>`
-      <button class="ptab ${k===curP?'on':''}"
-        style="--tc:${v.color};--bg:${v.bg}"
-        onclick="sw('${k}')">
-        <span class="ptab-icon">${v.icon}</span>
-        <span>
-          <div class="ptab-name">${v.short}</div>
-          <div class="ptab-sub">${k==='ai'?'AI動画・コンテンツ制作':k==='sales'?'職種別・営業':'職種別・バックオフィス'}</div>
-        </span>
-      </button>`
-    ).join('');
-}
-
-function sw(k){curP=k;curS=null;rTabs();rCards();rCals()}
-
-// Session cards
-function rCards(){
-  const p=P[curP];
-  document.getElementById('scGrid').innerHTML=
-    Object.entries(p.sess).map(([n,s])=>{
-      const ni=+n,c=C[ni],on=curS===ni;
-      return `<div class="sc ${on?'on':''}" style="--cd:${c.d};${on?`border-color:${c.d}`:''}" onclick="togS(${ni})">
-        <div class="sc-n" style="background:${c.l};color:${c.t}">${ni}</div>
-        <div class="sc-info">
-          <div class="stl" style="color:${c.t}">${s.title}</div>
-          <div class="sgn">${s.genre}</div>
-          ${s.shared?'<span class="sh-tag">★ 営業・BO共通</span>':''}
-        </div>
-      </div>`;
-    }).join('');
-}
-
-function togS(n){curS=curS===n?null:n;rCards();rCals()}
-
-// Calendars
-function rCals(){
-  const p=P[curP];
-  const em={};
-  for(const ev of p.evs){
-    if(curS!==null&&ev.s!==curS)continue;
-    (em[ev.d]=em[ev.d]||[]).push(ev);
-  }
-  document.getElementById('calOuter').innerHTML=
-    MONTHS.map(([y,m])=>mkMonth(y,m,em,p)).join('');
-}
-
-function mkMonth(y,m,em,p){
-  const fd=new Date(y,m-1,1).getDay();
-  const days=new Date(y,m,0).getDate();
-  let cells='';
-  for(let i=0;i<fd;i++)cells+='<div class="day emp"></div>';
-  for(let d=1;d<=days;d++){
-    const str=ds(y,m,d),dow=new Date(y,m-1,d).getDay();
-    const isH=!!HOLI_LABELS[str],isO=OBON_SET.has(str);
-    const evs=em[str]||[];
-    let cls='day';
-    if(isH)cls+=' hol';else if(isO)cls+=' obn';
-    if(dow===0)cls+=' sun';else if(dow===6)cls+=' sat';
-    const note=isH?`<span class="hn">${HOLI_LABELS[str]}</span>`:isO?`<span class="on2">お盆</span>`:'';
-    const chips=evs.map(ev=>{
-      const c=C[ev.s],up=ev.t.startsWith('11');
-      return `<div class="chip" style="background:${up?c.l:c.d};color:${up?c.t:'#fff'}"
-        onclick="openM('${curP}',${ev.s},'${str}','${ev.t}')">${p.sess[ev.s].chip}</div>`;
-    }).join('');
-    cells+=`<div class="${cls}"><div class="dn">${d}${note}</div><div class="chips">${chips}</div></div>`;
-  }
-  const rem=(fd+days)%7;
-  if(rem)for(let i=0;i<7-rem;i++)cells+='<div class="day emp"></div>';
-  const pre=ds(y,m,1).slice(0,7);
-  const cnt=Object.entries(em).reduce((a,[k,v])=>a+(k.startsWith(pre)?v.length:0),0);
-  return `<div class="cc">
-    <div class="cc-hd"><h3>${y}年${m}月</h3><span class="ctag">${cnt?`全${cnt}コマ`:'休講'}</span></div>
-    <div class="wrow">${WD.map((w,i)=>`<div class="wd ${i===0?'s':i===6?'sa':''}">${w}</div>`).join('')}</div>
-    <div class="cbody">${cells}</div>
-  </div>`;
-}
-
-// Modal
-function openM(pk,sn,str,tm){
-  const p=P[pk],s=p.sess[sn],c=C[sn];
-  const[,mo,d]=str.split('-'),dow=WD[new Date(str).getDay()];
-  const b=document.getElementById('mbadge');
-  b.textContent=p.name;b.style.cssText=`background:${c.l};color:${c.t}`;
-  document.getElementById('mttl').textContent=s.title;
-  document.getElementById('mdate').textContent=`${+mo}月${+d}日（${dow}）`;
-  document.getElementById('mtime').textContent=tm;
-  document.getElementById('mgnr').textContent=s.genre;
-  document.getElementById('mlist').innerHTML=s.topics.map(t=>`<li>${t}</li>`).join('');
-  document.getElementById('snote').style.display=s.shared?'block':'none';
-  document.getElementById('mwrap').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeM(){document.getElementById('mwrap').classList.remove('open');document.body.style.overflow='';}
-function bgClick(e){if(e.target===document.getElementById('mwrap'))closeM();}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM();});
-init();
-</script>
-</body>
-</html>
+renderCourses();
+</script></body></html>
