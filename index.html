@@ -41,6 +41,16 @@ header h1{font-size:18px;font-weight:700}header p{font-size:11.5px;color:#bdbdbd
 .done{background:#f0fbf6;border:1px solid #bfe6cf;border-radius:12px;padding:18px}
 .done h2{color:#0f6e56;font-size:16px;margin-bottom:8px}.done table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px}.done td{border:1px solid #d7ece2;padding:5px 8px}
 .policy{background:#fff8e6;border:1px solid #f0d98a;border-radius:10px;padding:10px 12px;font-size:11.5px;color:#7a5c00;margin:14px 0 2px;line-height:1.5}.policy b{color:#5c4500}.errmsg{background:#fdecec;color:#c0392b;border:1px solid #f3c9c9;border-radius:8px;padding:9px 10px;font-size:12px;font-weight:700;margin-top:8px;text-align:center}.note{font-size:10.5px;color:#999;margin-top:8px}.hide{display:none}
+.viewtabs{display:flex;gap:6px;margin:0 0 10px}.viewtabs button{flex:1;border:1.5px solid #ddd;background:#fff;border-radius:8px;padding:8px;font-size:12.5px;font-weight:700;color:#555;cursor:pointer;font-family:inherit}.viewtabs button.on{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+.cal-legend{display:flex;flex-wrap:wrap;gap:8px 12px;margin:2px 2px 8px;font-size:11px;color:#444}.cal-leg{display:flex;align-items:center;gap:4px}
+.cal-note{font-size:10.5px;color:#999;margin:0 2px 10px}
+.cal-month{background:#fff;border:1px solid #e6e6e9;border-radius:12px;padding:10px;margin-bottom:12px}.cal-mh{font-weight:700;font-size:13px;margin-bottom:6px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-wd{text-align:center;font-size:10px;color:#888;padding:2px 0}.cal-wd.sun{color:#c0392b}.cal-wd.sat{color:#2563eb}
+.cal-cell{min-height:44px;border:1px solid #f0f0f2;border-radius:6px;padding:2px 2px 3px}.cal-cell.empty{border:none;background:transparent}.cal-cell.has{background:#fafcff;border-color:#e3eefb}
+.cal-d{font-size:10px;color:#777;line-height:1.2}
+.cal-ev{display:flex;align-items:center;gap:2px;margin-top:1px}.cal-ev .b{width:15px;height:15px;font-size:9px;border-radius:4px}.cal-t{font-size:8.5px;color:#555}
+.cal-ev.sel{outline:2px solid #1a1a1a;outline-offset:1px;border-radius:5px}
 @media print{.sub{display:none!important}.step,.policy,#app,#tray{display:none!important}body{background:#fff}.done{box-shadow:none;border:1px solid #cdd9d0}header{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style></head><body><div class="wrap">
 <header><h1>aicrew 生成AI研修｜受講者登録</h1><p>①〜⑤の受講日をそれぞれ選んでください（順不同・全日程を2ヶ月以内に受講いただきます）</p></header>
@@ -50,7 +60,9 @@ header h1{font-size:18px;font-weight:700}header p{font-size:11.5px;color:#bdbdbd
 <div class="courses" id="courses"></div>
 <div id="selWrap" class="hide">
 <div class="step">STEP 2 ／ <b>①〜⑤の受講日を1つずつ選ぶ（順番は自由）</b></div>
+<div class="viewtabs"><button data-v="list" class="on">リストで選ぶ</button><button data-v="cal">📅 カレンダーで見る</button></div>
 <div id="sessions"></div>
+<div id="calview" class="hide"></div>
 <div class="step">STEP 3 ／ <b>受講者情報</b></div>
 <div class="form">
 <div class="fr"><label>会社名<span class="req">必須</span></label><input id="f_comp" placeholder="株式会社◯◯"></div>
@@ -105,6 +117,39 @@ function renderSessions(){
     document.querySelectorAll(`.chip[data-n="${n}"]`).forEach(x=>x.classList.toggle('on',x===c));
     update();
   });
+  setView('list');
+}
+function calMonthsFor(course){
+  const opt=D.opt[course],map={},ms=new Set();
+  for(let n=1;n<=5;n++)opt[n].forEach(o=>{(map[o.date]=map[o.date]||[]).push({n:n,time:o.time});ms.add(o.date.slice(0,7));});
+  return {map:map,months:[...ms].sort()};
+}
+function renderCalendar(){
+  if(!st.course){$('calview').innerHTML='';return;}
+  const th=D.theme[st.course],r=calMonthsFor(st.course),WD=['日','月','火','水','木','金','土'];
+  let h='<div class="cal-legend">'+[1,2,3,4,5].map(n=>`<span class="cal-leg"><span class="b s${n}">${CIR[n-1]}</span>${th[n]}</span>`).join('')+'</div>';
+  h+='<div class="cal-note">※ 日程の選択は「リストで選ぶ」タブから行ってください（選んだ回は枠で表示されます）</div>';
+  for(const ym of r.months){
+    const y=+ym.slice(0,4),m=+ym.slice(5,7);
+    const first=new Date(Date.UTC(y,m-1,1)).getUTCDay(),days=new Date(Date.UTC(y,m,0)).getUTCDate();
+    h+=`<div class="cal-month"><div class="cal-mh">${y}年 ${m}月</div><div class="cal-grid">`;
+    h+=WD.map((w,i)=>`<div class="cal-wd${i===0?' sun':i===6?' sat':''}">${w}</div>`).join('');
+    for(let i=0;i<first;i++)h+='<div class="cal-cell empty"></div>';
+    for(let d=1;d<=days;d++){
+      const ds=ym+'-'+String(d).padStart(2,'0'),evs=r.map[ds];
+      let inner=`<div class="cal-d">${d}</div>`;
+      if(evs)inner+=evs.map(e=>`<div class="cal-ev${st.sel[e.n]===ds?' sel':''}"><span class="b s${e.n}">${CIR[e.n-1]}</span><span class="cal-t">${e.time.split('〜')[0]}</span></div>`).join('');
+      h+=`<div class="cal-cell${evs?' has':''}">${inner}</div>`;
+    }
+    h+='</div></div>';
+  }
+  $('calview').innerHTML=h;
+}
+function setView(v){
+  document.querySelectorAll('.viewtabs button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+  $('sessions').classList.toggle('hide',v!=='list');
+  $('calview').classList.toggle('hide',v!=='cal');
+  if(v==='cal')renderCalendar();
 }
 function update(){
   const opt=st.course?D.opt[st.course]:null;
@@ -190,4 +235,5 @@ window.doSubmit=async function(){
 };
 
 renderCourses();
+document.querySelectorAll('.viewtabs button').forEach(b=>b.onclick=()=>setView(b.dataset.v));
 </script></body></html>
