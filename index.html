@@ -58,7 +58,7 @@ header h1{font-size:18px;font-weight:700}header p{font-size:11.5px;color:#bdbdbd
 </style></head><body><div class="wrap">
 <header><h1>aicrew 生成AI研修｜受講者登録</h1><p>①〜⑤の受講日をそれぞれ選んでください（順不同・全日程を2ヶ月以内に受講いただきます）</p></header>
 <div id="app">
-<div class="policy">📌 <b>受講日の変更について</b>：変更は<b style="color:#c0392b">受講日の10日前まで</b>であれば可能です。以降は変更不可。変更の際は研修サポート事務局 <b>support@aicrew.jp</b> へご連絡ください。</div>
+<div class="policy">📌 <b>受講日の変更について</b>：受講日の変更は<b style="color:#c0392b">10日前まで</b>であれば可能。それ以降は変更不可となります。変更の際は研修サポート事務局 <b>support@aicrew.jp</b> までご連絡ください。</div>
 <div class="step">STEP 1 ／ <b>コースを選ぶ</b></div>
 <div class="courses" id="courses"></div>
 <div id="selWrap" class="hide">
@@ -71,7 +71,7 @@ header h1{font-size:18px;font-weight:700}header p{font-size:11.5px;color:#bdbdbd
 <div class="form">
 <div class="fr"><label>会社名<span class="req">必須</span></label><input id="f_comp" placeholder="株式会社◯◯"></div>
 <div class="fr"><label>受講者氏名<span class="req">必須</span></label><div class="namerow"><input id="f_sei" placeholder="姓（山田）"><input id="f_mei" placeholder="名（太郎）"></div></div>
-<div class="fr"><label>ふりがな<span class="req">必須</span></label><div class="namerow"><input id="f_seik" placeholder="せい（やまだ）"><input id="f_meik" placeholder="めい（たろう）"></div></div>
+<div class="fr"><label>ふりがな<span class="req">必須</span></label><div class="namerow"><input id="f_seik" placeholder="やまだ"><input id="f_meik" placeholder="たろう"></div></div>
 <div class="fr"><label>メールアドレス<span class="req">必須</span></label><input id="f_mail" type="email" inputmode="email" placeholder="taro@example.co.jp"><div class="hint">日程・Zoom URLはこのアドレスに送ります（半角英数のみ・スペース不可）</div><div id="mailErr" class="hint" style="color:#c0392b;display:none">メールアドレスの形式を確認してください</div></div>
 
 </div>
@@ -243,7 +243,7 @@ window.doSubmit=async function(){
    <div style="font-size:12.5px">${infoLine_()}</div>
    <table><tr><td>研修内容</td><td>日付</td><td>時間</td><td>変更締切</td></tr>${r.rows}</table>
    <div style="font-size:12px">各回のZoom URLは <b>${$('f_mail').value}</b> 宛にお送りします。</div>
-   <div style="font-size:11.5px;margin-top:8px;background:#fff8e6;border:1px solid #f0d98a;border-radius:8px;padding:9px 11px;color:#7a5c00">📌 受講日の変更は<b style="color:#c0392b">受講日の10日前まで</b>であれば可能です。以降は変更不可。各回の<b>変更締切</b>までに <b>support@aicrew.jp</b>（研修サポート事務局）へご連絡ください。</div>
+   <div style="font-size:11.5px;margin-top:8px;background:#fff8e6;border:1px solid #f0d98a;border-radius:8px;padding:9px 11px;color:#7a5c00">📌 受講日の変更について：受講日の変更は<b style="color:#c0392b">10日前まで</b>であれば可能。それ以降は変更不可となります。変更の際は研修サポート事務局 <b>support@aicrew.jp</b> までご連絡ください。</div>
    <button class="sub" style="margin-top:12px;background:#534ab7" onclick="window.print()">この画面を保存する（PDF）</button><button class="sub" style="margin-top:8px;background:#1a1a1a" onclick="location.reload()">別の受講者を登録する</button></div>`;
   window.scrollTo({top:0,behavior:'smooth'});
 };
