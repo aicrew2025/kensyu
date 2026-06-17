@@ -1,59 +1,71 @@
 <!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>aicrew 生成AI研修 受講者登録</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:"Yu Gothic","Hiragino Kaku Gothic ProN",system-ui,sans-serif;background:#f4f4f6;color:#1a1a1a;line-height:1.55}
+body{font-family:"Yu Gothic","Hiragino Kaku Gothic ProN",system-ui,sans-serif;background:#f2f3f9;color:#1c1c28;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 .wrap{max-width:720px;margin:0 auto;padding:0 14px 220px}
-header{background:#1a1a1a;color:#fff;padding:20px 16px;border-radius:0 0 14px 14px;margin:0 -14px 16px}
-header h1{font-size:18px;font-weight:700}header p{font-size:11.5px;color:#bdbdbd;margin-top:3px}
-.step{font-size:12px;color:#666;margin:18px 2px 8px;font-weight:700}.step b{color:#1a1a1a}
-.courses{display:flex;gap:8px;flex-wrap:wrap}
-.cbtn{flex:1;min-width:130px;border:1.5px solid #ddd;background:#fff;border-radius:10px;padding:12px;font-size:13px;font-weight:700;cursor:pointer;color:#333}
-.cbtn.on{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
-.sblock{background:#fff;border:1px solid #e6e6e9;border-radius:12px;padding:12px 13px;margin-bottom:10px}
-.shead{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;margin-bottom:9px}
-.b{width:20px;height:20px;border-radius:6px;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+header{background:linear-gradient(135deg,#241d4a 0%,#473aa6 60%,#5b4bd6 100%);color:#fff;padding:24px 20px;border-radius:0 0 20px 20px;margin:0 -14px 18px;box-shadow:0 8px 24px rgba(50,36,120,.22)}
+header h1{font-size:19px;font-weight:700;letter-spacing:.02em}header p{font-size:11.5px;color:#d3ccf2;margin-top:5px;line-height:1.55}
+.step{font-size:11.5px;color:#8a8a99;margin:22px 2px 9px;font-weight:700;letter-spacing:.04em}.step b{color:#1c1c28}
+.courses{display:flex;gap:9px;flex-wrap:wrap}
+.cbtn{flex:1;min-width:130px;border:1.5px solid #e4e4ee;background:#fff;border-radius:13px;padding:14px 12px;font-size:13px;font-weight:700;cursor:pointer;color:#3a3a48;transition:transform .14s,box-shadow .14s,border-color .14s,color .14s;box-shadow:0 1px 2px rgba(20,20,40,.04)}
+.cbtn:hover{border-color:#b8aef0;color:#5b4bd6;transform:translateY(-1px);box-shadow:0 6px 16px rgba(91,75,214,.14)}
+.cbtn.on{background:linear-gradient(135deg,#5b4bd6,#7a5be0);color:#fff;border-color:transparent;box-shadow:0 6px 18px rgba(91,75,214,.36)}
+.sblock{background:#fff;border:1px solid #ececf3;border-radius:15px;padding:14px 15px;margin-bottom:11px;box-shadow:0 1px 2px rgba(20,20,40,.04),0 5px 18px rgba(20,20,40,.045)}
+.shead{display:flex;align-items:center;gap:9px;font-size:13.5px;font-weight:700;margin-bottom:10px}
+.b{width:21px;height:21px;border-radius:7px;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none}
 .s1{background:#ede9fe;color:#4c1d95}.s2{background:#fff3e8;color:#9a3412}.s3{background:#ecfdf5;color:#065f46}.s4{background:#fef3c7;color:#92400e}.s5{background:#dbeafe;color:#1e3a8a}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{border:1.5px solid #e0e0e4;background:#fafafa;border-radius:9px;padding:5px 9px;font-size:11.5px;cursor:pointer;text-align:center;line-height:1.25;min-width:62px}
-.chip:hover{border-color:#9b8cff}
-.chip .t{display:block;color:#888;font-size:9.5px}
-.chip.on{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
-.chip.on .t{color:#cfcfcf}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{border:1.5px solid #e6e6ee;background:#fafafb;border-radius:11px;padding:6px 10px;font-size:11.5px;cursor:pointer;text-align:center;line-height:1.25;min-width:64px;color:#3a3a48;transition:transform .12s,box-shadow .12s,border-color .12s,background .12s}
+.chip:hover{border-color:#9b8cff;background:#fff;transform:translateY(-1px);box-shadow:0 4px 12px rgba(91,75,214,.14)}
+.chip .t{display:block;color:#9a9aa8;font-size:9.5px}
+.chip.on{background:linear-gradient(135deg,#5b4bd6,#7a5be0);color:#fff;border-color:transparent;box-shadow:0 5px 14px rgba(91,75,214,.32)}
+.chip.on .t{color:#e2dbff}
 .chip.dim{opacity:.32;pointer-events:none}
 /* 下のタブ（自動反映） */
-#tray{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:2px solid #1a1a1a;box-shadow:0 -4px 18px rgba(0,0,0,.1);z-index:50}
-.tray-in{max-width:720px;margin:0 auto;padding:10px 16px}
-.tray-h{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:700;margin-bottom:6px}
-.status{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:20px}
-.ok{background:#e7f7ee;color:#0f6e56}.ng{background:#fdecec;color:#c0392b}.wait{background:#eee;color:#888}
-.slots{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
-.slot{border:1px solid #eee;border-radius:8px;padding:6px 4px;text-align:center;font-size:11px}
-.slot .n{font-size:11px;font-weight:700}.slot .d{font-size:12px;font-weight:700;margin-top:2px}.slot .e{color:#bbb}
-.slot .tm{font-size:9px;color:#888}
-.totline{font-size:11px;color:#555;margin-top:6px;display:flex;justify-content:space-between;align-items:center}
-.form{background:#fff;border:1px solid #e6e6e9;border-radius:12px;padding:16px;margin-top:6px}
-.fr{margin-bottom:12px}.fr label{display:block;font-size:12px;font-weight:700;margin-bottom:4px}.fr label .req{color:#c0392b;font-size:10px;margin-left:4px}
-.fr input,.fr select{width:100%;border:1.5px solid #ddd;border-radius:8px;padding:9px 10px;font-size:13px;font-family:inherit}
-.fr input:focus,.fr select:focus{outline:none;border-color:#534ab7}
-.namerow{display:flex;gap:8px}.namerow input{flex:1;min-width:0}
-.hint{font-size:10.5px;color:#999;margin-top:3px}
-.sub{width:100%;background:#534ab7;color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:700;cursor:pointer}
-.sub:disabled{background:#c5c5cf;cursor:not-allowed}
-.done{background:#f0fbf6;border:1px solid #bfe6cf;border-radius:12px;padding:18px}
-.done h2{color:#0f6e56;font-size:16px;margin-bottom:8px}.done table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px}.done td{border:1px solid #d7ece2;padding:5px 8px}
-.policy{background:#fff8e6;border:1px solid #f0d98a;border-radius:10px;padding:10px 12px;font-size:11.5px;color:#7a5c00;margin:14px 0 2px;line-height:1.5}.policy b{color:#5c4500}.errmsg{background:#fdecec;color:#c0392b;border:1px solid #f3c9c9;border-radius:8px;padding:9px 10px;font-size:12px;font-weight:700;margin-top:8px;text-align:center}.note{font-size:10.5px;color:#999;margin-top:8px}.hide{display:none}
-.resetbar{display:flex;justify-content:flex-end;margin:2px 0 0}.reset{background:none;border:1px solid #ddd;border-radius:20px;padding:4px 12px;font-size:11.5px;color:#666;cursor:pointer;font-family:inherit}.reset:hover{background:#f0f0f2;color:#333}
-#totop{position:fixed;right:14px;bottom:176px;z-index:60;border:none;background:#1a1a1a;color:#fff;padding:9px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.28);display:none;font-family:inherit}#totop.show{display:block}
-.viewtabs{display:flex;gap:6px;margin:0 0 10px}.viewtabs button{flex:1;border:1.5px solid #ddd;background:#fff;border-radius:8px;padding:8px;font-size:12.5px;font-weight:700;color:#555;cursor:pointer;font-family:inherit}.viewtabs button.on{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
-.cal-legend{display:flex;flex-wrap:wrap;gap:8px 12px;margin:2px 2px 8px;font-size:11px;color:#444}.cal-leg{display:flex;align-items:center;gap:4px}
-.cal-note{font-size:10.5px;color:#999;margin:0 2px 10px}
-.cal-month{background:#fff;border:1px solid #e6e6e9;border-radius:12px;padding:10px;margin-bottom:12px}.cal-mh{font-weight:700;font-size:13px;margin-bottom:6px}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
-.cal-wd{text-align:center;font-size:10px;color:#888;padding:2px 0}.cal-wd.sun{color:#c0392b}.cal-wd.sat{color:#2563eb}
-.cal-cell{min-height:44px;border:1px solid #f0f0f2;border-radius:6px;padding:2px 2px 3px}.cal-cell.empty{border:none;background:transparent}.cal-cell.has{background:#fafcff;border-color:#e3eefb}
-.cal-d{font-size:10px;color:#777;line-height:1.2}
+#tray{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:saturate(1.4) blur(8px);border-top:1px solid #e8e8f0;box-shadow:0 -8px 28px rgba(20,20,40,.1);z-index:50}
+.tray-in{max-width:720px;margin:0 auto;padding:11px 16px}
+.tray-h{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:700;margin-bottom:7px}
+.status{font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:20px}
+.ok{background:#e6f7ef;color:#0f7a5f}.ng{background:#fdecec;color:#d23b3b}.wait{background:#eeeef4;color:#8a8a99}
+.slots{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.slot{border:1px solid #ececf3;border-radius:11px;padding:7px 4px;text-align:center;font-size:11px;background:#fff;transition:border-color .12s}
+.slot .n{font-size:11px;font-weight:700}.slot .d{font-size:12px;font-weight:700;margin-top:3px}.slot .e{color:#c2c2cc}
+.slot .tm{font-size:9px;color:#9a9aa8}
+.totline{font-size:11px;color:#6b6b7b;margin-top:7px;display:flex;justify-content:space-between;align-items:center}
+.form{background:#fff;border:1px solid #ececf3;border-radius:15px;padding:18px;margin-top:6px;box-shadow:0 1px 2px rgba(20,20,40,.04),0 5px 18px rgba(20,20,40,.045)}
+.fr{margin-bottom:13px}.fr label{display:block;font-size:12px;font-weight:700;margin-bottom:5px}.fr label .req{color:#d23b3b;font-size:10px;margin-left:5px}
+.fr input,.fr select{width:100%;border:1.5px solid #e0e0ea;border-radius:10px;padding:10px 11px;font-size:13px;font-family:inherit;transition:border-color .14s,box-shadow .14s}
+.fr input:focus,.fr select:focus{outline:none;border-color:#5b4bd6;box-shadow:0 0 0 3px rgba(91,75,214,.13)}
+.namerow{display:flex;gap:9px}.namerow input{flex:1;min-width:0}
+.hint{font-size:10.5px;color:#9a9aa8;margin-top:4px}
+.sub{width:100%;background:linear-gradient(135deg,#5b4bd6,#7a5be0);color:#fff;border:none;border-radius:12px;padding:15px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(91,75,214,.32);transition:transform .14s,box-shadow .14s,filter .14s}
+.sub:hover{transform:translateY(-1px);filter:brightness(1.05);box-shadow:0 10px 24px rgba(91,75,214,.4)}
+.sub:disabled{background:#cacad6;cursor:not-allowed;box-shadow:none;transform:none;filter:none}
+.done{background:#f0fbf6;border:1px solid #bfe6cf;border-radius:15px;padding:20px;box-shadow:0 5px 18px rgba(20,80,50,.06)}
+.done h2{color:#0f7a5f;font-size:16px;margin-bottom:8px}.done table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px}.done td{border:1px solid #d7ece2;padding:6px 8px}
+.policy{background:#fff8e6;border:1px solid #f0d98a;border-radius:13px;padding:11px 13px;font-size:11.5px;color:#7a5c00;margin:14px 0 2px;line-height:1.55}.policy b{color:#5c4500}.errmsg{background:#fdecec;color:#d23b3b;border:1px solid #f3c9c9;border-radius:10px;padding:10px;font-size:12px;font-weight:700;margin-top:8px;text-align:center}.note{font-size:10.5px;color:#9a9aa8;margin-top:8px}.hide{display:none}
+.resetbar{display:flex;justify-content:flex-end;margin:2px 0 0}.reset{background:#fff;border:1px solid #e0e0ea;border-radius:20px;padding:5px 13px;font-size:11.5px;color:#6b6b7b;cursor:pointer;font-family:inherit;transition:background .12s,color .12s,border-color .12s}.reset:hover{background:#f3f3f8;color:#5b4bd6;border-color:#c8c0f0}
+#totop{position:fixed;right:14px;bottom:176px;z-index:60;border:none;background:linear-gradient(135deg,#5b4bd6,#7a5be0);color:#fff;padding:10px 15px;border-radius:22px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(91,75,214,.42);display:none;font-family:inherit;transition:transform .14s}
+#totop:hover{transform:translateY(-2px)}#totop.show{display:block}
+.viewtabs{display:flex;gap:7px;margin:0 0 11px}.viewtabs button{flex:1;border:1.5px solid #e4e4ee;background:#fff;border-radius:10px;padding:9px;font-size:12.5px;font-weight:700;color:#6b6b7b;cursor:pointer;font-family:inherit;transition:all .14s}.viewtabs button:hover{border-color:#b8aef0;color:#5b4bd6}.viewtabs button.on{background:#1f1f2e;color:#fff;border-color:#1f1f2e}
+.cal-legend{display:flex;flex-wrap:wrap;gap:8px 12px;margin:2px 2px 8px;font-size:11px;color:#555}.cal-leg{display:flex;align-items:center;gap:4px}
+.cal-note{font-size:10.5px;color:#9a9aa8;margin:0 2px 10px}
+.cal-month{background:#fff;border:1px solid #ececf3;border-radius:15px;padding:12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,20,40,.04),0 5px 18px rgba(20,20,40,.045)}.cal-mh{font-weight:700;font-size:13px;margin-bottom:7px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-wd{text-align:center;font-size:10px;color:#9a9aa8;padding:2px 0}.cal-wd.sun{color:#d23b3b}.cal-wd.sat{color:#2563eb}
+.cal-cell{min-height:46px;border:1px solid #f2f2f7;border-radius:8px;padding:2px 2px 3px}.cal-cell.empty{border:none;background:transparent}.cal-cell.has{background:#f7f6ff;border-color:#e4ddfb}
+.cal-d{font-size:10px;color:#888;line-height:1.2}
 .cal-ev{display:flex;align-items:center;gap:2px;margin-top:1px}.cal-ev .b{width:15px;height:15px;font-size:9px;border-radius:4px}.cal-t{font-size:8.5px;color:#555}
-.cal-ev.sel{outline:2px solid #1a1a1a;outline-offset:1px;border-radius:5px}
+.cal-ev.sel{outline:2px solid #5b4bd6;outline-offset:1px;border-radius:5px}
+.faq{background:#fff;border:1px solid #ececf3;border-radius:15px;padding:4px 16px;margin-top:16px;box-shadow:0 1px 2px rgba(20,20,40,.04),0 5px 18px rgba(20,20,40,.045)}
+.faq-h{font-size:13px;font-weight:700;padding:13px 2px 8px;color:#1c1c28;letter-spacing:.02em}
+.faq-item{border-top:1px solid #f2f2f7}
+.faq-q{width:100%;text-align:left;background:none;border:none;padding:12px 2px;font-size:12.5px;font-weight:700;color:#3a3a48;cursor:pointer;display:flex;justify-content:space-between;gap:10px;font-family:inherit;line-height:1.45;transition:color .12s}
+.faq-q:hover{color:#5b4bd6}
+.faq-q::after{content:'＋';color:#5b4bd6;font-weight:700;flex:none}
+.faq-item.open .faq-q::after{content:'－'}
+.faq-a{display:none;padding:0 2px 13px;font-size:12px;color:#5b5b6b;line-height:1.7}
+.faq-item.open .faq-a{display:block}
 @media print{.sub{display:none!important}.step,.policy,#app,#tray{display:none!important}body{background:#fff}.done{box-shadow:none;border:1px solid #cdd9d0}header{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style></head><body><div class="wrap">
 <header><h1>aicrew 生成AI研修｜受講者登録</h1><p>①〜⑤の受講日をそれぞれ選んでください（順不同・全日程を2ヶ月以内に受講いただきます）</p></header>
@@ -61,6 +73,16 @@ header h1{font-size:18px;font-weight:700}header p{font-size:11.5px;color:#bdbdbd
 <div class="policy">📌 <b>受講日の変更について</b>：受講日の変更は<b style="color:#c0392b">10日前まで</b>であれば可能。それ以降は変更不可となります。変更の際は研修サポート事務局 <b>support@aicrew.jp</b> までご連絡ください。</div>
 <div class="step">STEP 1 ／ <b>コースを選ぶ</b></div>
 <div class="courses" id="courses"></div>
+<div id="faqBox" class="faq">
+<div class="faq-h">❓ よくある質問</div>
+<div class="faq-item"><button class="faq-q" type="button">申込日から40日以降の日程しか選べないのはなぜ？</button><div class="faq-a">助成金申請の準備期間を確保するため、お申込日からおおむね40日先以降の日程のみ選択できます（それ以前はグレー表示で選べません）。</div></div>
+<div class="faq-item"><button class="faq-q" type="button">5回の受講日はどう選べばいい？</button><div class="faq-a">①〜⑤を1回ずつ、ご都合に合わせて自由な順番で選べます。ただし最も早い回から「2ヶ月以内」にすべて収めてください。</div></div>
+<div class="faq-item"><button class="faq-q" type="button">複数人で申し込めますか？</button><div class="faq-a">出席を個人単位で記録するため、受講者お一人ずつフォームからお申込みください。</div></div>
+<div class="faq-item"><button class="faq-q" type="button">当日はどうやって参加しますか？</button><div class="faq-a">各回ごとに登録メール宛へお送りする「ご自身専用のURL」から、お一人ずつご入室ください。カメラON・お名前表示でのご参加をお願いします。</div></div>
+<div class="faq-item"><button class="faq-q" type="button">受講日を変更したい／欠席しそうなときは？</button><div class="faq-a">受講日の変更は10日前まで可能です（研修サポート事務局 support@aicrew.jp へご連絡）。欠席・遅刻・早退があった回は助成金の対象外となる場合があります。</div></div>
+<div class="faq-item"><button class="faq-q" type="button">確認メールが届きません。</button><div class="faq-a">迷惑メールフォルダをご確認ください。見当たらない場合は、メールアドレスに誤りがある可能性があります。support@aicrew.jp までお問い合わせください。</div></div>
+<div class="faq-item"><button class="faq-q" type="button">研修内容について質問したい。</button><div class="faq-a">研修内容に関するご質問は support@aicrew.jp（研修サポート事務局）までお寄せください。担当より改めてご回答します。</div></div>
+</div>
 <div id="selWrap" class="hide">
 <div class="resetbar"><button id="resetBtn" class="reset" type="button">↺ 最初からやり直す</button></div>
 <div class="step">STEP 2 ／ <b>①〜⑤の受講日を1つずつ選ぶ（順番は自由）</b></div>
@@ -112,7 +134,7 @@ function renderCourses(){
     if(st.course===b.dataset.c){resetAll();return;}
     st.course=b.dataset.c;st.sel={1:null,2:null,3:null,4:null,5:null};
     document.querySelectorAll('.cbtn').forEach(x=>x.classList.toggle('on',x===b));
-    renderSessions();$('selWrap').classList.remove('hide');$('tray').classList.remove('hide');$('result').classList.add('hide');update();
+    renderSessions();$('selWrap').classList.remove('hide');$('faqBox').classList.add('hide');$('tray').classList.remove('hide');$('result').classList.add('hide');update();
   });
 }
 function renderSessions(){
@@ -159,7 +181,7 @@ function renderCalendar(){
 function resetAll(){
   st.course=null;st.sel={1:null,2:null,3:null,4:null,5:null};
   document.querySelectorAll('.cbtn').forEach(x=>x.classList.remove('on'));
-  $('selWrap').classList.add('hide');$('tray').classList.add('hide');$('result').classList.add('hide');$('app').classList.remove('hide');
+  $('selWrap').classList.add('hide');$('faqBox').classList.remove('hide');$('tray').classList.add('hide');$('result').classList.add('hide');$('app').classList.remove('hide');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function setView(v){
@@ -256,4 +278,5 @@ document.querySelectorAll('.viewtabs button').forEach(b=>b.onclick=()=>setView(b
 $('resetBtn').onclick=resetAll;
 $('totop').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
 window.addEventListener('scroll',()=>$('totop').classList.toggle('show',window.scrollY>300));
+document.querySelectorAll('#faqBox .faq-q').forEach(q=>q.onclick=()=>q.parentElement.classList.toggle('open'));
 </script></body></html>
