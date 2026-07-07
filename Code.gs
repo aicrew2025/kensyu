@@ -22,6 +22,9 @@ const VIEW_MONTHS = 2;                        // 録画の視聴期間（公開�
 const SB_REST = 'https://gfbedmzdgjpczpfadaft.supabase.co/rest/v1/registrations?select=id&limit=1';
 const SB_KEY = 'sb_publishable_ECc0koefc0NFUeXwyT2U1w_BW6KExj4';
 const SB_DASHBOARD = 'https://supabase.com/dashboard/project/gfbedmzdgjpczpfadaft';
+// 出席の自動記録（Meet監査ログ）
+const ATTLOG_SHEET = '_入室ログ';        // 入退室の生ログ（証憑・手動確認用）
+const ATTEND_MIN_MINUTES = 100;          // この分数以上の滞在で「出席」（2時間講義の目安。調整可）
 const CIR = ['①', '②', '③', '④', '⑤'];
 const COURSE_JP = { video: 'AI動画', sales: '営業', bo: 'BO' };
 
@@ -564,13 +567,125 @@ function keepAliveSupabase() {
   return ok ? 'alive: ' + detail : 'NG: ' + detail;
 }
 
-// 一度だけ実行：すべての自動処理トリガーをまとめて登録（リマインド／録画配信／期限失効／Supabase維持）
+// ---- 出席の自動記録（Meet監査ログ：誰が・どの会議に・何分いたか）----
+// 前提：このスクリプトの実行アカウント（support@）に、管理コンソールの「レポート」閲覧権限（管理者ロール）が必要。
+
+// Meetの会議コードを突合用に正規化（監査ログは「ABCDEFGHIJ」形式、URLは「abc-defg-hij」形式のため）
+function normMeetCode_(s) { return String(s || '').replace(/-/g, '').toLowerCase(); }
+
+// 監査ログ（call_ended）を取得し、{code|email: 滞在分} と生ログ配列を返す
+function fetchMeetAudit_() {
+  const start = new Date(Date.now() - 2 * 86400000).toISOString();  // 直近2日分
+  const agg = {}, raw = [];
+  let pageToken = '';
+  for (let page = 0; page < 5; page++) {
+    const url = 'https://admin.googleapis.com/admin/reports/v1/activity/users/all/applications/meet' +
+      '?eventName=call_ended&maxResults=1000&startTime=' + encodeURIComponent(start) +
+      (pageToken ? '&pageToken=' + encodeURIComponent(pageToken) : '');
+    const res = UrlFetchApp.fetch(url, {
+      headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() }, muteHttpExceptions: true
+    });
+    const code = res.getResponseCode();
+    if (code < 200 || code >= 300) throw new Error('reports_api ' + code + ': ' + res.getContentText().slice(0, 300));
+    const body = JSON.parse(res.getContentText());
+    (body.items || []).forEach(function (item) {
+      const when = item.id && item.id.time ? String(item.id.time) : '';
+      (item.events || []).forEach(function (ev) {
+        let mc = '', email = '', dur = 0, disp = '';
+        (ev.parameters || []).forEach(function (pm) {
+          if (pm.name === 'meeting_code') mc = pm.value || '';
+          if (pm.name === 'identifier') email = pm.value || '';
+          if (pm.name === 'display_name') disp = pm.value || '';
+          if (pm.name === 'duration_seconds') dur = Number(pm.intValue || pm.value || 0);
+        });
+        if (!mc) return;
+        const mins = Math.round(dur / 60);
+        raw.push({ time: when, code: mc, email: email, disp: disp, mins: mins });
+        if (email) {
+          const key = normMeetCode_(mc) + '|' + String(email).toLowerCase();
+          agg[key] = (agg[key] || 0) + mins;
+        }
+      });
+    });
+    pageToken = body.nextPageToken || '';
+    if (!pageToken) break;
+  }
+  return { agg: agg, raw: raw };
+}
+
+// 毎日22時トリガー：当日・前日の受講記録の「出席」列を監査ログから自動入力
+function markAttendance() {
+  const tz = 'Asia/Tokyo';
+  const days = [Utilities.formatDate(new Date(), tz, 'yyyy-MM-dd'),
+                Utilities.formatDate(new Date(Date.now() - 86400000), tz, 'yyyy-MM-dd')];
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const sh = ss.getSheetByName(DETAIL_SHEET);
+  if (!sh) return 'no detail sheet';
+  const data = sh.getDataRange().getValues();
+  // 対象行：日付が当日/前日 かつ 出席が空欄 or 「要確認」（ログ遅延に備えて再判定）
+  const targets = [];
+  for (let r = 1; r < data.length; r++) {
+    const dc = data[r][8];  // I列: 日付
+    const ds = (dc instanceof Date) ? Utilities.formatDate(dc, tz, 'yyyy-MM-dd') : String(dc).slice(0, 10);
+    if (days.indexOf(ds) < 0) continue;
+    const att = String(data[r][16] || '');  // Q列: 出席
+    if (att && att.indexOf('要確認') !== 0) continue;
+    const url = String(data[r][17] || '');  // R列: Meet URL
+    if (!url) continue;
+    targets.push({ row: r + 1, email: String(data[r][4] || '').toLowerCase(), code: normMeetCode_(meetCodeFromUrl_(url)), cur: att });
+  }
+  if (targets.length === 0) return 'no target rows';
+
+  let audit;
+  try {
+    audit = fetchMeetAudit_();
+  } catch (err) {
+    GmailApp.sendEmail(SUPPORT_EMAIL, '【出席自動記録】Meetの入室ログを取得できませんでした',
+      'エラー: ' + String(err) + '\n\n' +
+      'このスクリプトの実行アカウントに、Google Workspace 管理コンソールの「レポート」閲覧権限（管理者ロール）が付与されているかご確認ください。\n' +
+      '管理コンソール → アカウント → 管理者ロール で、レポートを閲覧できるロールを support@ のアカウントに割り当ててください。\n' +
+      'それまでの間、出席は従来どおり受講記録シートへの手入力でお願いします。', { name: FROM_NAME });
+    return 'audit fetch failed';
+  }
+
+  // 生ログを _入室ログ に追記（同じ日×会議×人は1行、証憑・手動確認用）
+  const logSh = ensureSheet_(ATTLOG_SHEET, ['日時', '会議コード', 'メール', '表示名', '滞在分']);
+  const logData = logSh.getDataRange().getValues();
+  const seen = {};
+  for (let r = 1; r < logData.length; r++) {
+    seen[String(logData[r][0]).slice(0, 10) + '|' + normMeetCode_(logData[r][1]) + '|' + String(logData[r][2] || logData[r][3]).toLowerCase()] = true;
+  }
+  audit.raw.forEach(function (e) {
+    const k = String(e.time).slice(0, 10) + '|' + normMeetCode_(e.code) + '|' + String(e.email || e.disp).toLowerCase();
+    if (seen[k]) return;
+    seen[k] = true;
+    logSh.appendRow([e.time, e.code, e.email, e.disp, e.mins]);
+  });
+
+  // 突合して出席列を更新
+  let marked = 0;
+  targets.forEach(function (t) {
+    if (!t.email || !t.code) return;
+    const mins = audit.agg[t.code + '|' + t.email] || 0;
+    let val = '';
+    if (mins >= ATTEND_MIN_MINUTES) val = '出席';
+    else if (mins > 0) val = '要確認(' + mins + '分)';
+    if (val && val !== t.cur) { sh.getRange(t.row, 17).setValue(val); marked++; }
+  });
+  return 'marked ' + marked + ' / targets ' + targets.length;
+}
+
+// 一度だけ実行：すべての自動処理トリガーをまとめて登録（リマインド／録画配信／期限失効／Supabase維持／出席記録）
 function setupAllTriggers() {
   const a = setupReminderTrigger();
   const b = setupRecordingTriggers();
-  ScriptApp.getProjectTriggers().forEach(function (t) { if (t.getHandlerFunction() === 'keepAliveSupabase') ScriptApp.deleteTrigger(t); });
+  ScriptApp.getProjectTriggers().forEach(function (t) {
+    const h = t.getHandlerFunction();
+    if (h === 'keepAliveSupabase' || h === 'markAttendance') ScriptApp.deleteTrigger(t);
+  });
   ScriptApp.newTrigger('keepAliveSupabase').timeBased().atHour(8).everyDays(1).inTimezone('Asia/Tokyo').create();
-  return a + ' / ' + b + ' / keepalive set (daily 8:00 JST)';
+  ScriptApp.newTrigger('markAttendance').timeBased().atHour(22).everyDays(1).inTimezone('Asia/Tokyo').create();
+  return a + ' / ' + b + ' / keepalive set (daily 8:00 JST) / attendance set (daily 22:00 JST)';
 }
 
 function icsUtc_(date, hm) {
