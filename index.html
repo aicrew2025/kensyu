@@ -1,13 +1,22 @@
 <!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>aicrew 生成AI研修 受講者登録</title><style>
+<title>aicrew 生成AI研修 受講者登録</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 190'%3E%3Cpolygon points='110,7 156.6,89 110,172 63.4,89' fill='%23264290'/%3E%3Cpolygon points='56,100 100,183 10,183' fill='%23264290'/%3E%3Cpolygon points='164,100 210,183 120,183' fill='%23264290'/%3E%3Cpath d='M58,183A52,52 0 0 1 162,183Z' fill='%23fff'/%3E%3Cpath d='M66,183A44,44 0 0 1 154,183Z' fill='%23264290'/%3E%3Ccircle cx='110' cy='117' r='28' fill='%23fff'/%3E%3Ccircle cx='110' cy='117' r='20' fill='%23264290'/%3E%3C/svg%3E">
+<style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:"Yu Gothic","Hiragino Kaku Gothic ProN",system-ui,sans-serif;background:#f8f4eb;color:#1c1c28;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 .wrap{max-width:720px;margin:0 auto;padding:0 14px 220px}
-header{background:linear-gradient(135deg,#130c23 0%,#021b74 55%,#264290 100%);color:#fff;padding:24px 20px;border-radius:0 0 20px 20px;margin:0 -14px 18px;box-shadow:0 8px 24px rgba(2,27,116,.22)}
-header h1{font-size:19px;font-weight:700;letter-spacing:.02em}header p{font-size:11.5px;color:#c6cfe6;margin-top:5px;line-height:1.55}
+header{background:linear-gradient(135deg,#130c23 0%,#021b74 55%,#264290 100%);color:#fff;padding:26px 20px 24px;border-radius:0 0 20px 20px;margin:0 -14px 18px;box-shadow:0 8px 24px rgba(2,27,116,.22);position:relative;overflow:hidden}
+header h1{font-size:18px;font-weight:700;letter-spacing:.02em;margin-top:3px}header p{font-size:11.5px;color:#c6cfe6;margin-top:6px;line-height:1.55}
+.hwm{position:absolute;right:-28px;top:-16px;width:185px;height:160px;fill:#fff;opacity:.07;transform:rotate(8deg);pointer-events:none}
+.hrow{display:flex;align-items:center;gap:14px;position:relative}
+.hbadge{width:56px;height:56px;background:#fff;border-radius:15px;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 6px 16px rgba(0,0,0,.28)}
+.mkimg{width:40px;height:34.6px;background:url(logo.png) no-repeat;background-size:70.67px 70.67px;background-position:-15.34px -9.33px}
+.hbrand{font-size:15px;font-weight:800;letter-spacing:.16em;color:#fff;line-height:1;opacity:.95}
+.foot{text-align:center;margin:36px 0 4px;color:#9a9aa8;font-size:11px;line-height:1.9}
+.flogo{width:104px;height:110.4px;margin:0 auto 6px;background:url(logo.png) no-repeat;background-size:159.26px 159.26px;background-position:-27.55px -21.02px}
 .step{font-size:11.5px;color:#8a8a99;margin:22px 2px 9px;font-weight:700;letter-spacing:.04em}.step b{color:#1c1c28}
 .courses{display:flex;gap:9px;flex-wrap:wrap}
-.cbtn{flex:1;min-width:130px;border:1.5px solid #e4e4ee;background:#fff;border-radius:13px;padding:14px 12px;font-size:13px;font-weight:700;cursor:pointer;color:#3a3a48;transition:transform .14s,box-shadow .14s,border-color .14s,color .14s;box-shadow:0 1px 2px rgba(20,20,40,.04)}
+.cbtn{flex:1;min-width:104px;border:1.5px solid #e4e4ee;background:#fff;border-radius:13px;padding:14px 12px;font-size:13px;font-weight:700;cursor:pointer;color:#3a3a48;transition:transform .14s,box-shadow .14s,border-color .14s,color .14s;box-shadow:0 1px 2px rgba(20,20,40,.04)}
 .cbtn:hover{border-color:#9fb2dd;color:#264290;transform:translateY(-1px);box-shadow:0 6px 16px rgba(38,66,144,.14)}
 .cbtn.on{background:linear-gradient(135deg,#264290,#021b74);color:#fff;border-color:transparent;box-shadow:0 6px 18px rgba(38,66,144,.36)}
 .sblock{background:#fff;border:1px solid #ece7da;border-radius:15px;padding:14px 15px;margin-bottom:11px;box-shadow:0 1px 2px rgba(20,20,40,.04),0 5px 18px rgba(20,20,40,.045)}
@@ -27,8 +36,8 @@ header h1{font-size:19px;font-weight:700;letter-spacing:.02em}header p{font-size
 .tray-h{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:700;margin-bottom:7px}
 .status{font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:20px}
 .ok{background:#e6f7ef;color:#0f7a5f}.ng{background:#fdecec;color:#d23b3b}.wait{background:#eeeef4;color:#8a8a99}
-.slots{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
-.slot{border:1px solid #ece7da;border-radius:11px;padding:7px 4px;text-align:center;font-size:11px;background:#fff;transition:border-color .12s}
+.slots{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+.slot{border:1px solid #ece7da;border-radius:11px;padding:7px 2px;text-align:center;font-size:11px;background:#fff;transition:border-color .12s;min-width:0;overflow:hidden}
 .slot .n{font-size:11px;font-weight:700}.slot .d{font-size:12px;font-weight:700;margin-top:3px}.slot .e{color:#c2c2cc}
 .slot .tm{font-size:9px;color:#9a9aa8}
 .totline{font-size:11px;color:#6b6b7b;margin-top:7px;display:flex;justify-content:space-between;align-items:center}
@@ -69,11 +78,21 @@ header h1{font-size:19px;font-weight:700;letter-spacing:.02em}header p{font-size
 .notice{background:#eef2fb;border:1px solid #d3def3;border-left:4px solid #264290;border-radius:11px;padding:11px 13px;font-size:11.5px;color:#2a3556;line-height:1.75;margin:2px 2px 12px}.notice b{color:#021b74}
 .policy.alert{background:#fff4f4;border-color:#f0b9b9;color:#7a2a2a;line-height:1.65}.policy.alert b{color:#5c1a1a}
 @media print{.sub{display:none!important}.step,.policy,#app,#tray{display:none!important}body{background:#fff}.done{box-shadow:none;border:1px solid #cdd9d0}header{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
-</style></head><body><div class="wrap">
-<header><h1>aicrew 生成AI研修｜受講者登録</h1><p>①〜⑤の受講日をそれぞれ選んでください（順不同・全日程を2ヶ月以内に受講いただきます）</p></header>
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<g id="aimark"><polygon points="110,7 156.6,89 110,172 63.4,89" fill="var(--ink,#264290)"/><polygon points="56,100 100,183 10,183" fill="var(--ink,#264290)"/><polygon points="164,100 210,183 120,183" fill="var(--ink,#264290)"/><path d="M58,183A52,52 0 0 1 162,183Z" fill="var(--paper,#fff)"/><path d="M66,183A44,44 0 0 1 154,183Z" fill="var(--ink,#264290)"/><circle cx="110" cy="117" r="28" fill="var(--paper,#fff)"/><circle cx="110" cy="117" r="20" fill="var(--ink,#264290)"/></g>
+<g id="aimark-flat"><polygon points="110,7 156.6,89 110,172 63.4,89"/><polygon points="56,100 100,183 10,183"/><polygon points="164,100 210,183 120,183"/></g>
+</defs></svg>
+<div class="wrap">
+<header>
+<svg class="hwm" viewBox="0 0 220 190" aria-hidden="true"><use href="#aimark-flat"/></svg>
+<div class="hrow">
+<div class="hbadge"><div class="mkimg" role="img" aria-label="aicrew"></div></div>
+<div><div class="hbrand">aicrew</div><h1>生成AI研修｜受講者登録</h1><p>①〜⑤の受講日をそれぞれ選んでください（順不同・全日程を2ヶ月以内に受講いただきます）</p></div>
+</div>
+</header>
 <div id="app">
 <div class="policy alert">⚠️ <b>受講日の変更・欠席について（重要）</b><br>受講日の変更は<b style="color:#c0392b">受講日の10日前まで</b>可能です（<b>年末年始・大型連休は除きます</b>）。<br><b style="color:#c0392b">期限を過ぎた変更・無断欠席・遅刻・早退は、助成金の受給に影響が出る場合があります。</b><br>変更の際は、研修サポート事務局 <b>support@aicrew.jp</b> までお早めにご連絡ください。</div>
-<div class="notice">🎥 <b>録画について</b><br>各回は録画し、講義終了後に復習用として<b>自動でメールにてご案内</b>します（<b>録画の公開日から2ヶ月間</b>視聴できます）。<br>録画は<b>受講者ご本人の復習用</b>です。第三者への送信・共有・SNS等への転載はご遠慮ください。</div>
 <div class="step">STEP 1 ／ <b>コースを選ぶ</b></div>
 <div class="courses" id="courses"></div>
 <div id="faqBox" class="faq">
@@ -104,6 +123,7 @@ header h1{font-size:19px;font-weight:700;letter-spacing:.02em}header p{font-size
 </div>
 </div></div>
 <div id="result" class="hide"></div>
+<div class="foot"><div class="flogo" role="img" aria-label="aicrew"></div><div>aicrew 研修サポート事務局｜support@aicrew.jp</div></div>
 </div>
 
 <button id="totop" type="button">↑ TOPに戻る</button>
