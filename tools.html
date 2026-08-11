@@ -1,0 +1,241 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>aicrew研修 AI動画活用編｜事前準備・ツールガイド</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Yu Gothic","Hiragino Kaku Gothic ProN",system-ui,sans-serif;background:#f8f4eb;color:#1c1c28;line-height:1.75;-webkit-font-smoothing:antialiased}
+.wrap{max-width:780px;margin:0 auto;padding:0 16px 60px}
+header{background:linear-gradient(135deg,#130c23 0%,#021b74 55%,#264290 100%);color:#fff;padding:28px 22px 26px;border-radius:0 0 20px 20px;margin:0 -16px 20px;box-shadow:0 8px 24px rgba(2,27,116,.22)}
+.hrow{display:flex;align-items:center;gap:14px}
+.hbadge{width:56px;height:56px;background:#fff;border-radius:15px;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 6px 16px rgba(0,0,0,.28)}
+.mkimg{width:40px;height:34.6px;background:url(logo.png) no-repeat;background-size:70.67px 70.67px;background-position:-15.34px -9.33px}
+.hbrand{font-size:15px;font-weight:800;letter-spacing:.16em;opacity:.95}
+header h1{font-size:19px;font-weight:700;margin-top:3px}
+header p{font-size:11.5px;color:#c6cfe6;margin-top:6px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+nav a{flex:1;min-width:92px;text-align:center;text-decoration:none;border:1.5px solid #e4e4ee;background:#fff;border-radius:13px;padding:11px 6px;font-size:12px;font-weight:700;color:#3a3a48;box-shadow:0 1px 2px rgba(20,20,40,.04)}
+nav a:hover{border-color:#9fb2dd;color:#264290}
+.card{background:#fff;border:1px solid #ece7da;border-radius:15px;padding:18px 20px;margin-bottom:14px;box-shadow:0 1px 2px rgba(20,20,40,.04),0 5px 18px rgba(20,20,40,.045)}
+h2{font-size:16.5px;color:#021b74;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid #eceff7}
+h3{font-size:14.5px;color:#264290;margin:0 0 4px}
+p,li,td,th{font-size:13px;color:#3a3a48}
+ol,ul{margin:6px 0 6px 20px}li{margin:4px 0}
+b{color:#021b74}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:8px 0}
+th,td{border:1px solid #ece7da;padding:7px 9px;text-align:left;vertical-align:top}
+th{background:#264290;color:#fff;font-size:12px}
+tr:nth-child(even) td{background:#f9fafd}
+.tool{border:1.5px solid #dfe4f2;border-radius:13px;padding:14px 16px;margin:12px 0;background:#fbfbfe}
+.thead{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:6px}
+.kai{background:#264290;color:#fff;border-radius:20px;padding:2px 11px;font-size:11px;font-weight:700;flex:none}
+.meta{font-size:11.5px;color:#8a8a99;margin-bottom:8px}
+.btn{display:inline-block;background:linear-gradient(135deg,#264290,#021b74);color:#fff;text-decoration:none;border-radius:10px;padding:8px 16px;font-size:12.5px;font-weight:700;margin:6px 0;box-shadow:0 4px 12px rgba(38,66,144,.28)}
+.done{background:#f0fbf6;border:1px solid #bfe6cf;border-radius:9px;padding:8px 11px;font-size:12px;color:#0f6e56;margin-top:8px}
+.warn{background:#fff8e6;border:1px solid #f0d98a;border-radius:9px;padding:8px 11px;font-size:12px;color:#7a5c00;margin-top:8px}
+.note{background:#fff8e6;border:1px solid #f0d98a;border-radius:12px;padding:11px 13px;font-size:12.5px;color:#7a5c00;margin:10px 0}
+.chk{list-style:none;margin-left:0}
+.chk li{background:#fdfdfb;border:1px solid #ece7da;border-radius:10px;padding:8px 12px;margin:6px 0;font-size:12.5px}
+.faq-q{font-weight:700;color:#021b74;margin-top:12px;font-size:13px}
+.faq-a{font-size:12.5px;color:#3a3a48;margin-top:2px}
+.foot{text-align:center;margin-top:34px;color:#9a9aa8;font-size:11px;line-height:1.9}
+.flogo{width:104px;height:110.4px;margin:0 auto 6px;background:url(logo.png) no-repeat;background-size:159.26px 159.26px;background-position:-27.55px -21.02px}
+</style></head><body><div class="wrap">
+<header><div class="hrow">
+<div class="hbadge"><div class="mkimg" role="img" aria-label="aicrew"></div></div>
+<div><div class="hbrand">aicrew</div><h1>AI動画活用編｜事前準備・ツールガイド</h1><p>各回で使用するツールと、研修当日までに行う登録・インストール手順</p></div>
+</div></header>
+
+<div class="note">🔐 <b>全ツール共通の注意</b><br>社外秘・個人情報・未公開情報、権利処理していない画像や音声は入力しないでください。有料プランや支払情報の登録は、必ず受講企業の承認を得てください（有料プランは研修受講後に必要性を確認してからのご検討で問題ありません）。</div>
+
+<nav>
+<a href="#list">📋 準備一覧</a><a href="#r1">第1回</a><a href="#r2">第2回</a><a href="#r3">第3回</a><a href="#r4">第4回</a><a href="#r5">第5回</a><a href="#faq">❓ FAQ</a>
+</nav>
+
+<div class="card" id="list">
+<h2>各回の準備一覧</h2>
+<p>該当する研修日までにご準備ください。<b>受講企業の方針に従い、利用するツールのみ</b>で構いません。</p>
+<table>
+<tr><th style="width:14%">回</th><th style="width:30%">使用想定ツール</th><th>事前にすること</th></tr>
+<tr><td>第1回</td><td>Gemini / Nano Banana</td><td>Googleアカウントでログイン確認</td></tr>
+<tr><td>第2回</td><td>Canva</td><td>無料アカウント作成・ログイン確認</td></tr>
+<tr><td>第3回</td><td>Runway</td><td>無料アカウント作成・ログイン確認</td></tr>
+<tr><td>第3回</td><td>Adobe Premiere</td><td>利用する場合：インストール・起動確認</td></tr>
+<tr><td>第4回</td><td>Suno AI</td><td>無料アカウント作成・ログイン確認</td></tr>
+<tr><td>第4回</td><td>ElevenLabs</td><td>無料アカウント作成・ログイン確認</td></tr>
+<tr><td>第4回</td><td>HeyGen</td><td>無料アカウント作成・ログイン確認</td></tr>
+<tr><td>第5回</td><td>NoLang</td><td>無料アカウント作成・ログイン確認</td></tr>
+<tr><td>第5回</td><td>Vrew</td><td>PC版をインストール・起動確認</td></tr>
+</table>
+<h3 style="margin-top:14px">準備完了チェック</h3>
+<ul class="chk">
+<li>□ 研修当日も確認できるメールアドレスで登録した</li>
+<li>□ 該当ツールのホーム画面またはダッシュボードを表示できる</li>
+<li>□ 必要なアプリをPCで起動できる</li>
+<li>□ 社用PC・社内アカウントの利用制限を確認した</li>
+<li>□ 無料クレジット・生成回数を研修前に消費していない</li>
+</ul>
+</div>
+
+<div class="card" id="r1">
+<h2>第1回の準備</h2>
+<div class="tool">
+<div class="thead"><span class="kai">第1回</span><h3>Gemini（Nano Banana / 画像生成を含む）</h3></div>
+<div class="meta">Googleアカウント ／ 第1回当日まで ／ 無料利用可</div>
+<a class="btn" href="https://gemini.google.com/?hl=ja" target="_blank" rel="noopener">公式サイトを開く ↗</a>
+<ol>
+<li>公式サイトを開きます。</li>
+<li>Googleアカウントでログインします。</li>
+<li>Geminiの入力画面が表示されることを確認します。</li>
+<li>勤務先・学校のGoogleアカウントで利用できない場合は、社内研修担当者またはシステム管理者へご確認ください。</li>
+</ol>
+<div class="done">✅ 完了の目安：Geminiのチャット入力画面が表示されれば完了です。Nano Banana用の別アプリは不要です。</div>
+</div>
+</div>
+
+<div class="card" id="r2">
+<h2>第2回の準備</h2>
+<div class="tool">
+<div class="thead"><span class="kai">第2回</span><h3>Canva</h3></div>
+<div class="meta">無料アカウント ／ 第2回当日まで ／ 無料プラン</div>
+<a class="btn" href="https://www.canva.com/ja_jp/" target="_blank" rel="noopener">公式サイトを開く ↗</a>
+<ol>
+<li>公式サイトを開き、「登録」または「ログイン」を選びます。</li>
+<li>Googleアカウントまたはメールアドレスで無料アカウントを作成します。</li>
+<li>Canvaのホーム画面が表示されることを確認します。</li>
+</ol>
+<div class="done">✅ 完了の目安：ホーム画面で「デザインを作成」などのメニューが見えれば完了です。</div>
+<div class="warn">⚠️ Canva Proの無料体験案内が表示されても、研修前の加入は不要です。</div>
+</div>
+</div>
+
+<div class="card" id="r3">
+<h2>第3回の準備</h2>
+<div class="tool">
+<div class="thead"><span class="kai">第3回</span><h3>Runway</h3></div>
+<div class="meta">無料アカウント ／ 第3回当日まで ／ 無料枠あり</div>
+<a class="btn" href="https://runwayml.com/" target="_blank" rel="noopener">公式サイトを開く ↗</a>
+<ol>
+<li>Google Chromeで公式サイトを開きます。</li>
+<li>Googleアカウントまたはメールアドレスでアカウントを作成します。</li>
+<li>Freeプランのままログインし、ダッシュボードが表示されることを確認します。</li>
+</ol>
+<div class="done">✅ 完了の目安：Runwayのダッシュボードが表示されれば完了です。</div>
+<div class="warn">⚠️ 無料クレジットは研修前に使用せず、ログイン確認までにしてください。</div>
+</div>
+<div class="tool">
+<div class="thead"><span class="kai">第3回</span><h3>Adobe Premiere</h3></div>
+<div class="meta">利用する場合はPCへインストール ／ 第3回当日まで</div>
+<a class="btn" href="https://www.adobe.com/jp/products/premiere.html" target="_blank" rel="noopener">公式サイトを開く ↗</a>
+<ol>
+<li>受講企業の方針を確認します。</li>
+<li>Adobe IDを作成、または既存IDでログインします。</li>
+<li>Creative Cloud経由でPremiereをダウンロードします。</li>
+<li>Premiereを一度起動し、ホーム画面まで表示します。</li>
+<li>社用PCでインストール制限がある場合は、システム管理者へ事前にご確認ください。</li>
+</ol>
+<div class="done">✅ 完了の目安：Premiereが起動し、ホーム画面が表示されれば完了です。</div>
+<div class="warn">⚠️ 無料体験の条件や料金は変更される場合があります。支払情報の登録・継続・解約は、必ず受講企業の方針に従ってください。</div>
+</div>
+</div>
+
+<div class="card" id="r4">
+<h2>第4回の準備</h2>
+<div class="tool">
+<div class="thead"><span class="kai">第4回</span><h3>Suno AI</h3></div>
+<div class="meta">無料アカウント ／ 第4回当日まで ／ 無料プラン</div>
+<a class="btn" href="https://suno.com/ja" target="_blank" rel="noopener">公式サイトを開く ↗</a>
+<ol>
+<li>公式サイトを開き、「Sign Up」を選択します。</li>
+<li>Googleアカウント等で無料アカウントを作成します。</li>
+<li>ログイン後、作成画面が表示されることを確認します。</li>
+</ol>
+<div class="done">✅ 完了の目安：Sunoの作成画面が表示されれば完了です。</div>
+<div class="warn">⚠️ 研修前は生成せず、ログイン確認までにしてください。業務・商用利用時は最新の利用条件をご確認ください。</div>
+</div>
+<div class="tool">
+<div class="thead"><span class="kai">第4回</span><h3>ElevenLabs</h3></div>
+<div class="meta">無料アカウント ／ 第4回当日まで ／ 無料プラン</div>
+<a class="btn" href="https://elevenlabs.io/ja" target="_blank" rel="noopener">公式サイトを開く ↗</a>
+<ol>
+<li>公式サイトを開き、登録画面へ進みます。</li>
+<li>Googleアカウントまたはメールアドレスで登録します。</li>
+<li>必要に応じてメール認証を行い、ログインします。</li>
+</ol>
+<div class="done">✅ 完了の目安：ElevenLabsのホーム画面が表示されれば完了です。</div>
+</div>
+<div class="tool">
+<div class="thead"><span class="kai">第4回</span><h3>HeyGen</h3></div>
+<div class="meta">無料アカウント ／ 第4回当日まで ／ 無料プラン</div>
+<a class="btn" href="https://www.heygen.com/ja-jp" target="_blank" rel="noopener">公式サイトを開く ↗</a>
+<ol>
+<li>公式サイトを開き、無料アカウントの登録を選びます。</li>
+<li>Googleアカウントまたはメールアドレスで登録します。</li>
+<li>Freeプランのままログインし、ホーム画面を確認します。</li>
+</ol>
+<div class="done">✅ 完了の目安：HeyGenのホーム画面が表示されれば完了です。</div>
+<div class="warn">⚠️ 無料生成枠は変更される場合があります。研修前は動画を生成せず、ログイン確認までにしてください。</div>
+</div>
+</div>
+
+<div class="card" id="r5">
+<h2>第5回の準備</h2>
+<div class="tool">
+<div class="thead"><span class="kai">第5回</span><h3>NoLang</h3></div>
+<div class="meta">無料アカウント ／ 第5回当日まで ／ 無料プラン</div>
+<a class="btn" href="https://no-lang.com/" target="_blank" rel="noopener">公式サイトを開く ↗</a>
+<ol>
+<li>PCのブラウザで公式サイトを開きます。</li>
+<li>Googleアカウントまたはメールアドレス等で登録します。</li>
+<li>ログイン後、ホーム画面が表示されることを確認します。</li>
+</ol>
+<div class="done">✅ 完了の目安：NoLangのホーム画面が表示されれば完了です。</div>
+<div class="warn">⚠️ 無料プランの保存期間や利用条件は変更される場合があります。画面上の最新表示も確認してください。</div>
+</div>
+<div class="tool">
+<div class="thead"><span class="kai">第5回</span><h3>Vrew</h3></div>
+<div class="meta">PCインストール ／ 第5回当日まで ／ 無料利用可</div>
+<a class="btn" href="https://vrew.ai/ja/" target="_blank" rel="noopener">公式サイトを開く ↗</a>
+<ol>
+<li>公式サイトを開き、「無料ダウンロード」を選びます。</li>
+<li>Windows・Macから、自分のPCに合う版をダウンロードします。</li>
+<li>ダウンロードしたファイルを開き、インストールします。</li>
+<li>Vrewを起動し、必要に応じて無料アカウントを作成します。</li>
+<li>社用PCでインストール制限がある場合は、システム管理者へ事前にご確認ください。</li>
+</ol>
+<div class="done">✅ 完了の目安：Vrewが起動し、ホーム画面が表示されれば完了です。</div>
+</div>
+</div>
+
+<div class="card" id="faq">
+<h2>ツール・事前準備 FAQ</h2>
+<div class="faq-q">Q. すべてのツールを準備する必要がありますか？</div>
+<div class="faq-a">A. いいえ。受講企業の方針に従い、利用するツールのみ、該当する研修日の当日までにご準備ください。</div>
+<div class="faq-q">Q. どのメールアドレスを使えばよいですか？</div>
+<div class="faq-a">A. 研修当日も確認できるメールアドレスをご使用ください。登録確認やパスワード再設定のメールが届く場合があります。</div>
+<div class="faq-q">Q. 有料プランへの申込みは必要ですか？</div>
+<div class="faq-a">A. 必須ではありません。無料プランを利用できるツールは、まず無料プランで準備してください。有料プランや支払情報の登録は受講企業の承認を得てください。研修受講後に必要性を確認してからのご検討で問題ありません。</div>
+<div class="faq-q">Q. 研修前に動画や音声を作ってもよいですか？</div>
+<div class="faq-a">A. 無料クレジットや生成回数を研修で使用するため、事前準備では生成せず、ログインや起動の確認までにしてください。</div>
+<div class="faq-q">Q. 勤務先や個人のGoogleアカウントを使えますか？</div>
+<div class="faq-a">A. 利用できますが、管理者設定により一部のサービスへログインできない場合があります。</div>
+<div class="faq-q">Q. 社用PCにアプリをインストールできません。どうすればよいですか？</div>
+<div class="faq-a">A. 社内のシステム管理者へ確認してください。インストールが難しい場合は、受講企業の研修担当者へご相談ください。</div>
+<div class="faq-q">Q. 登録やログインがうまくいかない場合は？</div>
+<div class="faq-a">A. ページの再読み込み、ブラウザやアプリの再起動、最新版Chromeでの再試行、各ツールの公式ヘルプをご確認ください。解決しない場合は、エラー画面、ツール名、使用OSを添えて、社内研修担当者またはシステム管理者へご相談ください。</div>
+<div class="faq-q">Q. 無料枠や料金、利用条件が資料と違う場合は？</div>
+<div class="faq-a">A. 各サービスの画面、無料枠、料金、利用条件は変更される場合があります。登録時は各サービスの公式サイトに表示される最新情報をご確認ください。</div>
+<div class="faq-q">Q. 研修で使用する画像・音声・情報に制限はありますか？</div>
+<div class="faq-a">A. 社外秘・個人情報・未公開情報、権利処理していない画像や音声は入力しないでください。業務で実際に使用する際も、各サービスの利用規約、著作権、社内ルール等をご確認ください。</div>
+</div>
+
+<div class="card">
+<h2>お問い合わせ先</h2>
+<p><b>aicrew サポート事務局　support@aicrew.jp</b></p>
+<ul>
+<li>受講URL・当日の入室・欠席連絡・研修後の質問は、受講企業の研修担当者が取りまとめてご連絡ください。</li>
+<li>ツール固有の操作・ログイン方法は各ツールの公式ヘルプへ。</li>
+<li>社用PC・アカウント・インストール制限は社内研修担当者またはシステム管理者へご確認ください。</li>
+</ul>
+</div>
+
+<div class="foot"><div class="flogo" role="img" aria-label="aicrew"></div>aicrew 研修サポート事務局｜support@aicrew.jp</div>
+</div></body></html>
