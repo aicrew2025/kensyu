@@ -1,0 +1,189 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>aicrew リアルタイム研修｜手作業運用マニュアル</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Yu Gothic","Hiragino Kaku Gothic ProN",system-ui,sans-serif;background:#f8f4eb;color:#1c1c28;line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 60px}
+header{background:linear-gradient(135deg,#130c23 0%,#021b74 55%,#264290 100%);color:#fff;padding:28px 22px 26px;border-radius:0 0 20px 20px;margin:0 -16px 20px;box-shadow:0 8px 24px rgba(2,27,116,.22)}
+.hrow{display:flex;align-items:center;gap:14px}
+.hbadge{width:56px;height:56px;background:#fff;border-radius:15px;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 6px 16px rgba(0,0,0,.28)}
+.mkimg{width:40px;height:34.6px;background:url(logo.png) no-repeat;background-size:70.67px 70.67px;background-position:-15.34px -9.33px}
+.hbrand{font-size:15px;font-weight:800;letter-spacing:.16em;opacity:.95}
+header h1{font-size:19px;font-weight:700;margin-top:3px}
+header p{font-size:11.5px;color:#c6cfe6;margin-top:6px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+nav a{flex:1;min-width:104px;text-align:center;text-decoration:none;border:1.5px solid #e4e4ee;background:#fff;border-radius:13px;padding:11px 6px;font-size:12px;font-weight:700;color:#3a3a48;box-shadow:0 1px 2px rgba(20,20,40,.04)}
+nav a:hover{border-color:#9fb2dd;color:#264290}
+.card{background:#fff;border:1px solid #ece7da;border-radius:15px;padding:18px 20px;margin-bottom:14px;box-shadow:0 1px 2px rgba(20,20,40,.04),0 5px 18px rgba(20,20,40,.045)}
+h2{font-size:17px;color:#021b74;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid #eceff7}
+h3{font-size:14px;margin:16px 0 6px;color:#264290}
+p,li{font-size:13px;color:#3a3a48}
+ul,ol{margin:6px 0 6px 20px}li{margin:4px 0}
+b{color:#021b74}
+table{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0}
+th,td{border:1px solid #ece7da;padding:7px 9px;text-align:left}
+th{background:#f4f6fc;color:#264290;font-size:11.5px}
+.note{background:#fff8e6;border:1px solid #f0d98a;border-radius:12px;padding:10px 13px;font-size:12px;color:#7a5c00;margin:10px 0}
+.mail{background:#f4f6fc;border-left:5px solid #264290;border-radius:8px;padding:12px 14px;font-size:12.5px;margin:8px 0;color:#3a3a48}
+.mail .sub{font-weight:700;color:#021b74;margin-bottom:6px}
+.step{background:#eef1f9;color:#264290;border-radius:20px;padding:2px 10px;font-size:10.5px;font-weight:700;margin-right:6px;white-space:nowrap}
+.check{background:#e6f7ef;border:1px solid #bfe6cf;border-radius:12px;padding:12px 14px;margin:8px 0}
+.check li{font-size:12.5px}
+.foot{text-align:center;margin-top:34px;color:#9a9aa8;font-size:11px;line-height:1.9}
+.flogo{width:104px;height:110.4px;margin:0 auto 6px;background:url(logo.png) no-repeat;background-size:159.26px 159.26px;background-position:-27.55px -21.02px}
+</style></head><body><div class="wrap">
+<header><div class="hrow">
+<div class="hbadge"><div class="mkimg" role="img" aria-label="aicrew"></div></div>
+<div><div class="hbrand">aicrew</div><h1>リアルタイム研修｜手作業運用マニュアル</h1><p>自動化を使わずに運営する場合の事務局手順書（システム障害時の代替手順を兼ねる）</p></div>
+</div></header>
+
+<nav>
+<a href="#prep">0. 道具</a><a href="#meet">1. 期初:Meet作成</a><a href="#apply">2. 申込対応</a><a href="#remind">3. リマインド</a><a href="#day">4. 当日</a><a href="#rec">5. 録画配布</a><a href="#exp">6. 期限管理</a><a href="#att">7. 出席記録</a><a href="#chg">8. 変更対応</a><a href="#list">9. 一覧</a>
+</nav>
+
+<div class="card" id="prep">
+<h2>0. 前提：使う道具</h2>
+<table>
+<tr><th>道具</th><th>用途</th></tr>
+<tr><td>申込台帳（スプレッドシート）</td><td>申込・出席・録画配布のすべてを記録する台帳</td></tr>
+<tr><td>Googleカレンダー（support@）</td><td>Meet予定の作成・受講者の招待</td></tr>
+<tr><td>Gmail（support@）</td><td>確認メール・リマインド・録画案内の送信</td></tr>
+<tr><td>Googleドライブ</td><td>録画の保管と共有（04.研修 &gt; リアルタイム）</td></tr>
+<tr><td>Google管理コンソール</td><td>Meetの入室記録（出席の確認）</td></tr>
+</table>
+<p><b>台帳に必要な4タブ</b>：①申込一覧（1申込=1行）②受講予定（1人×1回=1行・日付順）③録画配布記録（配布日・期限・配布先）④Meet URL一覧</p>
+</div>
+
+<div class="card" id="meet">
+<h2>1. 期初にやること：Meet予定をまとめて作る</h2>
+<ol>
+<li>support@ でGoogleカレンダーを開き、該当日時に予定を作成<br>タイトル例：<b>aicrew 生成AI研修 ① 知識・基本操作（AI動画）</b></li>
+<li>「Google Meetのビデオ会議を追加」をクリック → URLが発行される（ゲストの「他のユーザーを招待」はオフ）</li>
+<li>URLを台帳「Meet URL一覧」へ<b>コピー&ペーストで</b>転記（対象・回・日付・時間・テーマ・URL）</li>
+<li>全コマ分くり返す（AI動画活用編＝1コース×5回×開講期の数）。</li>
+</ol>
+<div class="note">⚠️ URL転記ミスは「受講者が違う会議に入る」事故につながります。手打ち禁止・必ずコピペで。</div>
+</div>
+
+<div class="card" id="apply">
+<h2>2. 申込を受け付けたら（受付当日中）</h2>
+<h3><span class="step">STEP 1</span>内容チェック（3つのルール）</h3>
+<ul>
+<li>5日程すべてが<b>申込日から40日以降</b>か（助成金の申請準備期間）</li>
+<li><b>最初の回から2ヶ月以内</b>にすべて収まっているか</li>
+<li><b>同じ人×同じコースの重複申込</b>がないか（台帳を検索）</li>
+</ul>
+<p>→ 違反があれば受講者に連絡し、日程を選び直してもらう。</p>
+<h3><span class="step">STEP 2</span>台帳へ記録</h3>
+<p>「申込一覧」に1行＋「受講予定」に5行（1回分=1行）を追加</p>
+<h3><span class="step">STEP 3</span>Meetに招待</h3>
+<p>カレンダーで該当5コマの予定を開き、ゲストに受講者のメールを追加。保存時の通知は<b>「送信しない」</b>（案内は次のメールに一本化）</p>
+<h3><span class="step">STEP 4</span>確認メールを送信</h3>
+<div class="mail"><div class="sub">件名：【aicrew リアルタイム研修】お申込みを受け付けました（Meet URLのご案内）</div>
+〇〇様<br>お申込みありがとうございます。以下の日程で受け付けました。<br><br>
+・コース：AI動画活用編（全5回・計10時間／2ヶ月以内）<br>
+・① 〔テーマ〕〔8/24(月) 11:30〜13:30〕 Meet：〔URL〕<br>
+・②〜⑤ …同様に5回分…<br><br>
+【当日】開始5分前までに上記Meetリンクからご参加ください（Googleアカウント推奨）。<br>
+【日程変更】ご変更・欠席のご相談は、本メールへの返信でお早めにご連絡ください。無断欠席・遅刻・早退は、助成金の受給に影響が出る場合があります。<br>
+【録画】各回の録画を受講後にご案内します（公開日から2ヶ月間・ご本人の復習用）。<br><br>
+aicrew研修サポート事務局 support@aicrew.jp</div>
+</div>
+
+<div class="card" id="remind">
+<h2>3. 毎営業日の定例：前日リマインド（16時）</h2>
+<ol>
+<li>台帳「受講予定」を<b>翌日</b>の日付でフィルタ（金曜は土日月分を前倒し）</li>
+<li>対象者へ送信（下記テンプレ）</li>
+<li>送信済みの行に「リマインド済」と記入（送り漏れ防止）</li>
+</ol>
+<div class="mail"><div class="sub">件名：【明日です】aicrew リアルタイム研修 〔① 知識・基本操作〕のご案内</div>
+〇〇様<br>明日の研修のご案内です。<br>
+・日時：〔8/24(月) 11:30〜13:30〕<br>
+・参加URL：〔Meet URL〕<br>
+開始5分前までにご入室ください。<br>aicrew研修サポート事務局</div>
+<div class="note">⚠️ リマインド漏れは無断欠席＝助成金への影響に直結。<b>毎日16時</b>にカレンダーの繰り返し予定でリマインドすること。</div>
+</div>
+
+<div class="card" id="day">
+<h2>4. 当日の作業</h2>
+<ol>
+<li><b>前日まで</b>：担当講師へ担当回・Meet URL・受講者数を連絡</li>
+<li><b>開始時</b>：講師が <b>@aicrew.jp アカウント</b>で入室し「⋮」→<b>録画を開始</b>（外部アカウントでは録画ボタンが出ない）<br>委託講師がaicrewアカウントを持たない場合は、事務局が開始時刻に入室して録画開始→講師へ引き継ぐ</li>
+<li><b>開始後</b>：赤い「録画中」表示を確認してから講義開始</li>
+<li><b>終了時</b>：録画を停止して退室</li>
+</ol>
+</div>
+
+<div class="card" id="rec">
+<h2>5. 講義後：録画の配布（当日〜翌営業日）</h2>
+<p>録画は講義終了の数分〜数十分後、Driveの「Meet Recordings」フォルダに保存されます。</p>
+<h3><span class="step">STEP 1</span>ファイルの共有設定</h3>
+<p>右クリック→「共有」→⚙（設定）で以下を<b>必ずオフ</b>：</p>
+<ul>
+<li>「閲覧者と閲覧者（コメント可）に、ダウンロード、印刷、コピーの項目を表示する」→ <b>オフ</b></li>
+<li>「編集者は権限を変更して共有できます」→ <b>オフ</b></li>
+</ul>
+<h3><span class="step">STEP 2</span>受講者へ共有</h3>
+<p>台帳「受講予定」で<b>その回の受講者だけ</b>を特定（日付×コマ）→ 共有画面にメールを追加し権限は<b>「閲覧者」</b>。通知チェックは外す。</p>
+<h3><span class="step">STEP 3</span>案内メール</h3>
+<div class="mail"><div class="sub">件名：【録画のご案内】aicrew リアルタイム研修 〔① 知識・基本操作〕</div>
+〇〇様<br>ご受講ありがとうございました。復習用の録画をご案内します。<br>
+・視聴URL：〔DriveのファイルURL〕<br>
+・視聴期限：<b>〔配布日+2ヶ月〕まで</b><br>
+※録画はご本人の復習用です。第三者への共有・転載はご遠慮ください。<br>aicrew研修サポート事務局</div>
+<h3><span class="step">STEP 4</span>後処理</h3>
+<ol>
+<li>録画を「aicrew株式会社 &gt; 04.研修 &gt; リアルタイム」へ移動（右クリック→整理→移動）</li>
+<li>台帳「録画配布記録」に<b>配布日・視聴期限（+2ヶ月）</b>・ファイル名・配布先を記入</li>
+</ol>
+<div class="note">⚠️ 最重要注意：DL可のまま共有／別の回の受講者への誤共有は<b>情報漏えい事故</b>になります。STEP1→2の順番を必ず守ること。</div>
+</div>
+
+<div class="card" id="exp">
+<h2>6. 毎週の定例：視聴期限のチェック</h2>
+<ol>
+<li>週1回（曜日を固定）、台帳「録画配布記録」で期限切れの行を確認</li>
+<li>該当ファイルの「共有」から<b>期限切れ受講者の権限を削除</b></li>
+<li>台帳に「解除済」と記入</li>
+</ol>
+</div>
+
+<div class="card" id="att">
+<h2>7. 出席の記録（コマ終了後1週間以内）</h2>
+<p><b>助成金の証憑</b>になるため正確に記録します。</p>
+<ol>
+<li><b>管理コンソール</b>（admin.google.com）→ レポート → 監査と調査 →「Google Meetのログイベント」</li>
+<li>該当日時・会議コードでフィルタし、参加者ごとの<b>参加時刻・退出時刻・滞在時間</b>を確認</li>
+<li>台帳「受講予定」に記入：<b>出席</b>（出席／欠席／遅刻(◯分)）と<b>受講時間</b>（例：2.0h）</li>
+<li>途中退出・再入室など判断に迷うケースは滞在分数を記録し、事務局内で扱いを決める</li>
+</ol>
+<p>補助手段：講師に開始直後・終了直前の<b>参加者一覧のスクリーンショット</b>を撮ってもらうと照合が楽です。</p>
+</div>
+
+<div class="card" id="chg">
+<h2>8. 受講日変更・欠席の対応</h2>
+<p><b>変更依頼</b>：</p>
+<ol>
+<li>直前の場合は助成金への影響を説明のうえ個別判断</li>
+<li>カレンダー：旧日程の予定から受講者を削除 → 新日程の予定に招待</li>
+<li>台帳：「申込一覧」「受講予定」の日付を修正</li>
+<li>受講者へ変更完了メール（新しい日時とURLを明記）</li>
+</ol>
+<p><b>欠席連絡</b>：台帳に記録し、振替日程を同じ手順で設定</p>
+</div>
+
+<div class="card" id="list">
+<h2>9. 作業チェックリスト（まとめ）</h2>
+<div class="check"><ul>
+<li><b>申込のたび</b>：ルール3点チェック → 台帳記入 → Meet招待 → 確認メール</li>
+<li><b>毎営業日16時</b>：翌日分のリマインド送信 → 済マーク</li>
+<li><b>コマ前日</b>：講師へ連絡</li>
+<li><b>コマ当日</b>：録画開始の確認</li>
+<li><b>コマ後</b>：録画の権限設定 → 配布 → フォルダ移動 → 台帳記入／出席の記録</li>
+<li><b>毎週</b>：視聴期限切れの権限解除</li>
+</ul></div>
+</div>
+
+<div class="foot"><div class="flogo" role="img" aria-label="aicrew"></div>aicrew 研修サポート事務局｜support@aicrew.jp</div>
+</div></body></html>

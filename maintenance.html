@@ -1,0 +1,174 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>aicrew リアルタイム研修｜保守・更新マニュアル（引き継ぎ用）</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Yu Gothic","Hiragino Kaku Gothic ProN",system-ui,sans-serif;background:#f8f4eb;color:#1c1c28;line-height:1.75;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 60px}
+header{background:linear-gradient(135deg,#130c23 0%,#021b74 55%,#264290 100%);color:#fff;padding:28px 22px 26px;border-radius:0 0 20px 20px;margin:0 -16px 20px;box-shadow:0 8px 24px rgba(2,27,116,.22)}
+.hrow{display:flex;align-items:center;gap:14px}
+.hbadge{width:56px;height:56px;background:#fff;border-radius:15px;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 6px 16px rgba(0,0,0,.28)}
+.mkimg{width:40px;height:34.6px;background:url(logo.png) no-repeat;background-size:70.67px 70.67px;background-position:-15.34px -9.33px}
+.hbrand{font-size:15px;font-weight:800;letter-spacing:.16em;opacity:.95}
+header h1{font-size:19px;font-weight:700;margin-top:3px}
+header p{font-size:11.5px;color:#c6cfe6;margin-top:6px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+nav a{flex:1;min-width:110px;text-align:center;text-decoration:none;border:1.5px solid #e4e4ee;background:#fff;border-radius:13px;padding:11px 6px;font-size:12px;font-weight:700;color:#3a3a48;box-shadow:0 1px 2px rgba(20,20,40,.04)}
+nav a:hover{border-color:#9fb2dd;color:#264290}
+.card{background:#fff;border:1px solid #ece7da;border-radius:15px;padding:18px 20px;margin-bottom:14px;box-shadow:0 1px 2px rgba(20,20,40,.04),0 5px 18px rgba(20,20,40,.045)}
+h2{font-size:17px;color:#021b74;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid #eceff7}
+h3{font-size:13.5px;margin:16px 0 6px;color:#264290}
+p,li{font-size:13px;color:#3a3a48}
+ul,ol{margin:6px 0 6px 20px}li{margin:5px 0}
+b{color:#021b74}
+table{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0}
+th,td{border:1px solid #ece7da;padding:7px 9px;text-align:left;vertical-align:top}
+th{background:#f4f6fc;color:#264290;font-size:11.5px}
+.steps{counter-reset:st;list-style:none;margin-left:0}
+.steps>li{counter-increment:st;display:flex;gap:11px;margin:9px 0;align-items:flex-start}
+.steps>li::before{content:counter(st);flex:none;width:24px;height:24px;border-radius:50%;background:#264290;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+code{background:#f1f2f8;border-radius:5px;padding:1px 6px;color:#0a2380}
+pre{background:#171d33;color:#e6ecff;border-radius:12px;padding:13px 15px;overflow-x:auto;margin:8px 0;line-height:1.65}
+pre .y{color:#ffd479}pre .g{color:#7fe0a7}pre .c{color:#7d8ab8}
+.note{background:#fff8e6;border:1px solid #f0d98a;border-radius:12px;padding:10px 13px;font-size:12px;color:#7a5c00;margin:10px 0}
+.danger{background:#fdecec;border:1px solid #f3c9c9;border-radius:12px;padding:10px 13px;font-size:12px;color:#a02020;margin:10px 0}
+.ok{background:#f0fbf6;border:1px solid #bfe6cf;border-radius:12px;padding:10px 13px;font-size:12px;color:#0f6e56;margin:10px 0}
+.case{border:1.5px solid #dfe4f2;border-radius:13px;padding:13px 15px;margin:12px 0;background:#fbfbfe}
+.case h3{margin-top:0;font-size:14px}
+.badge{display:inline-block;background:#264290;color:#fff;border-radius:20px;padding:2px 12px;font-size:10.5px;font-weight:700;margin-right:6px;vertical-align:2px}
+.foot{text-align:center;margin-top:34px;color:#9a9aa8;font-size:11px;line-height:1.9}
+.flogo{width:104px;height:110.4px;margin:0 auto 6px;background:url(logo.png) no-repeat;background-size:159.26px 159.26px;background-position:-27.55px -21.02px}
+</style></head><body><div class="wrap">
+<header><div class="hrow">
+<div class="hbadge"><div class="mkimg" role="img" aria-label="aicrew"></div></div>
+<div><div class="hbrand">aicrew</div><h1>保守・更新マニュアル（引き継ぎ用）</h1><p>プログラミング・Claude Code未経験でも、日程変更やシステム更新ができる手順書</p></div>
+</div></header>
+
+<nav>
+<a href="#map">🗺 全体の地図</a><a href="#cal">📅 日程の変更（最頻出）</a><a href="#gas">⚙️ プログラム更新</a><a href="#ai">🤖 AIに頼む</a><a href="#faq">❓ 困ったら</a>
+</nav>
+
+<div class="card" id="map">
+<h2>0. 全体の地図：どこに何があるか</h2>
+<p>このシステムは4つの場所でできています。<b>触るのはほぼ①と②だけ</b>です。</p>
+<table>
+<tr><th>場所</th><th>何があるか</th><th>触る頻度</th></tr>
+<tr><td><b>① GitHub</b><br>github.com/aicrew2025/kensyu</td><td>申込フォームのファイル（index.html）と日程データ。ここを変えるとフォームの表示が変わる</td><td><b>日程変更のたび</b></td></tr>
+<tr><td><b>② Apps Script</b><br>管理シート→拡張機能→Apps Script</td><td>自動処理のプログラム（Code.gs）。メール送信・Meet作成・出席記録など</td><td>日程変更後に1回実行／プログラム更新時</td></tr>
+<tr><td><b>③ 管理スプレッドシート</b></td><td>申込・出席・Meet URL一覧などの記録</td><td>毎日見る（編集は最小限）</td></tr>
+<tr><td><b>④ Supabase</b><br>supabase.com のダッシュボード</td><td>フォームとApps Scriptの中継サーバー</td><td><b>基本触らない</b>（月1回稼働確認のみ）</td></tr>
+</table>
+<div class="note">💡 ログインはすべて <b>support@aicrew.jp</b> のGoogleアカウント（Apps Script・シート・カレンダー・Gmail共通）。GitHubは専用アカウント、Supabaseは招待されたアカウントでログインします。パスワード類は社内の管理簿で引き継いでください。</div>
+</div>
+
+<div class="card" id="cal">
+<h2>1. 日程（カレンダー）の変更・追加 — 一番よくある作業</h2>
+<p>日程のデータは、フォームのファイル <b>index.html</b> の中に書かれています。<b>「GitHub上で書き換える → Apps Scriptで反映ボタンを押す」</b>の2段階です。</p>
+
+<h3>共通手順：GitHubで index.html を編集する</h3>
+<ol class="steps">
+<li>ブラウザで <b>github.com/aicrew2025/kensyu</b> を開き、ログインする</li>
+<li>ファイル一覧の <b>index.html</b> をクリック</li>
+<li>右上の<b>鉛筆マーク（Edit）</b>をクリック → 編集画面になる</li>
+<li><b>Ctrl+F（Macは⌘+F）</b>で変えたい日付（例：<code>2026-11-04</code>）を検索する</li>
+<li>該当箇所を書き換える（下の「データの読み方」参照）</li>
+<li>右上の緑ボタン <b>Commit changes</b> → もう一度 <b>Commit changes</b> で保存</li>
+<li>1〜2分待って、フォーム（aicrew2025.github.io/kensyu）を<b>スーパーリロード（Ctrl+Shift+R）</b>して表示を確認</li>
+</ol>
+
+<h3>データの読み方：1コマ＝この1かたまり</h3>
+<pre><span class="c">// index.html内の「const D=」以降に日程データが並んでいます</span>
+<span class="c">// video=AI動画活用編（現在はこの1コースのみ）、"1"〜"5"=第①〜⑤回</span>
+{<span class="y">"date"</span>:<span class="g">"2026-11-04"</span>, <span class="c">← 日付（半角・YYYY-MM-DD）</span>
+ <span class="y">"wd"</span>:<span class="g">"水"</span>,           <span class="c">← 曜日（漢字1文字）</span>
+ <span class="y">"time"</span>:<span class="g">"14:00〜16:00"</span>, <span class="c">← 時間（〜は全角のまま）</span>
+ <span class="y">"cool"</span>:<span class="g">"11月"</span>}       <span class="c">← カレンダー画面のグループ名</span></pre>
+<div class="danger">⚠️ 書き換えてよいのは <b>" "の中身だけ</b>。カンマ・カッコ・引用符を消すとフォーム全体が動かなくなります（動かなくなったら慌てずGitHubの「History」から直前の版に戻せます。→ FAQ参照）</div>
+
+<div class="case"><h3><span class="badge">ケース1</span>1コマの日付・時間を変更する（申込者がまだいない場合）</h3>
+<ol class="steps">
+<li>上の共通手順で、該当コマの <code>date</code>・<code>wd</code>・<code>time</code> を書き換えて保存</li>
+<li>カレンダー（support@）で<b>旧日程のMeet予定を削除</b>する（タイトルで検索）</li>
+<li>管理シートの<b>Meet URL一覧から旧日程の行を削除</b>する</li>
+<li>Apps Scriptで <b>preCreateAllMeets</b> を実行 → 新日程のMeetが作られ、一覧に追加される</li>
+</ol></div>
+
+<div class="case"><h3><span class="badge">ケース2</span>新しい期の日程を追加する（例：来年1月〜3月分）</h3>
+<ol class="steps">
+<li>各コース×各回に、新しい日程のかたまりを<b>カンマ区切りで追記</b>する。既存のかたまりをコピーして日付・曜日・時間・グループ名（例：<code>"1月"</code>）を変えるのが安全</li>
+<li>保存してフォームで表示確認（カレンダー表示に新しい月が出るか）</li>
+<li>Apps Scriptで <b>preCreateAllMeets</b> を実行（新しいコマのMeetだけが追加作成される。既存分は重複しない）</li>
+</ol>
+<div class="note">💡 数が多いとき（期まるごと等）は、自分で書き換えるよりAIに頼むのが確実です → 下の「3. AIに頼む」</div></div>
+
+<div class="case"><h3><span class="badge">ケース3</span>すでに申込者がいるコマを変更する</h3>
+<p>フォームの書き換えだけでは<b>申込済みの人には伝わりません</b>。以下も必ずセットで：</p>
+<ol class="steps">
+<li>ケース1の手順で日程データとMeetを更新</li>
+<li>申込済みの受講者に変更案内メールを送る（新日時と新Meet URL）</li>
+<li>カレンダー：新しいMeet予定に受講者を招待し直す</li>
+<li>管理シート：受講記録・_リマインドの該当行の日付を修正</li>
+</ol></div>
+
+<div class="case"><h3><span class="badge">ケース4</span>あるコマを休講（削除）にする</h3>
+<ol class="steps">
+<li>index.htmlから該当のかたまりを<b>カンマごと削除</b>（前後のカンマが二重にならないよう注意）</li>
+<li>カレンダーの該当Meet予定を削除、Meet URL一覧の行も削除</li>
+<li>申込者がいた場合はケース3の②〜④で振替対応</li>
+</ol></div>
+</div>
+
+<div class="card" id="gas">
+<h2>2. プログラム（Code.gs）の更新と実行</h2>
+<h3>関数を実行する（preCreateAllMeets など）</h3>
+<ol class="steps">
+<li>管理スプレッドシートを開く → メニュー<b>「拡張機能」→「Apps Script」</b></li>
+<li>画面上部の<b>プルダウン</b>（「実行」ボタンの左）から関数名を選ぶ</li>
+<li><b>▶ 実行</b>をクリック。権限確認が出たら support@ を選んで許可</li>
+<li>下の「実行ログ」に完了メッセージが出るのを確認</li>
+</ol>
+<table>
+<tr><th>関数名</th><th>何をする</th><th>いつ使う</th></tr>
+<tr><td><code>preCreateAllMeets</code></td><td>フォームの日程を読み取り、全コマのMeetを一括作成（既存は重複しない）</td><td><b>日程を変更・追加した後</b></td></tr>
+<tr><td><code>formatMeetSheet</code></td><td>Meet URL一覧の並べ替え＋色分け＋整形だけ（安全）</td><td>一覧が乱れたとき</td></tr>
+<tr><td><code>deleteAllMeets</code></td><td>一覧の全Meet予定を削除しシートをクリア</td><td>全部作り直すときだけ（<b>要注意</b>）</td></tr>
+<tr><td><code>sendReminders</code></td><td>翌日分のリマインドを手動送信</td><td>テストや再送のとき</td></tr>
+<tr><td><code>markAttendance</code></td><td>出席の自動記録を手動実行</td><td>テストのとき</td></tr>
+</table>
+<h3>Code.gs 自体を差し替える（プログラム更新時）</h3>
+<ol class="steps">
+<li>Apps Scriptエディタで Code.gs を開き、<b>全選択（Ctrl+A）→ 新しい内容を貼り付け → 保存（Ctrl+S）</b></li>
+<li>右上<b>「デプロイ」→「デプロイを管理」→ 鉛筆マーク → バージョン「新バージョン」→ デプロイ</b></li>
+</ol>
+<div class="danger">⚠️ <b>「新しいデプロイ」は絶対に選ばない</b>こと。URLが変わって申込が届かなくなります。必ず「デプロイを<b>管理</b>」から既存デプロイの新バージョン更新を選びます。（間違えてしまったら → FAQへ）</div>
+</div>
+
+<div class="card" id="ai">
+<h2>3. 自信がないときは：AIに頼む（Claude Code不要）</h2>
+<p>このシステムはAI（Claude）が構築しました。引き継いだ人も、<b>ブラウザ版のClaude（claude.ai）に頼めば同じように更新できます</b>。特別なツールは不要です。</p>
+<ol class="steps">
+<li><b>claude.ai</b> にログインし、新しいチャットを開く</li>
+<li>GitHubで index.html（または Code.gs）を開き、<b>Rawボタン → 全選択してコピー</b>、チャットに貼り付ける（ファイル添付でもOK）</li>
+<li>やりたいことを日本語で伝える。例：<br>
+「これは研修申込フォームです。日程データ（const D）の11月分を、次の日程に差し替えて、ファイル全体を返してください：AI動画①=11/5(木)14:00〜16:00、…」</li>
+<li>返ってきたファイルをGitHubにアップロード（Add file → Upload files で上書き）</li>
+<li>フォームの表示を確認 → Apps Scriptで <code>preCreateAllMeets</code> を実行</li>
+</ol>
+<div class="ok">✅ 頼むときのコツ：「何のファイルか」「どこを」「どう変えたいか」「ファイル全体を返して」の4点を伝える。変更後は必ず自分の目でフォームの表示を確認する。</div>
+</div>
+
+<div class="card" id="faq">
+<h2>4. 困ったら（よくあるトラブルと復旧）</h2>
+<table>
+<tr><th>症状</th><th>復旧方法</th></tr>
+<tr><td>index.htmlを編集したらフォームが真っ白/壊れた</td><td>GitHubで index.html を開く → <b>「History」</b>→ 壊れる前の版を開く → 「Raw」で中身をコピー → 編集画面に貼り直して保存（＝元に戻る）</td></tr>
+<tr><td>申込が届かなくなった（誤って「新しいデプロイ」をした）</td><td>Apps Scriptの「デプロイを管理」で<b>新しいURL</b>をコピー → Supabaseダッシュボード → Edge Functions → submit-registration 内の <code>GAS_URL</code> を新URLに書き換えてDeploy（またはAIに依頼）</td></tr>
+<tr><td>フォームは動くが確認メールが来ない</td><td>Apps Scriptのデプロイが最新版か確認（デプロイを管理→新バージョン）。support@に届く【申込エラー】メールの内容も確認</td></tr>
+<tr><td>Meetが作られない・録画が配布されない</td><td>Apps Scriptの「実行数」（時計マーク）でエラーを確認。support@のアラートメールに対応方法が書かれている</td></tr>
+<tr><td>原因がわからない</td><td>症状・直前にやったこと・エラーメールを添えて claude.ai に相談（Code.gsとindex.htmlを貼ると精度が上がる）</td></tr>
+</table>
+<div class="note">📚 関連資料：日々の運用→<b>事務局チェックリスト</b>／運営全般→<b>運営ハンドブック</b>／システム停止時→<b>手作業運用マニュアル</b>（いずれもGitHubの同じ場所に保管）</div>
+</div>
+
+<div class="foot"><div class="flogo" role="img" aria-label="aicrew"></div>aicrew 研修サポート事務局｜support@aicrew.jp</div>
+</div></body></html>

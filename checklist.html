@@ -1,0 +1,123 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>aicrew リアルタイム研修｜事務局チェックリスト</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Yu Gothic","Hiragino Kaku Gothic ProN",system-ui,sans-serif;background:#f8f4eb;color:#1c1c28;line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 60px}
+header{background:linear-gradient(135deg,#130c23 0%,#021b74 55%,#264290 100%);color:#fff;padding:28px 22px 26px;border-radius:0 0 20px 20px;margin:0 -16px 20px;box-shadow:0 8px 24px rgba(2,27,116,.22)}
+.hrow{display:flex;align-items:center;gap:14px}
+.hbadge{width:56px;height:56px;background:#fff;border-radius:15px;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 6px 16px rgba(0,0,0,.28)}
+.mkimg{width:40px;height:34.6px;background:url(logo.png) no-repeat;background-size:70.67px 70.67px;background-position:-15.34px -9.33px}
+.hbrand{font-size:15px;font-weight:800;letter-spacing:.16em;opacity:.95}
+header h1{font-size:19px;font-weight:700;margin-top:3px}
+header p{font-size:11.5px;color:#c6cfe6;margin-top:6px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+nav a{flex:1;min-width:104px;text-align:center;text-decoration:none;border:1.5px solid #e4e4ee;background:#fff;border-radius:13px;padding:11px 6px;font-size:12px;font-weight:700;color:#3a3a48;box-shadow:0 1px 2px rgba(20,20,40,.04)}
+nav a:hover{border-color:#9fb2dd;color:#264290}
+.card{background:#fff;border:1px solid #ece7da;border-radius:15px;padding:18px 20px;margin-bottom:14px;box-shadow:0 1px 2px rgba(20,20,40,.04),0 5px 18px rgba(20,20,40,.045)}
+h2{font-size:17px;color:#021b74;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid #eceff7}
+h3{font-size:13.5px;margin:14px 0 6px;color:#264290}
+p,li,label{font-size:13px;color:#3a3a48}
+ul{margin:6px 0 6px 20px}li{margin:4px 0}
+b{color:#021b74}
+table{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0}
+th,td{border:1px solid #ece7da;padding:7px 9px;text-align:left}
+th{background:#f4f6fc;color:#264290;font-size:11.5px}
+.ck{list-style:none;margin-left:0}
+.ck li{display:flex;gap:9px;align-items:flex-start;padding:7px 10px;border:1px solid #ece7da;border-radius:10px;margin:6px 0;background:#fdfdfb}
+.ck input{margin-top:4px;width:15px;height:15px;accent-color:#264290;flex:none;cursor:pointer}
+.ck li:has(input:checked){background:#f0fbf6;border-color:#bfe6cf}
+.ck li:has(input:checked) label{text-decoration:line-through;color:#9a9aa8}
+label{cursor:pointer}
+.sub{margin-left:34px}
+.note{background:#fff8e6;border:1px solid #f0d98a;border-radius:12px;padding:10px 13px;font-size:12px;color:#7a5c00;margin:10px 0}
+.tagline{font-size:11px;color:#9a9aa8;margin-top:4px}
+.foot{text-align:center;margin-top:34px;color:#9a9aa8;font-size:11px;line-height:1.9}
+.flogo{width:104px;height:110.4px;margin:0 auto 6px;background:url(logo.png) no-repeat;background-size:159.26px 159.26px;background-position:-27.55px -21.02px}
+@media print{nav,.note{display:none}header{border-radius:0}}
+</style></head><body><div class="wrap">
+<header><div class="hrow">
+<div class="hbadge"><div class="mkimg" role="img" aria-label="aicrew"></div></div>
+<div><div class="hbrand">aicrew</div><h1>リアルタイム研修｜事務局チェックリスト</h1><p>これだけ見れば今日やることがわかる1枚｜詳細手順は運営ハンドブック参照｜support@aicrew.jp</p></div>
+</div></header>
+
+<nav>
+<a href="#a">A. 開始前（一回きり）</a><a href="#b">B. 毎日</a><a href="#c">C. コマ日</a><a href="#d">D. 例外対応</a><a href="#e">E. 定期メンテ</a>
+</nav>
+<p class="note">✅ チェックボックスはクリックで消し込みできます（表示中のみ・保存はされません。記録が必要な場合は印刷またはコピーして運用）。</p>
+
+<div class="card" id="a">
+<h2>A. 受付開始前の最終チェック（一回きり・約30分）</h2>
+<ul class="ck">
+<li><input type="checkbox" id="a1"><label for="a1"><b>自動録画の承認</b>：Apps Scriptで appsscript.json を最新版に貼り替え → <b>authorize</b> 実行（すべて許可）</label></li>
+<li><input type="checkbox" id="a2"><label for="a2"><b>preCreateAllMeets</b> を実行 → Meet URL一覧の「自動録画」列を確認<br>
+<span class="tagline">OK → 講師案内は「入室するだけで録画されます」／NG → 「入室したら録画ボタンを1タップ」</span></label></li>
+<li><input type="checkbox" id="a3"><label for="a3"><b>出席の自動記録テスト</b>：<b>markAttendance</b> を実行 → エラーメールが来なければOK</label></li>
+<li><input type="checkbox" id="a4"><label for="a4"><b>テストデータの掃除</b>：申込一覧・受講記録・受講者サマリ・_リマインドの「テスト」行を削除／テストMeetのゲスト（tokunan@）を削除</label></li>
+<li><input type="checkbox" id="a5"><label for="a5"><b>担当講師の記入</b>：Meet URL一覧のK列に各回の担当講師名を記入</label></li>
+<li><input type="checkbox" id="a6"><label for="a6"><b>講師アカウント</b>：takka@aicrew.jp の初期設定完了を本人に確認（並行開催日は別アカウント必須）</label></li>
+<li><input type="checkbox" id="a7"><label for="a7"><b>フォーム最終確認</b>：<a href="https://aicrew2025.github.io/kensyu/">aicrew2025.github.io/kensyu</a>（表示・日程・ロゴ）</label></li>
+</ul>
+</div>
+
+<div class="card" id="b">
+<h2>B. 毎日のチェック（朝10分）</h2>
+<ul class="ck">
+<li><input type="checkbox" id="b1"><label for="b1"><b>support@ の受信箱</b>を確認：<br>
+<span class="tagline">【申込通知】→ 見るだけ（処理は自動）／【申込エラー】【録画配信エラー】【Supabaseが応答しません】→ D欄の対応表へ／受講者からの返信（変更・欠席相談）→ D欄へ</span></label></li>
+<li><input type="checkbox" id="b2"><label for="b2">16時の前日リマインドは<b>自動送信＝操作不要</b>（心配な日は16時過ぎに送信済みメールを確認）</label></li>
+</ul>
+</div>
+
+<div class="card" id="c">
+<h2>C. コマがある日のチェック</h2>
+<h3>前日</h3>
+<ul class="ck">
+<li><input type="checkbox" id="c1"><label for="c1">Meet URL一覧で翌日のコマ・担当講師を確認<br><span class="tagline">色分け：紫=AI動画活用編</span></label></li>
+<li><input type="checkbox" id="c2"><label for="c2">担当講師へ連絡：担当回・時間・Meet URL・受講者数</label></li>
+</ul>
+<h3>当日</h3>
+<ul class="ck">
+<li><input type="checkbox" id="c3"><label for="c3">講師が @aicrew.jp で入室し録画が回っているか（自動録画OKなら確認不要）</label></li>
+</ul>
+<h3>翌日〜数日以内</h3>
+<ul class="ck">
+<li><input type="checkbox" id="c4"><label for="c4">受講記録の出席欄：<b>「要確認(◯分)」の人だけ</b>遅刻・早退・欠席を判断して上書き</label></li>
+<li><input type="checkbox" id="c5"><label for="c5">_録画配信シートに「配信済」が付いているか（エラー時はメールが来るので基本見るだけ）</label></li>
+</ul>
+</div>
+
+<div class="card" id="d">
+<h2>D. 例外が起きたら（見る場所）</h2>
+<table>
+<tr><th style="width:38%">起きたこと</th><th>対応</th></tr>
+<tr><td>日程変更の依頼</td><td>①カレンダー：旧Meetから受講者を外し新Meetへ招待 ②シートの日付修正 ③_リマインドの日付修正 ④本人へ完了メール</td></tr>
+<tr><td>直前の変更・無断欠席</td><td>助成金に影響の可能性を説明し、社内（代表・社労士）と扱いを相談</td></tr>
+<tr><td>録画が配布されない</td><td>_録画配信シートとエラーメールを確認 → 手作業運用マニュアル5章の手順で手動配布（<b>閲覧のみ・DL不可</b>）</td></tr>
+<tr><td>フォームが動かない</td><td>Supabaseダッシュボードで稼働確認 → 復旧までメール仮受付（手作業マニュアル参照）</td></tr>
+<tr><td>労働局・監査から出席ログの依頼</td><td>証憑3層：①_入室ログ＋管理コンソール監査ログ ②受講記録・サマリ ③録画 → 様式は社労士に確認</td></tr>
+</table>
+</div>
+
+<div class="card" id="e">
+<h2>E. 定期メンテナンス</h2>
+<h3>毎週（曜日を決めて）</h3>
+<ul class="ck">
+<li><input type="checkbox" id="e0"><label for="e0"><b>Supabaseの稼働確認</b>：ダッシュボードで「ACTIVE」であること（停止時はRestore→フォームで送信テスト）</label></li>
+<li><input type="checkbox" id="e1"><label for="e1">受講記録の「要確認」が放置されていないか</label></li>
+<li><input type="checkbox" id="e2"><label for="e2">Meet URL一覧の担当講師列に空欄がないか（直近2週間分）</label></li>
+</ul>
+<h3>毎月</h3>
+<ul class="ck">
+<li><input type="checkbox" id="e3"><label for="e3">Supabaseダッシュボードでプロジェクトが「ACTIVE」か確認（停止していたら「Restore」で即復旧）</label></li>
+<li><input type="checkbox" id="e4"><label for="e4">録画フォルダ「04.研修 &gt; リアルタイム」に各回の録画が溜まっているか</label></li>
+</ul>
+<h3>期の終わり／日程追加のとき</h3>
+<ul class="ck">
+<li><input type="checkbox" id="e5"><label for="e5">新日程を index.html に反映しアップロード → preCreateAllMeets を再実行</label></li>
+<li><input type="checkbox" id="e6"><label for="e6">受講者サマリで全員の受講時間（10h）が揃っているか → 社労士へ連携</label></li>
+</ul>
+</div>
+
+<div class="foot"><div class="flogo" role="img" aria-label="aicrew"></div>aicrew 研修サポート事務局｜support@aicrew.jp</div>
+</div></body></html>

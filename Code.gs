@@ -175,9 +175,8 @@ function appendRow_(p) {
   const sh = ss.getSheets().filter(s => s.getSheetId() === SHEET_GID)[0] || ss.getSheets()[0];
   const s = p.sessions;
   const cells = s.map(o => md_(o.date) + '(' + o.wd + ') ' + o.time + ' ' + o.theme);
-  const ddl = s.map(o => o.deadline).join(' / ');
   sh.appendRow([new Date(), p.company, p.name, p.kana, p.email, p.course_label,
-    cells[0], cells[1], cells[2], cells[3], cells[4], ddl, p.sid || '']);
+    cells[0], cells[1], cells[2], cells[3], cells[4], p.sid || '']);
 }
 
 // ---- 社労士連携：管理シート一元化（明細＋サマリ） ----
@@ -188,7 +187,7 @@ function appendManagement_(p) {
   // ① 受講記録（明細）：出勤簿・受講記録として提出しやすい1行=1回の形。「出席」列は当日に事務局が手入力。
   const detail = ensureSheet_(DETAIL_SHEET,
     ['申込日時', '会社', '氏名', 'カナ', 'メール', 'コース', '回', '対象',
-      '日付', '曜日', '時間', '開始', '終了', '時間数(h)', 'テーマ', '変更締切', '出席', 'Meet URL', '申込ID']);
+      '日付', '曜日', '時間', '開始', '終了', '時間数(h)', 'テーマ', '出席', 'Meet URL', '申込ID']);
   let total = 0;
   const dates = [];
   p.sessions.forEach(function (o) {
@@ -196,7 +195,7 @@ function appendManagement_(p) {
     const h = hours_(o.time);
     total += h; dates.push(o.date);
     detail.appendRow([now, p.company, p.name, p.kana, p.email, p.course_label,
-      CIR[o.n - 1], targetLabel_(p.course, o.n), o.date, o.wd, o.time, st, en, h, o.theme, o.deadline, '', o.meetUrl || '', p.sid || '']);
+      CIR[o.n - 1], targetLabel_(p.course, o.n), o.date, o.wd, o.time, st, en, h, o.theme, '', o.meetUrl || '', p.sid || '']);
   });
 
   // ② 受講者サマリ：1人1行。合計時間・予定回数は申込内容から、出席回数は明細の「出席」入力を数式で自動集計（メール一致）。
@@ -246,7 +245,6 @@ function sendMail_(p) {
       '<td style="border:1px solid #d7ece2;padding:6px 8px"><b>' + CIR[i] + '</b> ' + esc_(o.theme) + '</td>' +
       '<td style="border:1px solid #d7ece2;padding:6px 8px">' + esc_(md_(o.date)) + '(' + esc_(o.wd) + ')</td>' +
       '<td style="border:1px solid #d7ece2;padding:6px 8px">' + esc_(o.time) + '</td>' +
-      '<td style="border:1px solid #d7ece2;padding:6px 8px">' + esc_(o.deadline) + 'まで</td>' +
       '<td style="border:1px solid #d7ece2;padding:6px 8px">' + meet + '</td></tr>';
   }).join('');
   const html =
@@ -258,15 +256,14 @@ function sendMail_(p) {
     '<td style="border:1px solid #d7ece2;padding:6px 8px">研修内容</td>' +
     '<td style="border:1px solid #d7ece2;padding:6px 8px">日付</td>' +
     '<td style="border:1px solid #d7ece2;padding:6px 8px">時間</td>' +
-    '<td style="border:1px solid #d7ece2;padding:6px 8px">変更締切</td>' +
     '<td style="border:1px solid #d7ece2;padding:6px 8px">参加</td></tr>' + rows + '</table>' +
     '<p style="font-size:13px">各回の <b>Google Meet</b> はリンクをクリックするだけで参加できます（アプリ不要・ブラウザでOK・Windows / Mac / スマホ対応）。</p>' +
     '<p style="font-size:13px">添付の <b>.ics</b> ファイルは、<b>Outlook や Apple カレンダー等に5回分をまとめて登録</b>するためのものです。ファイルを開いて「追加／インポート」を選ぶと登録できます（Googleカレンダーをお使いの方は招待が自動で届きます）。</p>' +
     '<p style="font-size:13px">複数人で1つの画面でご覧になる場合も、<b>必ずお一人ずつ、ご自身の端末からご参加ください</b>（マイク・カメラはオフのままでOKです）。出席を個人単位で記録するためのお願いです。</p>' +
     '<p style="font-size:13px">各回とも<b>開始5分前から入室いただけます</b>。出席記録のため、<b>開始5分前までのご入室</b>にご協力ください。</p>' +
     '<p style="font-size:12.5px;background:#fff8e6;border:1px solid #f0d98a;border-radius:8px;padding:10px 12px;color:#7a5c00">' +
-    '【ご注意：受講日の変更・欠席について】受講日の変更は<b style="color:#c0392b">受講日の10日前まで</b>可能です（<b>年末年始・大型連休は除きます</b>）。' +
-    '<b style="color:#c0392b">期限を過ぎた変更・無断欠席・遅刻・早退は、助成金の受給に影響が出る場合があります。</b><br>' +
+    '【ご注意：受講日の変更・欠席について】' +
+    '<b style="color:#c0392b">無断欠席・遅刻・早退は、助成金の受給に影響が出る場合があります。</b><br>' +
     '変更の際は研修サポート事務局 <b>' + SUPPORT_EMAIL + '</b> までお早めにご連絡ください。</p>' +
     '<p style="font-size:12.5px;background:#eef2fb;border:1px solid #d3def3;border-radius:8px;padding:10px 12px;color:#2a3556">' +
     '【録画について】各回は録画し、講義終了後に復習用として<b>自動でメールにてご案内</b>します（<b>各録画の公開日から2ヶ月間</b>視聴可能）。' +
@@ -707,7 +704,7 @@ function buildIcs_(p) {
       'DTSTAMP:' + now, 'DTSTART:' + icsUtc_(o.date, st), 'DTEND:' + icsUtc_(o.date, en),
       'SUMMARY:aicrew 生成AI研修 ' + CIR[i] + ' ' + o.theme + ' (' + p.course_label + ')',
       'LOCATION:' + loc,
-      'DESCRIPTION:オンライン(Google Meet)' + (o.meetUrl ? ' ' + o.meetUrl : '') + '\\n変更締切: ' + o.deadline + 'まで',
+      'DESCRIPTION:オンライン(Google Meet)' + (o.meetUrl ? ' ' + o.meetUrl : ''),
       'END:VEVENT');
   });
   L.push('END:VCALENDAR');
